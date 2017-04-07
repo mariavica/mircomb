@@ -1,6 +1,6 @@
-#globalVariables(names=c("conversor","conversor.mouse","conversor","conversor.mouse",
-#"org.Hs.egSYMBOL","org.Mm.egSYMBOL","microCosm_v5_18","genes_human_h37",
-#"mirnas_human_17_h37","grup2","grup1","version.mirnas"),package="miRComb")
+globalVariables(names=c("conversor","conversor.mouse","conversor","conversor.mouse",
+"org.Hs.egSYMBOL","org.Mm.egSYMBOL","microCosm_v5_18","genes_human_h37",
+"mirnas_human_17_h37","grup2","grup1","version.mirnas"),package="miRComb")
 
 summary.corObject <- function (object, ...) {
 
@@ -96,6 +96,12 @@ translatemiRNAs <- function ( x , from = NULL, to = "21") {
 	from<-paste("miRBase_",as.character(from),sep="")
 	to<-paste("miRBase_",as.character(to),sep="")
 
+	if (from=="unknown") {
+		options<-checkmiRNAs(x, to.dataframe=TRUE)
+		sel<-which(options[,2]==max(options[,2]))
+		from<-options[sel[length(sel)],1]	
+	}
+	
 	sel<-which((versions.mirnas[,from] %in% x)==TRUE)
 	subs<-versions.mirnas[sel,]
 	rownames(subs)<-subs[,from]

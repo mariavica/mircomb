@@ -16,7 +16,7 @@ translatemiRNAs(x, from = NULL, to = "21")
  character vector with the names of the miRNAs to translate.
 }
   \item{from}{
- character vector, version of the miRBase of the miRNAs to translate. Must be one of: "6.0", "7.0", "7.1", "8.0", "8.1", "8.2", "9.0", "9.1", "9.2", "10.0", "10.1", "11.0", "12.0", "13.0", "14", "15", "16", "17", "18", "19", "20", "21"
+ character vector, version of the miRBase of the miRNAs to translate. Must be one of: "6.0", "7.0", "7.1", "8.0", "8.1", "8.2", "9.0", "9.1", "9.2", "10.0", "10.1", "11.0", "12.0", "13.0", "14", "15", "16", "17", "18", "19", "20", "21" or "unknown"
 }
   \item{to}{
  character vector, version of the miRBase of the miRNAs to translate. Must be one of: "6.0", "7.0", "7.1", "8.0", "8.1", "8.2", "9.0", "9.1", "9.2", "10.0", "10.1", "11.0", "12.0", "13.0", "14", "15", "16", "17", "18", "19", "20", "21"

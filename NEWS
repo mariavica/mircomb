@@ -2,7 +2,8 @@ CHANGES IN VERSION 0.8.7
 ------------------------
 
     o Now available on GitHub.
-    
+    o Function evaluate and addGlmnet implemented (both still in test).
+
 
 CHANGES IN VERSION 0.8.5
 ------------------------
@@ -23,12 +24,10 @@ CHANGES IN VERSION 0.8.2
     o Functions plotHclust, plotSurv added.
 
 
-
 CHANGES IN VERSION 0.8.1
 ------------------------
 
     o Minor changes. Bug fixes.
-
 
 
 CHANGES IN VERSION 0.8.0

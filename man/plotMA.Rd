@@ -7,7 +7,7 @@ MA plot
 Plots a MA plot of the 2 selected samples.
 }
 \usage{
-plotMA(obj, subset, sample1 = NULL, sample2 = NULL )
+plotMA(obj, subset, sample1 = NULL, sample2 = NULL, cex.lab = 1, cex.axis = 1 )
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -15,6 +15,8 @@ plotMA(obj, subset, sample1 = NULL, sample2 = NULL )
   \item{subset}{"miRNA" or "mRNA"}
   \item{sample1}{number of the column or column name of sample 1 to use}
   \item{sample2}{number of the column or column name of sample 2 to use}
+  \item{cex.lab}{cex of the label axis. Default is 1}
+  \item{cex.axis}{cex of the axis. Default is 1}
 }
 \value{A MA plot.}
 \examples{
