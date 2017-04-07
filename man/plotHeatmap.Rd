@@ -30,7 +30,7 @@ number of items to plot.
 (optional) factor or character vector indicating predefined groups}
   \item{grouping.row}{
 (optional) factor or character vector indicating predefined groups}
-  \item{order}{criteria used to select the "top" miRNAs or mRNAs. "pval" or "FDR" (default), or "logratio" or "FC"}
+  \item{order}{criteria used to select the "top" miRNAs or mRNAs. "pval" or "FDR" (default), or "logratio" or "FC". Only for class="miRNA" or "mRNA"}
   \item{cex.lab}{cex of the label axis. Default is 0.75}
 }
 \value{

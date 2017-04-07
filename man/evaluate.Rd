@@ -3,7 +3,7 @@
 \title{
 Evaluate function}
 \description{
-Evaluate in detail
+Evaluate in detail (STILL IN TEST!)
 }
 \usage{
 evaluate(obj, method = c("hypergeometric", "logistic", "GSEA"), databases = "all", adj.pval = 0.05, plot = TRUE, miRNAs = "all", mRNAs = "all", nperm = nperm)

@@ -93,15 +93,16 @@ translatemiRNAs <- function ( x , from = NULL, to = "21") {
 
 	if (!exists("versions.mirnas")) { data(versions.mirnas) }
 	
-	from<-paste("miRBase_",as.character(from),sep="")
-	to<-paste("miRBase_",as.character(to),sep="")
-
 	if (from=="unknown") {
 		options<-checkmiRNAs(x, to.dataframe=TRUE)
 		sel<-which(options[,2]==max(options[,2]))
-		from<-options[sel[length(sel)],1]	
+		from<-as.character(options[sel[length(sel)],1])
+		cat(paste("Your miRNAs have been assigned to miRBase version ",from,", with a coincidence of ", round(max(options[,2],1)),"%. Check checkmiRNAs function for more details.\n",sep=""))
 	}
-	
+  
+  from<-paste("miRBase_",as.character(from),sep="")
+  to<-paste("miRBase_",as.character(to),sep="")
+  
 	sel<-which((versions.mirnas[,from] %in% x)==TRUE)
 	subs<-versions.mirnas[sel,]
 	rownames(subs)<-subs[,from]
@@ -3459,185 +3460,185 @@ topTable <- function (obj, class, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]
 
 
 evaluate <- function ( obj, method=c("hypergeometric", "logistic", "GSEA"), databases="all", adj.pval=0.05 , plot=TRUE, miRNAs="all" , mRNAs= "all" , nperm=nperm ) {
-
-#obj<-data.txell
-#method<-"gsea"
-#databases="all"
-#adj.pval=0.05
-#plot=TRUE
-#miRNAs="all"
-#mRNAs= "all"
-
-	
-	if (databases=="all") {
-		test.dat<-colnames(obj@net)[grep("dat.",colnames(obj@net))]
-	} else {
-		if (!all(paste("dat.",databases,sep="") %in% colnames(obj@net)[grep("dat.",colnames(obj@net))])) stop("Selected databases not in the corObject")
-		test.dat<-c(paste("dat.",databases,sep=""),"dat.sum")
-	}
-
-	#subnet <- obj@net[which(obj@net$miRNA %in% miRNAs & obj@net$mRNA %in% mRNAs) , ]
-	subnet <- obj@net
-
-	result<-data.frame(miRNA=as.character(unique(subnet$miRNA)))
-
-	result$tot.targets <- table(subnet$miRNA[which(subnet$dat.sum>0 & subnet$adj.pval < adj.pval)])[result$miRNA]
-
-
-	if ("hypergeometric" %in% method | "hyper" %in% method) {
-
-		cat("Hypergeometric testing\n")
-
-		for (i in 1:length(test.dat)) {
-			cat(paste("  Testing database",test.dat[i],"\n"))
-			k<-dim(result)[2]
-			
-			targets<-table(subnet$miRNA[which(subnet$adj.pval<adj.pval & subnet[,test.dat[i]]>0)])[result$miRNA]
-			cor<-table(subnet$miRNA[which(subnet$adj.pval<adj.pval)])[result$miRNA]
-			pred.targets<-table(subnet$miRNA[which(subnet[,test.dat[i]]>0)])[result$miRNA]
-			size<-table(subnet$miRNA)[result$miRNA]
-
-			#saving the results
-			result[,k+1]<-targets#[result$miRNA]
-			result[,k+2]<-phyper(targets-1, pred.targets, size-pred.targets, cor, lower.tail=FALSE )
-			result[,k+3]<-p.adjust(result[,k+2],method="BH")
-			result[,k+4]<-size * targets / (pred.targets * cor) 
-
-
-			#### per test fisher
-
-			allt<-table(subnet[,test.dat[i]]>0,subnet$adj.pval<0.05,subnet$miRNA)
-
-			result[,k+5]<-NA
-
-
-			for (ii in 1:length(result$miRNA)) {
-				result[ii,k+5]<-chisq.test(allt[,,result$miRNA[ii]])$p.value
-			}
-
-			result[,k+6]<-p.adjust(result[,k+5],method="BH")
-
-
-			#changing column names
-			colnames(result)[(k+1):(k+6)] <- paste("h",test.dat[i],c("targets","pval","FDR","OR","fish.p","fish.FDR"),sep=".")
-
-		}
-
-		if (plot==TRUE) {
-			x11()
-			boxplot(as.matrix(log2(result[,grep("h*OR",colnames(result))])))
-		}
-
-
-	}
-
-
-
-	if ("logistic" %in% method | "log" %in% method | "regression" %in% method) {
-
-		cat("Logistic regression\n")
-
-		#library(pROC)
-		#library(verification)
-	
-
-		for (i in 1:length(test.dat)) {
-			k<-dim(result)[2]
-
-			result[,(k+1):(k+6)]<-NA
-
-			colnames(result)[(k+1):(k+6)]<-paste("l",test.dat[i],c("beta1","pval","FDR","auc","pval.a","FDR.a"),sep=".")
-
-			for (j in 1:dim(result)[1]) {
-				cat(paste("  Testing database",test.dat[i],"miRNA",result[j,"miRNA"],"\n"))
-
-				resp <- as.numeric(subnet[which(subnet$miRNA == result[j,"miRNA"]),test.dat[i]]>0)
-
-				if (length(table(resp))>1) {
-					cor <- subnet$cor[which(subnet$miRNA == result[j,"miRNA"])] 
-
-					#logistic regression
-					mod <- glm(resp ~ cor, family=binomial)
-					prob<-predict(mod,type=c("response"))
-					g1 <- roc(resp ~ prob)
-
-					result[j,k+1]<-summary(mod)$coefficients[2,1]
-					result[j,k+2]<-summary(mod)$coefficients[2,4]
-
-					result[j,k+4]<-g1$auc
-					result[j,k+5]<-roc.area(resp,prob)$p.value
-
-				}
-
-				result[,k+3]<-p.adjust(result[,k+2],method="BH")
-				result[,k+6]<-p.adjust(result[,k+5],method="BH")
-
-			}
-
-
-		}
-
-	}
-
-
-	if ("GSEA" %in% method | "gsea" %in% method) {
-		cat("GSEA\n")
-
-		#library(fgsea)
-		micro<-result$miRNA
-		k<-dim(result)[2]
-		result[,(k+1):(k+4*length(test.dat))]<-NA
-		colnames(result)[(k+1):(k+4*length(test.dat))]<-paste("g",rep(test.dat,each=4),c("NES","ES","pval","FDR"),sep=".")
-
-
-		for (j in 1:length(micro)) {
-
-			cat(paste("  Testing miRNA",micro[j],"\n"))
-
-			rank<-subnet$cor[which(subnet$miRNA==micro[j])]
-			names(rank)<-subnet$mRNA[which(subnet$miRNA==micro[j])]		
-			rank<-sort(rank)
-
-			pathways<-list()
-			for (i in 1:length(test.dat)) {
-				pathways[[i]] <- as.character(subnet$mRNA[which(subnet$miRNA==micro[j] & subnet[,test.dat[i]]>0)])
-			}
-			names(pathways)<-test.dat
-
-			fgseaRes <- fgsea(pathways = pathways, 
-	                 stats = rank,
-	                  minSize=1,
-	                  maxSize=5000,
-	                  nperm=nperm)
-
-			res<-data.frame(fgseaRes)
-
-			for (i in 1:length(test.dat)) {
-
-				if (test.dat[i] %in% res[,1]) {
-					sel<-which(res[,1] %in% test.dat[i])
-					result[j,k+4*(i-1)+1]<-res[sel,"NES"]
-					result[j,k+4*(i-1)+2]<-res[sel,"ES"]
-					result[j,k+4*(i-1)+3]<-res[sel,"pval"]
-					result[j,k+4*(i-1)+4]<-p.adjust(res[sel,"pval"],method="BH")
-					
-				}
-
-			}
-
-
-
-		}
-
-	}
-
-
-
-
-	return(result)
-
-
-
+  
+  #obj<-data.txell
+  #method<-"gsea"
+  #databases="all"
+  #adj.pval=0.05
+  #plot=TRUE
+  #miRNAs="all"
+  #mRNAs= "all"
+  
+  
+  if (databases=="all") {
+    test.dat<-colnames(obj@net)[grep("dat.",colnames(obj@net))]
+  } else {
+    if (!all(paste("dat.",databases,sep="") %in% colnames(obj@net)[grep("dat.",colnames(obj@net))])) stop("Selected databases not in the corObject")
+    test.dat<-c(paste("dat.",databases,sep=""),"dat.sum")
+  }
+  
+  #subnet <- obj@net[which(obj@net$miRNA %in% miRNAs & obj@net$mRNA %in% mRNAs) , ]
+  subnet <- obj@net
+  
+  result<-data.frame(miRNA=as.character(unique(subnet$miRNA)))
+  
+  result$tot.targets <- table(subnet$miRNA[which(subnet$dat.sum>0 & subnet$adj.pval < adj.pval)])[result$miRNA]
+  
+  
+  if ("hypergeometric" %in% method | "hyper" %in% method) {
+    
+    cat("Hypergeometric testing\n")
+    
+    for (i in 1:length(test.dat)) {
+      cat(paste("  Testing database",test.dat[i],"\n"))
+      k<-dim(result)[2]
+      
+      targets<-table(subnet$miRNA[which(subnet$adj.pval<adj.pval & subnet[,test.dat[i]]>0)])[result$miRNA]
+      cor<-table(subnet$miRNA[which(subnet$adj.pval<adj.pval)])[result$miRNA]
+      pred.targets<-table(subnet$miRNA[which(subnet[,test.dat[i]]>0)])[result$miRNA]
+      size<-table(subnet$miRNA)[result$miRNA]
+      
+      #saving the results
+      result[,k+1]<-targets#[result$miRNA]
+      result[,k+2]<-phyper(targets-1, pred.targets, size-pred.targets, cor, lower.tail=FALSE )
+      result[,k+3]<-p.adjust(result[,k+2],method="BH")
+      result[,k+4]<-size * targets / (pred.targets * cor) 
+      
+      
+      #### per test fisher
+      
+      allt<-table(subnet[,test.dat[i]]>0,subnet$adj.pval<0.05,subnet$miRNA)
+      
+      result[,k+5]<-NA
+      
+      
+      for (ii in 1:length(result$miRNA)) {
+        result[ii,k+5]<-chisq.test(allt[,,result$miRNA[ii]])$p.value
+      }
+      
+      result[,k+6]<-p.adjust(result[,k+5],method="BH")
+      
+      
+      #changing column names
+      colnames(result)[(k+1):(k+6)] <- paste("h",test.dat[i],c("targets","pval","FDR","OR","fish.p","fish.FDR"),sep=".")
+      
+    }
+    
+    if (plot==TRUE) {
+      x11()
+      boxplot(as.matrix(log2(result[,grep("h*OR",colnames(result))])))
+    }
+    
+    
+  }
+  
+  
+  
+  if ("logistic" %in% method | "log" %in% method | "regression" %in% method) {
+    
+    cat("Logistic regression\n")
+    
+    #library(pROC)
+    #library(verification)
+    
+    
+    for (i in 1:length(test.dat)) {
+      k<-dim(result)[2]
+      
+      result[,(k+1):(k+6)]<-NA
+      
+      colnames(result)[(k+1):(k+6)]<-paste("l",test.dat[i],c("beta1","pval","FDR","auc","pval.a","FDR.a"),sep=".")
+      
+      for (j in 1:dim(result)[1]) {
+        cat(paste("  Testing database",test.dat[i],"miRNA",result[j,"miRNA"],"\n"))
+        
+        resp <- as.numeric(subnet[which(subnet$miRNA == result[j,"miRNA"]),test.dat[i]]>0)
+        
+        if (length(table(resp))>1) {
+          cor <- subnet$cor[which(subnet$miRNA == result[j,"miRNA"])] 
+          
+          #logistic regression
+          mod <- glm(resp ~ cor, family=binomial)
+          prob<-predict(mod,type=c("response"))
+          g1 <- roc(resp ~ prob)
+          
+          result[j,k+1]<-summary(mod)$coefficients[2,1]
+          result[j,k+2]<-summary(mod)$coefficients[2,4]
+          
+          result[j,k+4]<-g1$auc
+          result[j,k+5]<-roc.area(resp,prob)$p.value
+          
+        }
+        
+        result[,k+3]<-p.adjust(result[,k+2],method="BH")
+        result[,k+6]<-p.adjust(result[,k+5],method="BH")
+        
+      }
+      
+      
+    }
+    
+  }
+  
+  
+  if ("GSEA" %in% method | "gsea" %in% method) {
+    cat("GSEA\n")
+    
+    #library(fgsea)
+    micro<-result$miRNA
+    k<-dim(result)[2]
+    result[,(k+1):(k+4*length(test.dat))]<-NA
+    colnames(result)[(k+1):(k+4*length(test.dat))]<-paste("g",rep(test.dat,each=4),c("NES","ES","pval","FDR"),sep=".")
+    
+    
+    for (j in 1:length(micro)) {
+      
+      cat(paste("  Testing miRNA",micro[j],"\n"))
+      
+      rank<-subnet$cor[which(subnet$miRNA==micro[j])]
+      names(rank)<-subnet$mRNA[which(subnet$miRNA==micro[j])]		
+      rank<-sort(rank)
+      
+      pathways<-list()
+      for (i in 1:length(test.dat)) {
+        pathways[[i]] <- as.character(subnet$mRNA[which(subnet$miRNA==micro[j] & subnet[,test.dat[i]]>0)])
+      }
+      names(pathways)<-test.dat
+      
+      fgseaRes <- fgsea(pathways = pathways, 
+                        stats = rank,
+                        minSize=1,
+                        maxSize=5000,
+                        nperm=nperm)
+      
+      res<-data.frame(fgseaRes)
+      
+      for (i in 1:length(test.dat)) {
+        
+        if (test.dat[i] %in% res[,1]) {
+          sel<-which(res[,1] %in% test.dat[i])
+          result[j,k+4*(i-1)+1]<-res[sel,"NES"]
+          result[j,k+4*(i-1)+2]<-res[sel,"ES"]
+          result[j,k+4*(i-1)+3]<-res[sel,"pval"]
+          result[j,k+4*(i-1)+4]<-p.adjust(res[sel,"pval"],method="BH")
+          
+        }
+        
+      }
+      
+      
+      
+    }
+    
+  }
+  
+  
+  
+  
+  return(result)
+  
+  
+  
 }
 
 

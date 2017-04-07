@@ -43,9 +43,8 @@ translatemiRNAs(x, from = NULL, to = "21")
 %%  ~~further notes~~
 }
 
-
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{checkmiRNAs}
 }
 \examples{
 translatemiRNAs(c("hsa-let-7b","not-a-miRNA","hsa-miR-200c"), from="6.0", to="21")
