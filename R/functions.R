@@ -93,6 +93,12 @@ translatemiRNAs <- function ( x , from = NULL, to = "21") {
 
 	if (!exists("versions.mirnas")) { data(versions.mirnas) }
 	
+	if (from=="unknown") {
+		options<-checkmiRNAs(x, to.dataframe=TRUE)
+		sel<-which(options[,2]==max(options[,2]))
+		from<-options[sel[length(sel)],1]	
+	}
+	
 	from<-paste("miRBase_",as.character(from),sep="")
 	to<-paste("miRBase_",as.character(to),sep="")
 
