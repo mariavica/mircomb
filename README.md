@@ -1,2 +1,1 @@
-# mircomb
-README file for miRComb in github
+MiRComb R package prepared fror github
