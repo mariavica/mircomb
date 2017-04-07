@@ -1,0 +1,17 @@
+Package: miRComb
+Type: Package
+Title: An R package for analyzing miRNA-mRNA interactions
+Version: 0.8.6
+Date: 2017-03-01
+Authors@R: c(person("Maria", "Vila-Casadesús", role = c("aut", "cre"), email = "maria.vila@ciberehd.org"),
+ person("Juanjo", "Lozano", role = c("aut","ths"), email= "juanjo.lozano@ciberehd.org"),
+ person("Pau", "Erola", role = "ctb"))
+Author: Maria Vila-Casadesús, Juanjo Lozano
+Maintainer: Maria Vila-Casadesús <maria.vila@ciberehd.org>
+Description: Find miRNA targets combining both biological and theoretical information.
+License: GPL-3
+Depends: R (>= 3.0), gplots, gtools, network, pheatmap, WriteXLS, Hmisc, mvoutlier, pROC, verification, glmnet, survival, mclust, RankProd, GOstats, limma, scatterplot3d, RamiGO, circlize, VennDiagram, xtable, ReactomePA, fgsea, DESeq, GO.db, KEGG.db, miRData (>= 0.4)
+Imports: AnnotationDbi
+biocViews: miRNA, mRNA, correlation
+Encoding: UTF-8
+URL: http://mircomb.sourceforge.net

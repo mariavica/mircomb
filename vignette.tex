@@ -1,0 +1,304 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+%\usepackage[left=1.5cm,top=2.5cm,right=1.5cm,bottom=2.5cm]{geometry}
+
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{soul} 
+\setul{depth}{thickness}
+\setul{1ex}{0.8ex}
+\setuldepth{g}
+\setul{1ex}{0.8ex}
+\usepackage{graphicx}
+
+\usepackage[table]{xcolor}
+\definecolor{gray095}{gray}{0.95}
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,shadows,arrows}
+
+
+\title{miRComb - Tools for miRNA target analysis}
+\author{Maria Vila-Casadesús, Juanjo Lozano}
+%\VignetteIndexEntry{miRComb Vignette}
+
+\usepackage{Sweave}
+\begin{document}
+\maketitle
+
+%\begin{abstract}
+%This package ...
+%\end{abstract}
+
+\tableofcontents
+
+\section{Workflow}
+
+This package provides a workflow for miRNA target analysis. Data about the miRNA databases is stores in a separate package --miRData--, which is is automatically loaded with miRComb.
+
+The main workflow of the package is represented in the following figure. We start from two datasets, where correlations are computed. Then they are combined with a database --microCosm or others-- and a functional analysis of the results can be performed.
+
+
+%\tikzstyle{decision} = [diamond, draw, fill=blue!50]
+\tikzstyle{line} = [draw, -stealth, thick]
+%\tikzstyle{elli}=[draw, ellipse, fill=red!50,minimum height=8mm, text width=5em, text centered]
+\tikzstyle{block} = [draw, rectangle, text width=10em, text centered, minimum height=10mm, node distance=5em, rounded corners, very thick]
+\tikzstyle{block.title} = [draw, rectangle, text width=40em, text centered, minimum height=15mm, node distance=10em, rounded corners]
+
+\vspace{1cm}
+\begin{center}
+\begin{tikzpicture}
+\node [block, fill=red] (1a1) {\textbf{miRNA Dataset}};
+
+%\node [block, below of=1a1, yshift=-0.4em, fill=red] (2a1) {\textbf{miRNA Exploratory analysis} (optional)};
+
+%\node [block, below of=2a1, yshift=-0.4em, fill=red] (2ba1) {\textbf{miRNA Differential expression}};
+
+\node [block, xshift=12em, fill=red] (1a2) {\textbf{mRNA Dataset}};
+
+%\node [block, below of=1a2, yshift=-0.4em, fill=red] (2a2) {\textbf{mRNA Exploratory analysis} (optional)};
+
+%\node [block, below of=2a2, yshift=-0.4em, fill=red] (2ba2) {\textbf{mRNA Differential expression}};
+
+\node [block, below of=1a2, yshift=-0.4em, xshift=-6em, fill=red] (3) {\textbf{miRNA-mRNA Correlation}};
+
+\node [block, right of=3, xshift=18em, fill=green] (4) {\textbf{microCosm database}};
+
+\node [block, below of=4, yshift=-0.4em, xshift=-10em, fill=violet] (5) {\textbf{Pvalue intersection and correction}};
+
+%\node [block, below of=5, yshift=-0.4em, fill=violet] (6) {\textbf{P.value correction}};
+
+\node [block, below of=5, yshift=-0.4em, fill=violet] (7) {
+\textbf{Network analysis}};
+
+
+%arrows
+%\path [line] (1a1) -- (2a1);
+%\path [line] (1a2) -- (2a2);
+%\path [line] (2a1) -- (2ba1);
+%\path [line] (2a2) -- (2ba2);
+%\path [line] (2ba1) -- (3);
+%\path [line] (2ba2) -- (3);
+\path [line] (1a1) -- (3);
+\path [line] (1a2) -- (3);
+\path [line] (3) -- (5);
+\path [line] (4) -- (5);
+%\path [line] (5) -- (6);
+\path [line] (5) -- (7);
+
+\end{tikzpicture}
+
+\end{center}
+\vspace{0.5cm}
+
+
+
+
+
+\section{Data format}
+We need the expression matrix for the miRNA and mRNA. The file format must be as follows: 
+
+\begin{itemize}
+\item Expression matrices: a \texttt{matrix} with log2 values. Columns corresponding to samples and Rows to probesets. Column names and Row names will be used as sample names and probe names respectively.
+\item Phenotypical information: a \texttt{data.frame}. Rows corresponding to sample names (must match with the Column names from the expression matrices). Columns with the desired combinations to test must be filled with 0 and 1. For example: 
+\begin{Schunk}
+\begin{Soutput}
+     group CvH
+N54     C0   0
+N17     C0   0
+N53     C0   0
+CA64    CA   1
+CA45    CA   1
+CA62    CA   1
+CA51    CA   1
+CA92    CA   1
+CA82    CA   1
+CA39    CA   1
+CA77    CA   1
+CA5     CA   1
+\end{Soutput}
+\end{Schunk}
+
+\end{itemize}
+
+\section{Creating the \texttt{corObject}}
+A \texttt{corObject} contains the following slots:
+\begin{itemize}
+\item MiRNA matrix expression
+\item MRNA matrix expression
+\item Phenotypical miRNA information
+\item Phenotypical mRNA information
+\item Correlation matrix
+\item Correlation P-value matrix
+\item Cytofile
+\item Differential expression analysis from miRNA data
+\item Differential expression analysis from mRNA data
+\item Significant miRNA
+\item Significant mRNA
+\item Information of the tests performed
+\end{itemize}
+
+However, not all slots are mandatory for creating a simple \texttt{corObject}. A \texttt{corObject} can be created from the matrix expressions and phenotypical information. Further slots can be filled with specific functions.
+
+We can begin with the data provided as example:
+\begin{Schunk}
+\begin{Sinput}
+> library(miRComb)
+> data(miRNA)
+> data(mRNA)
+> data(pheno.miRNA)
+> data(pheno.mRNA)
+\end{Sinput}
+\end{Schunk}
+
+To load the corObject:
+\begin{Schunk}
+\begin{Sinput}
+> data.obj<-new("corObject",miRNAdat=as.matrix(miRNA),mRNAdat=as.matrix(mRNA),
++ 	pheno.miRNA=pheno.miRNA,pheno.mRNA=pheno.mRNA)
+\end{Sinput}
+\end{Schunk}
+
+\subsection{Manipulating the \texttt{corObject}}
+We can select or remove specific samples and/or genes from the \texttt{corObject}:
+\begin{Schunk}
+\begin{Sinput}
+> #data.obj<-remove.samp(data.obj,"miRNA",samples="N17")
+> #data.obj<-remove.samp(data.obj,"mRNA",genes="ECD",keep=TRUE)
+\end{Sinput}
+\end{Schunk}
+
+
+\section{Analysis}
+\subsection{Exploratory analysis}
+Some plots are allowed to explore the data. For example we can plot the distances between samples of the mRNA dataset (Figure \ref{fig:dist}).\\
+\begin{Schunk}
+\begin{Sinput}
+> plot(data.obj,subset="mRNA",type="dist")
+\end{Sinput}
+\end{Schunk}
+
+\begin{figure}[!h]
+\centering
+\includegraphics{vignette-006}
+\caption[]{Plot of the distance between the samples of the mRNA dataset.}
+\label{fig:dist}
+\end{figure}
+
+After this exploratory analysis, it is also possible to remove bad samples. In this case we must indicate which sample and in wich dataset we want to remove. The sample will be removed from the corresponding expression matrix and phenotypical data.frame. The procedure is:
+\begin{Schunk}
+\begin{Sinput}
+> #data.obj<-remove.samp(data.obj,"mRNA",c("CA82"))
+> #data.obj<-remove.samp(data.obj,"miRNA",genes="hsa-miR-21",keep=TRUE)
+\end{Sinput}
+\end{Schunk}
+
+
+\begin{Schunk}
+\begin{Sinput}
+> boxplot.samples(data.obj,subset="mRNA")
+\end{Sinput}
+\end{Schunk}
+
+\begin{figure}[!h]
+\centering
+\includegraphics{vignette-009}
+\caption[]{Boxplot of the mRNA samples}
+\label{fig:boxplot}
+\end{figure}
+
+
+
+
+\begin{Schunk}
+\begin{Sinput}
+> plot3d(data.obj,subset="mRNA")
+\end{Sinput}
+\end{Schunk}
+
+%\begin{figure}[!h]
+%\centering
+%<<fig=TRUE,echo=FALSE,eval=TRUE>>=
+%#plot3d(data.obj,subset="mRNA")
+%@
+%\caption[]{3d plot of the mRNA samples}
+%\label{fig:plot3d}
+%\end{figure}
+
+
+\subsection{Differential expression}
+
+We can add foldchange expression to the cytofile from the differential expression slot. If this slot is not available, we can create it (indicating the column with the desired combination, in this case \emph{Case} versus \emph{Healthy}):\\
+\begin{Schunk}
+\begin{Sinput}
+> data.obj<-diffexp(data.obj,"miRNA",classes="CvH",method.dif="limma")
+> data.obj<-diffexp(data.obj,"mRNA",classes="CvH",method.dif="limma")
+\end{Sinput}
+\end{Schunk}
+We can explore the differential expression slot. For example, we select those genes with foldchange greater than 10, a corrected p.value less than 0.05 and specifically upregulated:
+\begin{Schunk}
+\begin{Sinput}
+> sel.subset.exprs(data.obj,"mRNA",FC=10,up=TRUE,pval.cor=0.05)
+\end{Sinput}
+\begin{Soutput}
+                FC logratio   meanExp         pval     pval.cor
+PDZK1IP1  14.57899 3.865819  6.629975 5.064322e-04 6.276438e-03
+UBD       35.75054 5.159893  9.454859 7.875760e-08 4.510663e-05
+KRT23     33.55178 5.068318  7.241382 3.372921e-06 3.006991e-04
+IL8       14.04741 3.812232  6.822951 9.593953e-06 5.136706e-04
+LCN2      15.74098 3.976453  8.024974 2.291436e-05 8.545174e-04
+MMP7      15.26068 3.931748  7.351221 2.449509e-04 3.910111e-03
+GOLM1     10.63198 3.410338  7.468754 7.785881e-09 1.131947e-05
+AKR1B10  241.33797 7.914911 10.807522 5.753775e-11 5.437318e-07
+CCL20     42.30617 5.402796  7.394774 9.421473e-07 1.709220e-04
+CXCL6     32.05831 5.002627  7.561346 1.629203e-06 1.961270e-04
+SPINK1    56.70853 5.825494  8.014330 1.110212e-06 1.745830e-04
+SPP1      22.41579 4.486443 10.093581 1.545755e-06 1.909462e-04
+\end{Soutput}
+\end{Schunk}
+
+To add this information to the corObject:
+\begin{Schunk}
+\begin{Sinput}
+> data.obj<-add.sig(data.obj,"mRNA",pval.cor=0.05,FC=1.5)
+> data.obj<-add.sig(data.obj,"miRNA",pval.cor=0.05)
+\end{Sinput}
+\end{Schunk}
+
+\subsubsection{Heatmap}
+Plot a heatmap of the top miRNA or mRNA (sorted by p.value):
+
+\begin{Schunk}
+\begin{Sinput}
+> heatmap.corObject(data.obj,"mRNA")
+\end{Sinput}
+\end{Schunk}
+
+\begin{figure}[!h]
+\includegraphics{vignette-015}
+\end{figure}
+
+
+\subsection{Correlation}
+The next step is to compute the correlation between the two matrices:
+\begin{Schunk}
+\begin{Sinput}
+> #data.obj<-correlation.alternative(data.obj)
+> data.obj<-correlation(data.obj,alternative="less")

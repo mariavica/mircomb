@@ -1,0 +1,16 @@
+citHeader("To cite miRComb in publications use:")
+
+citEntry(entry="article",
+         title = "MiRComb: an R package to analyze miRNA-mRNA interactions. Examples across five digestive cancers",
+         author = personList( as.person("Maria Vila-Casadesús"),
+                              as.person("Meritxell Gironella"),
+                              as.person("Juanjo Lozano")),
+         year = 2016,
+         journal = "PLOS ONE",
+	 number = 11,
+	 volume = 3,
+         doi = "10.1371/journal.pone.0151127",
+         textVersion = 
+         paste("Maria Vila-Casadesús, Meritxell Gironella* and Juanjo Lozano* (2016):", 
+               "MiRComb: an R package to analyze miRNA-mRNA interactions. Examples across five digestive cancers.",
+                "PLOS ONE." ) )

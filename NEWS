@@ -1,0 +1,33 @@
+CHANGES IN VERSION 0.8.5
+------------------------
+
+    o Solved fugs for function mkReport (now it works if there are less than 10 selected miRNAs or mRNAs).
+
+
+CHANGES IN VERSION 0.8.3
+------------------------
+
+    o Function selOutliers added.
+
+
+CHANGES IN VERSION 0.8.2
+------------------------
+
+    o Functions addGlmnet, plotCordist improved.
+    o Functions plotHclust, plotSurv added.
+
+
+
+CHANGES IN VERSION 0.8.1
+------------------------
+
+    o Minor changes. Bug fixes.
+
+
+
+CHANGES IN VERSION 0.8.0
+------------------------
+
+    o Reduced the size of miRNA and mRNA matrix examples and data.obj example.
+
+

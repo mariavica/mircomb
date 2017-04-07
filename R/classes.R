@@ -1,0 +1,30 @@
+setClass("corObject",representation(
+	dat.miRNA="matrix",
+	dat.mRNA="matrix",
+	pheno.miRNA="data.frame",
+	pheno.mRNA="data.frame",
+	cor="matrix",
+	pval="matrix",
+	net="data.frame",
+	diffexp.miRNA="data.frame",
+	diffexp.mRNA="data.frame",
+	sig.miRNA="vector",
+	sig.mRNA="vector",
+	GO.results="list",
+	info="list"),
+prototype(
+	dat.miRNA=matrix(),
+	dat.mRNA=matrix(),
+	pheno.miRNA=data.frame(),
+	pheno.mRNA=data.frame(),
+	cor=matrix(),
+	pval=matrix(),
+	net=data.frame(),
+	diffexp.miRNA=data.frame(),
+	diffexp.mRNA=data.frame(),
+	sig.miRNA=vector(),
+	sig.mRNA=vector(),
+	GO.results=list(),
+	info=list())
+)
+

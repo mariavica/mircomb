@@ -1,0 +1,39 @@
+useDynLib(miRComb,pearson,.registration=TRUE)
+export(pearson)
+exportPattern("^[[:alpha:]]+")
+exportClass("corObject")
+import(Hmisc)
+import(RamiGO)
+import(RankProd)
+import(ReactomePA)
+import(WriteXLS)
+import(circlize)
+import(gplots)
+import(gtools)
+import(limma)
+import(glmnet)
+import(pheatmap)
+import(survival)
+import(mclust)
+import(miRData)
+import(GO.db)
+import(KEGG.db)
+importFrom(mvoutlier,aq.plot)
+importFrom(network,network,plot.network)
+import(scatterplot3d)
+importFrom(xtable,xtable)
+importMethodsFrom(AnnotationDbi, as.list)
+importMethodsFrom(GOstats, summary)
+importFrom(VennDiagram,venn.diagram)
+importFrom(DESeq,newCountDataSet,estimateSizeFactors,estimateDispersions,nbinomTest)
+  importFrom("grDevices", "colorRamp", "dev.off", "palette", "pdf",
+             "rgb", "topo.colors", "x11")
+  importFrom("graphics", "abline", "axis", "barplot", "boxplot",
+             "identify", "image", "layout", "legend", "lines", "mtext",
+             "par", "pie", "plot", "plot.new", "points", "text")
+  importFrom("stats", "aov", "as.dist", "coef", "complete.cases",
+             "cooks.distance", "cor", "cor.test", "density", "dist",
+             "hclust", "lm", "median", "model.matrix", "p.adjust",
+             "pchisq", "pnorm", "prcomp", "pt", "qnorm", "qt",
+             "quantile", "relevel", "sd", "t.test", "var", "wilcox.test")
+  importFrom("utils", "data", "write.table")

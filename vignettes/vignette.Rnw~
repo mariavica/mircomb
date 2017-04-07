@@ -1,0 +1,558 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+%\usepackage[left=1.5cm,top=2.5cm,right=1.5cm,bottom=2.5cm]{geometry}
+
+\usepackage[paperheight=297mm,paperwidth=210mm,top=25mm,left=25mm,height=255mm,width=165mm]{geometry}
+
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{soul} 
+\setul{depth}{thickness}
+\setul{1ex}{0.8ex}
+\setuldepth{g}
+\setul{1ex}{0.8ex}
+\usepackage{graphicx}
+
+\usepackage[table]{xcolor}
+\definecolor{gray095}{gray}{0.95}
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,shadows,arrows}
+
+
+\title{miRComb - An R package for analyzing miRNA-mRNA interactions}
+\author{Maria Vila-Casadesús, Juanjo Lozano}
+%\VignetteIndexEntry{miRComb Vignette}
+
+\begin{document}
+\maketitle
+
+%\begin{abstract}
+%This package ...
+%\end{abstract}
+
+\tableofcontents
+
+\section{Workflow}
+
+This package provides a workflow for miRNA target analysis. Data about the miRNA databases is stores in a separate package --\texttt{miRData}--, which is is automatically loaded with \texttt{miRComb}.
+
+The main workflow of the package is represented in the following figure. We start from two datasets, where correlations are computed. Then they are combined with a database --microCosm or others-- and a functional analysis of the results can be performed.
+
+See full article: \texttt{miRComb} \cite{vila-casadesus_mircomb:_2016}
+
+%\tikzstyle{decision} = [diamond, draw, fill=blue!50]
+\tikzstyle{line} = [draw, -stealth, thick]
+%\tikzstyle{elli}=[draw, ellipse, fill=red!50,minimum height=8mm, text width=5em, text centered]
+\tikzstyle{block} = [draw, rectangle, text width=10em, text centered, minimum height=10mm, node distance=5em, rounded corners, very thick]
+\tikzstyle{block.title} = [draw, rectangle, text width=40em, text centered, minimum height=15mm, node distance=10em, rounded corners]
+
+\vspace{1cm}
+\begin{figure}[!h]
+\begin{center}
+\begin{tikzpicture}
+\node [block, fill=red] (1a1) {\textbf{miRNA Dataset}};
+\node [block, below of=1a1, yshift=-0.4em, fill=red] (2a1) {\textbf{miRNA Differential expression}};
+\node [block, xshift=12em, fill=red] (1a2) {\textbf{mRNA Dataset}};
+\node [block, below of=1a2, yshift=-0.4em, fill=red] (2a2) {\textbf{mRNA Differential expression}};
+\node [block, below of=2a2, yshift=-0.4em, xshift=-6em, fill=red] (3) {\textbf{miRNA-mRNA Correlation}};
+\node [block, right of=3, xshift=16em, fill=green] (4) {\textbf{microCosm database}};
+\node [block, below of=4, yshift=-0.4em, xshift=-10em, fill=violet] (5) {\textbf{List of relevant miRNA-mRNA pairs}};
+\node [block, below of=5, yshift=-0.4em, fill=violet] (6) {
+\textbf{Functional data analysis}};
+\node [block, below of=6, yshift=-0.4em, fill=violet] (7) {
+\textbf{Report generation}};
+
+%arrows
+\path [line] (1a1) -- (2a1);
+\path [line] (1a2) -- (2a2);
+\path [line] (2a1) -- (3);
+\path [line] (2a2) -- (3);
+\path [line] (3) -- (5);
+\path [line] (4) -- (5);
+\path [line] (5) -- (6);
+\path [line] (6) -- (7);
+\end{tikzpicture}
+\vspace{0.5cm}
+\caption[]{Outline of the pipeline.}
+\label{fig:pipeline}
+\end{center}
+\end{figure}
+\vspace{0.5cm}
+
+
+
+
+
+\section{Data format}
+\label{sec:dataformat}
+We need the expression matrix for the miRNA and mRNA. The file format must be as follows: 
+
+\begin{itemize}
+\item Expression matrices: a \texttt{matrix} with normalized data (preferably normalized log2 expression values). Columns should correspond to samples and Rows to probesets. Column names and Row names will be used as sample names and probe names respectively.
+\item Phenotypical information: a \texttt{data.frame}. Rows corresponding to sample names (must match with the Column names from the expression matrices). Columns with the desired combinations to test must be filled with 0 and 1. For example: 
+<<echo=FALSE>>=
+library(miRComb)
+library(miRData)
+data(pheno.miRNA)
+pheno.miRNA
+@
+
+\end{itemize}
+
+\section{Creating the \texttt{corObject}}
+A \texttt{corObject} contains the following slots:
+\begin{itemize}
+\item \texttt{dat.miRNA}: miRNA matrix expression
+\item \texttt{dat.mRNA}: mRNA matrix expression
+\item \texttt{pheno.miRNA}: phenotypical miRNA information
+\item \texttt{pheno.mRNA}: phenotypical mRNA information
+\item \texttt{cor}: correlation matrix
+\item \texttt{pval}: correlation $p$ value matrix
+\item \texttt{net}: a dataframe that can be used for cytoscape
+\item \texttt{diffexp.miRNA}: differential expression analysis from miRNA data
+\item \texttt{diffexp.mRNA}: differential expression analysis from mRNA data
+\item \texttt{sig.miRNA}: significant miRNAs
+\item \texttt{sig.mRNA}: significant mRNAs
+\item \texttt{info}: information of the tests performed
+\end{itemize}
+
+However, not all slots are mandatory for creating a simple \texttt{corObject}. A \texttt{corObject} can be created from the matrix expressions and phenotypical information. Further slots can be filled with specific functions.
+
+We can begin with the data provided as example (the data has been adapted from \cite{affo_transcriptome_2013}):
+<<>>=
+library(miRComb)
+data(miRNA)
+data(mRNA)
+data(pheno.miRNA)
+data(pheno.mRNA)
+@
+
+To create the \texttt{corObject}:
+<<>>=
+data.obj<-new("corObject",dat.miRNA=as.matrix(miRNA),dat.mRNA=as.matrix(mRNA),
+	pheno.miRNA=pheno.miRNA,pheno.mRNA=pheno.mRNA)
+@
+
+\begin{comment}
+\subsection{Manipulating the \texttt{corObject}}
+We can select or remove specific samples and/or genes from the \texttt{corObject}:
+<<>>=
+#data.obj<-removeSamp(data.obj,"miRNA",samples="Control_1")
+#data.obj<-removeSamp(data.obj,"mRNA",genes="ECD",keep=TRUE)
+@
+\end{comment}
+
+\section{Analysis}
+\subsection{Exploratory analysis}
+Some plots are allowed to explore the data. For example we can plot the distances between samples of the mRNA dataset (Figure \ref{fig:dist}).\\
+<<echo=TRUE,eval=FALSE>>=
+plotCordist(data.obj,subset="mRNA",type="dist")
+@
+
+\begin{figure}[!h]
+\centering
+<<fig=TRUE,echo=FALSE,eval=TRUE>>=
+plotCordist(data.obj,subset="mRNA",type="dist")
+@
+\caption[]{Plot of the distance between the samples of the mRNA dataset.}
+\label{fig:dist}
+\end{figure}
+
+After this exploratory analysis, it is also possible to remove some samples and/or miRNAs/mRNAs. In this case we must indicate which sample and in which dataset we want to remove. The sample will be removed from the corresponding expression matrix and phenotypical dataframe. It is also possible to remove all the samples except for the selected ones. The procedures would be:
+<<split=FALSE,label=How to remove or keep specific samples or genes>>=
+#data.obj<-removeSamp(data.obj,"mRNA",c("D_4"))	#remove D_4 from the mRNA dataset
+#data.obj<-removeSamp(data.obj,"miRNA",genes="hsa-miR-21",keep=TRUE)	#keep only hsa-miR-21 in the miRNA dataset
+@
+
+Boxplots of the expression can also be plotted (Figure \ref{fig:boxplot}):
+<<fig=FALSE,echo=TRUE,eval=FALSE>>=
+boxplotSamples(data.obj,subset="mRNA")
+@
+
+\begin{figure}[!h]
+\centering
+<<fig=TRUE,echo=FALSE,eval=TRUE>>=
+boxplotSamples(data.obj,subset="mRNA",las=2)
+@
+\caption[]{Boxplot of the mRNA samples.}
+\label{fig:boxplot}
+\end{figure}
+
+PCA plots are also available (Figure \ref{fig:pca}, and \texttt{plot3d} function plots a PCA in 3 dimensions):
+<<fig=FALSE,echo=TRUE,eval=FALSE>>=
+plotPca(data.obj,subset="mRNA")
+@
+
+\begin{figure}[!h]
+\centering
+<<fig=TRUE,echo=FALSE,eval=TRUE>>=
+plotPca(data.obj,subset="mRNA")
+@
+\caption[]{Principal Components Analysis (based on the correlation matrix) of the mRNA samples.}
+\label{fig:pca}
+\end{figure}
+
+
+
+\subsection{Differential expression}
+
+We can add FoldChange information to the net from the differential expression slot. If this slot is not available, we can create it (indicating the column with the desired combination, in this case \textit{Disease} (\textit{D}) versus \textit{Healthy} (\textit{H}), column \texttt{DvH} (see Section \ref{sec:dataformat} to see the format of the column)):\\
+<<>>=
+data.obj<-addDiffexp(data.obj,"miRNA",classes="DvH",method.dif="limma")
+data.obj<-addDiffexp(data.obj,"mRNA",classes="DvH",method.dif="limma")
+@
+
+Plot a heatmap of the top miRNA or mRNA (sorted by \emph{p} value) (Figure \ref{fig:heatmap}):
+<<echo=TRUE,eval=FALSE>>=
+plotHeatmap(data.obj,"mRNA")
+@
+
+\begin{figure}[!h]
+<<fig=TRUE,echo=FALSE,eval=TRUE>>=
+plotHeatmap(data.obj,"mRNA")
+@
+\caption{Heatmap of top 50 mRNAs, sorted by $p$ value.}
+\label{fig:heatmap}
+\end{figure}
+
+Moreover, we can obtain specific subsets, for example those genes with FoldChange greater than 10, a corrected $p$ value less than 0.05 and specifically upregulated:
+<<>>=
+selSubsetExprs(data.obj,"mRNA",FC=10,up=TRUE,adj.pval=0.05)
+@
+
+The same options can be used to add this information to the \texttt{corObject}. {\color{red}\textbf{The significant miRNAs and mRNAs added in this step will be used in correlation step.}}
+<<>>=
+data.obj<-addSig(data.obj,"mRNA",adj.pval=0.05,FC=1.5)
+data.obj<-addSig(data.obj,"miRNA",adj.pval=0.05)
+@
+
+If you have a specific list of miRNAs and/or mRNAs that you want to test, you should add them there in this step, for example:
+<<>>=
+#data.obj<-addSig(data.obj,"miRNA",manual=c("hsa-miR-21","hsa-miR-21*,hsa-miR-200c"))
+@
+
+
+
+\subsection{Correlation}
+The next step is to compute the correlation between the two matrices, the alternative hypothesis is \texttt{"less"} because we are interested only on negative correlations:
+<<>>=
+data.obj<-addCorrelation(data.obj,alternative="less")
+@
+At this moment, the slots \texttt{cor} and \texttt{pval} have been filled. The column names are the mRNAs selected by \texttt{add.sig}, and the row names are the miRNAs selected by \texttt{add.sig} also:
+<<>>=
+data.obj@cor[1:3,1:3]
+data.obj@pval[1:3,1:3]
+@
+
+If \texttt{add.sig} was set to \texttt{NULL}, all the miRNAs and/or mRNAs are used, respectively.
+
+
+\subsubsection{Diagnostic plots}
+It is also possible to plot the correlation for each pair (Figure \ref{fig:corrplot}) and some diagnostic plots for the linear correlation (Figure \ref{fig:diagplots}):
+
+<<>>=
+plotCorrelation(data.obj,miRNA="hsa-miR-107",mRNA="A2ML1",type="cor",
+    col.color="group",sample.names=TRUE)
+plotCorrelation(data.obj,miRNA="hsa-miR-107",mRNA="A2ML1",type="residuals")
+@
+
+\begin{figure}[!h]
+\centering
+<<fig=TRUE,echo=FALSE,eval=TRUE>>=
+plotCorrelation(data.obj,miRNA="hsa-miR-107",mRNA="A2ML1",type="cor",col.color="group",sample.names=TRUE)
+@
+\caption[]{Plot of the correlation of one miRNA (\textit{hsa-miR-107}) and one mRNA (\textit{A2ML1}). Horizontal and vertical axis represent the (log2-)expression values (see Section \ref{sec:dataformat}) of the miRNA and mRNA, respectively.}
+\label{fig:corrplot}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+<<fig=TRUE,echo=FALSE,eval=TRUE>>=
+plotCorrelation(data.obj,miRNA="hsa-miR-107",mRNA="A2ML1",type="residuals")
+@
+\caption[]{Diagnostic plot for the linear regression between \textit{hsa-miR-107} and \textit{A2ML1} (see Figure \ref{fig:corrplot}).}
+\label{fig:diagplots}
+\end{figure}
+
+
+
+\begin{figure}[!h]
+\centering
+<<fig=TRUE,echo=FALSE,eval=TRUE>>=
+boxplotCorrelation(data.obj,miRNA="hsa-miR-107",mRNA="A2ML1")
+@
+\caption[]{Plot of the correlation of one miRNA (\textit{hsa-miR-107}) and one mRNA (\textit{A2ML1}). Horizontal and vertical axis represent the (log2-)expression values (see Section \ref{sec:dataformat}) of the miRNA and mRNA, respectively.}
+\label{fig:corrplot}
+\end{figure}
+
+
+
+
+
+\subsection{Organize the pairs in rows}
+These slots can be used to create another slot, which is called \texttt{net}. This slot contains a \texttt{data.frame} where each row represents a specific miRNA-mRNA pair, and each column contains information relevant to the pair, the name of the table refers to Cytoscape software, as this format can be easily imported to it \cite{shannon_cytoscape:_2003}. In this step of the analysis the columns are: miRNA, mRNA, correlation coefficient and \emph{p} value; other columns will be added in further steps.
+<<>>=
+data.obj<-addNet(data.obj)
+head(data.obj@net)
+@
+
+\subsection{Foldchanges}
+As optional, we add the FoldChange information of the \texttt{diffexp.miRNA} and \texttt{diffexp.mRNA} slots to the \texttt{net} slot:
+<<>>=
+data.obj<-addFoldchanges(data.obj)
+head(data.obj@net)
+@
+
+
+\subsection{Adding targets information}
+\label{sec:databases}
+At this moment, two databases are provided, but if it is necessary we can add more (see \texttt{?add.database}):
+<<>>=
+data(microCosm_v5_18)
+data(targetScan_v6.2_18)
+@
+The function to add the database(s) information is (this step can take a while):
+<<>>=
+data.obj<-addDatabase(data.obj,database=c("microCosm_v5_18","targetScan_v6.2_18"))
+head(data.obj@net)
+@
+And we can see that some columns have been added:
+\begin{itemize}
+	\item One column for each database, with the name: \texttt{dat.\textit{database\_name}}. 1 means that the miRNA-mRNA pair has been found as predicted in that database, 0 that the miRNA-mRNA pair is not predicted.
+	\item The column \texttt{dat.sum}, it reports how many times that miRNA-mRNA pair has been found in the used databases.
+\end{itemize}
+
+\begin{comment}
+\subsection{\emph{P} value combination}
+Both \emph{p} values can be combined using the Stouffer method \cite{GadeG.2011}:
+\begin{equation}
+p_{comb} = 1- \Phi \left(  \frac{1}{\sqrt{2}} \left( \Phi^{-1} \left( 1- p_{cor} \right) + \Phi^{-1} \left( 1- p_{pred} \right) \right) \right)
+\end{equation}
+where,
+$$ \Phi(x) = \int_{-\infty}^{x} \frac{1}{\sqrt{2\pi}}e^{\frac{z^2}{2}} \textrm{d}z $$
+
+Fisher method is also available with (\texttt{method="fisher"})
+
+The procedure is:
+<<>>=
+#data.obj<-combine.pval(data.obj)
+#head(data.obj@net)
+@
+\end{comment}
+
+
+\subsection{\emph{P} value correction}
+We can add a column with the corrected \emph{p} value as follows. This step is important for controlling the Type I error of the correlations:
+<<>>=
+data.obj<-correctPval(data.obj, pval="pval",method.adj="BH")
+head(data.obj@net)
+@
+
+
+
+\subsection{Interaction score}
+Finally, a score can be added to each interaction. This score is related to both logratios and it is aimed to reflect the possible \textit{biological relevance} of the miRNA (higher score means that both miRNA and mRNA are highly deregulated in that disease).
+\begin{eqnarray}\nonumber
+\text{score} = - 2 (\text{logratio}_{\text{miRNA}} \cdot \text{logratio}_{\text{mRNA}})
+\label{eq:score.function}
+\end{eqnarray}
+<<>>=
+data.obj<-addScore(data.obj)
+head(data.obj@net)
+@
+
+\subsection{Save the results}
+It is possible to output the results to text files and explore them with other tools if desired (for example \textit{excel} or \textit{libreoffice}).
+<<eval=FALSE,echo=TRUE>>=
+writeCsv(data.obj,"results_today.csv",pval.corrected=1)
+@
+
+These networks can also be opened by cytoscape (v2.x), by indicating the pathway of the folder which contains the \texttt{cytoscape.jar} file:
+<<>>=
+#openCytoscape(data.obj,p.cutoff=0.0001,cytoscape.folder="/home/mvila/Cytoscape_v2.8.3")
+@
+
+\section{Functional analysis}
+
+\subsection{Most targeted miRNAs or mRNAs}
+A table showing the number of targets for each miRNA (or a table showing the number of miRNAs that are targeting a specific mRNA) can be obtained (with the option \texttt{names=TRUE}, the names of the targets are also reported). All the miRNA/mRNA are plotted and displayed here, even if they have no targets (Figure \ref{fig:hubs}).
+
+<<>>=
+topTable(data.obj,"miRNA",names=FALSE,pval.cutoff=0.05)[1:20]
+@
+
+
+This information can also be represented with a barplot (Figure \ref{fig:hubs}):
+<<echo=TRUE,eval=FALSE,fig=FALSE>>=
+topTable(data.obj,"miRNA",names=TRUE,pval.cutoff=0.05,plot=TRUE)
+@
+
+\begin{figure}[!h]
+\setkeys{Gin}{width=1\textwidth}
+\centering
+<<echo=FALSE,fig=TRUE,eval=TRUE>>=
+topTable(data.obj,"miRNA",names=TRUE,pval.cutoff=0.05,plot=TRUE)
+@
+\caption[]{Barplot showing the number of targets per miRNA. The red line represents the cumulative percentage of mRNAs --respect to the total number of deregulated mRNAs-- that the miRNAs are targeted by at least one miRNA.}
+\label{fig:hubs}
+\end{figure}
+
+
+\subsection{Network}
+We can draw a network (Figure \ref{fig:network}) with the following procedure. We need to give a \emph{p} value cutoff (this \emph{p} value refers to the corrected \emph{p} value) and a minimum number of occurrences on the theoretical databases (\texttt{dat.sum}, see Section \ref{sec:databases}):
+
+<<>>=
+plotNetwork(data.obj,pval.cutoff=0.01,dat.sum=1)
+@
+
+\begin{figure}[!h]
+\setkeys{Gin}{width=1\textwidth}
+\centering
+<<echo=FALSE,fig=TRUE,eval=TRUE>>=
+plotNetwork(data.obj,pval.cutoff=0.01,dat.sum=1)
+@
+\caption[]{Network}
+\label{fig:network}
+\end{figure}
+
+
+A bigger picture (Figure \ref{fig:bignetwork}):
+<<>>=
+plotNetwork(data.obj,pval.cutoff=0.05,names=FALSE)
+@
+
+\begin{figure}[!h]
+\setkeys{Gin}{width=1\textwidth}
+\centering
+<<echo=FALSE,fig=TRUE,eval=TRUE>>=
+plotNetwork(data.obj,pval.cutoff=0.05,names=FALSE)
+@
+\caption[]{Network, bigger picture (without names)}
+\label{fig:bignetwork}
+\end{figure}
+
+
+A picture of the miRNA with more targets (Figure \ref{fig:targets.hub}):
+<<eval=FALSE>>=
+hub<-names(topTable(data.obj,"miRNA"))[1]
+plotNetwork(data.obj,pval.cutoff=0.05,names=TRUE,sub.miRNA=hub,vertex.cex="interact.table")
+@
+
+\begin{figure}[!h]
+\setkeys{Gin}{width=1\textwidth}
+\centering
+<<echo=FALSE,fig=TRUE,eval=TRUE>>=
+hub<-names(topTable(data.obj,"miRNA"))[1]
+plotNetwork(data.obj,pval.cutoff=0.05,names=TRUE,sub.miRNA=hub,vertex.cex="interact.table")
+@
+\caption[]{Targets of the miRNA hub. The size of the mRNAs reflects the number of protein-protein interactions they have (provided by \texttt{interact.table}).}
+\label{fig:targets.hub}
+\end{figure}
+
+{\color{red} \textbf{*Any of these networks can be opened with Cytoscape using the function \texttt{openCytoscape}.}}
+
+\subsection{Gene Ontology analysis}
+It is possible to select the mRNA of the pairs according to the combined \emph{p} value and perform a GO enrichment analysis (reference genes are the whole human genome).
+
+<<eval=FALSE>>=
+GO.results<-GOanalysis(data.obj,type="GO",ontology="BP")
+@
+
+We can also compute the GO of a specific miRNA:
+<<eval=TRUE>>=
+#data.obj<-GOanalysis(data.obj,type="GO",ontology="BP",sub.miRNA="hsa-miR-516a-3p")
+#GO.results<-data.obj@GO.results[["GO:BP"]]
+#GO.results[which(GO.results$Pvalue<0.1),"Term"]
+@
+
+
+<<echo=FALSE>>=
+data.obj<-GOanalysis(data.obj,type="GO",ontology="BP")
+#options(keep.source=TRUE)
+#Sys.setenv(http_proxy="http://hcpprxpac.intra.csc.es:8081/accelerated_pac_base.pac")
+#Sys.setenv(https_proxy="http://hcpprxpac.intra.csc.es:8081/accelerated_pac_base.pac")
+#Sys.setenv(HTTP_PROXY="http://hcpprxpac.intra.csc.es:8081/accelerated_pac_base.pac")
+#Sys.setenv(HTTPS_PROXY="http://hcpprxpac.intra.csc.es:8081/accelerated_pac_base.pac")
+
+#Sys.setenv(http_proxy="http://hcpprxpac.intra.csc.es:8081")
+#Sys.setenv(https_proxy="http://hcpprxpac.intra.csc.es:8081")
+#Sys.setenv(HTTP_PROXY="http://hcpprxpac.intra.csc.es:8081")
+#Sys.setenv(HTTPS_PROXY="http://hcpprxpac.intra.csc.es:8081")
+
+#Sys.getenv("http_proxy")
+#system("export http_proxy=\"\"")
+#plotGO(data.obj,type="GO",ontology="BP",fdr=0.5)
+@
+
+\begin{comment}
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.6\textwidth]{GO_tree_default.png}
+\end{figure}
+\end{comment}
+
+\section{Summary}
+Finally, a summary of the methods used can be obtained:
+<<>>=
+summary(data.obj)
+@
+
+A pdf report can also be generated with the following function:
+<<eval=FALSE>>=
+mkReport(data.obj,"NameOfTheReport")
+@
+ 
+And then the file \texttt{NameOfTheReport.pdf} will be created.
+
+\section{Available databases}
+All \texttt{names} are from miRBase version 17. See \texttt{miRData} package for more information.
+
+\subsection{microCosm}
+\url{http://www.ebi.ac.uk/enright-srv/microcosm/htdocs/targets/v5/}
+<<>>=
+data(microCosm_v5_18)
+head(microCosm_v5_18)
+@
+
+\subsection{targetScan}
+\url{http://www.targetscan.org/}
+<<>>=
+data(targetScan_v6.2_18)
+head(targetScan_v6.2_18)
+@
+
+
+%------------------------------------------------------------ 
+\section{Session Info}
+%------------------------------------------------------------ 
+<<sessionInfo,echo=FALSE,results=tex>>==
+toLatex(sessionInfo())
+@
+
+
+\addcontentsline{toc}{section}{Bibliography}
+\bibliographystyle{unsrt}
+%\bibliographystyle{plainnat}
+\bibliography{/media/Iomega_HDD/docs/zotero}
+%\bibliography{/home/maria/Projecte/mybib}
+
+
+\end{document}

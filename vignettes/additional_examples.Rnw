@@ -1,0 +1,192 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+%\usepackage[left=1.5cm,top=2.5cm,right=1.5cm,bottom=2.5cm]{geometry}
+
+\usepackage[paperheight=297mm,paperwidth=210mm,top=25mm,left=25mm,height=255mm,width=165mm]{geometry}
+
+\usepackage{hyperref}
+\usepackage{comment}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{soul} 
+\setul{depth}{thickness}
+\setul{1ex}{0.8ex}
+\setuldepth{g}
+\setul{1ex}{0.8ex}
+\usepackage{graphicx}
+
+\usepackage[table]{xcolor}
+\definecolor{gray095}{gray}{0.95}
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\usepackage{titling}
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,shadows,arrows}
+
+
+\title{miRComb - An R package for analyzing miRNA-mRNA interactions. Additional Examples.}
+\author{Maria Vila-Casadesús}
+%\VignetteIndexEntry{Additional Examples}
+
+\begin{document}
+\maketitle
+
+\begin{comment}
+\begin{abstract}
+The main analysis is described in the miRComb main vignette, only variations of this description are included in this file.
+
+The article of the package is \cite{vila-casadesus_mircomb:_2016}. 
+\end{abstract}
+\end{comment}
+
+\tableofcontents
+
+\section*{Brief comment}
+The main analysis is described in the miRComb main vignette, only variations of this description are included in this file.
+
+The article of the package is \cite{vila-casadesus_mircomb:_2016}.
+
+\section{Time analysis}
+
+We can begin with the data provided as example\footnote{Data can be downloaded from here: \url{http://sourceforge.net/projects/mircomb/files/}.} (the data has been adapted from \cite{affo_transcriptome_2013}):
+<<>>=
+library(miRComb)
+load("longdata.RData")
+@
+
+To create the \texttt{corObject}:
+<<>>=
+data.obj<-new("corObject",dat.miRNA=as.matrix(miRNA),dat.mRNA=as.matrix(mRNA),
+	pheno.miRNA=pheno.miRNA,pheno.mRNA=pheno.mRNA)
+@
+
+Exploratory analysis can be done as usual.
+
+\subsection{Time analysis}
+
+We can add time information to the net from the "differential expression" slot (in this case, time analysis slot). If this slot is not available, we can create it. We have two options:
+
+\subsubsection{Final time}
+Analysing $t_{fin} - t_{init}$:
+
+In this case we compare the final time expression versus the inital expression of the miRNA or mRNA
+<<>>=
+data.obj<-addLong(data.obj,"miRNA","time_alt","time.point")
+data.obj<-addLong(data.obj,"mRNA","time_alt","time.point")
+@
+
+<<>>=
+head(data.obj@diffexp.miRNA)
+@
+
+\subsubsection{Linear regression}
+In this case we perform a linear regression of the expression of the miRNA or mRNAs across time. The slope of this regression is recorded: $miRNA ~ time$ (and $mRNA ~ time$)
+<<>>=
+data.obj<-addLong(data.obj,"miRNA","time_cont","linear.regression")
+data.obj<-addLong(data.obj,"mRNA","time_cont","linear.regression")
+head(data.obj@diffexp.miRNA)
+@
+
+\subsection{Select desired miRNAs and mRNAs (optional)}
+
+Specific miRNAs or mRNAs can be selected for the correlation step. In this case we select a minimum absolute slope of 0.3. For the case of miRNAs, we fix also that the slope must be positive. {\color{red}\textbf{The selected miRNAs and mRNAs added in this step will be used in correlation step.}}
+<<>>=
+data.obj<-addSig(data.obj,"mRNA",slope=0.1)
+data.obj<-addSig(data.obj,"miRNA",slope=0.1)
+@
+
+If you have a specific list of miRNAs and/or mRNAs that you want to test, you should add them there in this step, for example:
+<<>>=
+#data.obj<-addSig(data.obj,"miRNA",manual=c("hsa-miR-21","hsa-miR-21*,hsa-miR-200c"))
+@
+
+
+\subsection{Rest of the analysis}
+The rest of the analysis can be done like this: 
+<<>>=
+data.obj<-addCorrelation(data.obj,alternative="less")
+data.obj<-addNet(data.obj)
+data(microCosm_v5_18)
+data(targetScan_v6.2_18)
+data.obj<-addDatabase(data.obj,database=c("microCosm_v5_18","targetScan_v6.2_18"))
+data.obj<-correctPval(data.obj, pval="pval",method.adj="BH")
+@
+
+
+
+
+
+\section{Unpaired miRNA and mRNA data}
+
+In the case of unpaired data, no correlation can be computed, but individual p-values from differential expression analysis can be combined to only one p-value. This combined p-value highlights the miRNA-mRNA pairs more deregulated. In ideal conditions, these pairs should be similar to the ones computed by the correlation method.
+
+
+<<echo=TRUE, eval=TRUE>>=
+data(miRNA)
+data(mRNA)
+data(pheno.miRNA)
+data(pheno.mRNA)
+
+minimal<-new("corObject",dat.miRNA=miRNA,dat.mRNA=mRNA,
+	pheno.miRNA=pheno.miRNA,pheno.mRNA=pheno.mRNA)
+
+minimal.diffexp<-addDiffexp(minimal, "miRNA", classes="DvH",
+ method.dif="limma")
+head(minimal.diffexp@diffexp.miRNA)
+
+minimal.diffexp<-addDiffexp(minimal.diffexp, "mRNA", classes="DvH",
+ method.dif="limma")
+
+minimal.diffexp<-addSig(minimal.diffexp,"miRNA",pval=1)
+minimal.diffexp<-addSig(minimal.diffexp,"mRNA",pval=1)
+
+minimal<-addNet(minimal.diffexp)
+minimal<-addFoldchanges(minimal, add.pvals=TRUE)
+head(minimal@net)
+
+
+minimal<-combinePval(minimal, pval.1="pval.miRNA", pval.2="pval.mRNA", method="fisher")
+minimal<-correctPval(minimal, pval="p.comb")
+
+head(minimal@net)
+@
+
+
+
+
+
+
+%\section{Survival analysis}
+
+
+
+
+%------------------------------------------------------------ 
+\section{Session Info}
+%------------------------------------------------------------ 
+<<sessionInfo,echo=FALSE,results=tex>>==
+toLatex(sessionInfo())
+@
+
+
+\addcontentsline{toc}{section}{Bibliography}
+\bibliographystyle{unsrt}
+%\bibliographystyle{plainnat}
+\bibliography{/media/mvila/Iomega_HDD/docs/zotero}
+%\bibliography{/home/maria/Projecte/mybib}
+
+
+\end{document}
