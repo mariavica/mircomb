@@ -1,3 +1,3 @@
 # mircomb
 
-This is an R package
+This is an R package for analysing miRNA-mRNA interactions
