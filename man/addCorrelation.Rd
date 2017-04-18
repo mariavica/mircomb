@@ -3,11 +3,11 @@
 \title{
 Correlate miRNA and mRNA expression
 }
-\description{The function correlates miRNA and mRNA expression from a corObject and fills the \kbd{cor} and \kbd{pval} slots.
+\description{The function correlates miRNA and mRNA expression from a \kbd{corObject} and fills the \kbd{cor} and \kbd{pval} slots.
 }
 \usage{
 addCorrelation(obj, method = "pearson", subset.miRNA = obj@sig.miRNA,
-  subset.mRNA = obj@sig.mRNA, common = NULL, alternative = "two.sided")
+  subset.mRNA = obj@sig.mRNA, common = NULL, alternative = "less")
 }
 
 \arguments{
@@ -17,16 +17,16 @@ a \kbd{corObject}
   \item{method}{
 method used for computing correlation: \kbd{"pearson"} or \kbd{"spearman"}. }
   \item{subset.miRNA}{
-Optional, character vector with the names of the miRNAs to correlate.
+Optional, character vector with the names of the miRNAs to correlate. It is recommended that miRNAs are added using \kbd{addSig} function.
 }
   \item{subset.mRNA}{
-	Optional, character vector with the names of the mRNAs to correlate.
+	Optional, character vector with the names of the mRNAs to correlate. It is recommended that mRNAs are added using \kbd{addSig} function.
 }
   \item{common}{
 Optional, character vector with the names of the samples to correlate (the samples must appear in both miRNA and mRNA datasets.)
 }
   \item{alternative}{
-specification of the alternative hypothesis: \kbd{"two-sided"}, \kbd{"less"} or \kbd{"greater"}.
+specification of the alternative hypothesis:  \kbd{"less"} (default), \kbd{"two-sided"} or \kbd{"greater"}.
 }
 
 
@@ -34,11 +34,11 @@ specification of the alternative hypothesis: \kbd{"two-sided"}, \kbd{"less"} or 
 
 
 \value{
-\code{corObject} the slots \code{cor} and \code{pval} filled.
+\code{corObject} with the slots \code{cor} and \code{pval} filled.
 }
 
 \note{
-\code{\link{addCorrelation.R}} is the slow version of this funcion, but has the option to compute if there are any influential samples.
+\code{\link{addCorrelation.R}} is the slow version of this function, but has the option to compute if there are any influential samples affecting the correlation values.
 }
 
 \seealso{

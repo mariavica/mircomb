@@ -42,21 +42,44 @@ Contributor: Pau Erola (C++ code)
 \references{
 %\url{http://bioinfo.ciberehd.org/mircomb}
 
-\url{http://mircomb.sourceforge.net}
 
-Download files: \href{https://sourceforge.net/projects/mircomb/files/?source=navbar}{Link}.
+The package has been published in PLoS ONE:
 
-Example data adapted from: Affò S, Dominguez M, Lozano JJ, Sancho-Bru P et al. \href{http://gut.bmj.com/content/62/3/452.long}{\emph{Transcriptome analysis identifies TNF superfamily receptors as potential therapeutic targets in alcoholic hepatitis}}. Gut 2013 Mar; 62(3):452-60, doi: 10.1136/gutjnl-2011-301146.
+\itemize{
+  \item Vila-Casadesús M, Gironella M*, Lozano JJ*.  \textit{\href{http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0151127}{MiRComb: an R package to analyze miRNA-mRNA interactions. Examples across five digestive cancers.}} PLoS ONE 11(3): e0151127. (doi: 10.1371/journal.pone.0151127).
+}
+
+Files can be downloaded here: \href{https://sourceforge.net/projects/mircomb/files/?source=navbar}{Link} and via GitHub. Main page: \url{http://mircomb.sourceforge.net}.
+
 
 The use of the package has been reported in the following publications:
 \enumerate{
-	\item Coll M, Taghdouini AE, Perea L, Mannaerts I, Vila-Casadesús M, Blaya D, Rodrigo-Torres D, Affò S, Morales-Ibanez O, Graupera I, Lozano JJ, Najimi M, Sokal E, Lambrecht J, Ginès P, van Grusnven LA, Sancho-Bru P. \href{http://www.nature.com/srep/2015/150622/srep11549/full/srep11549.html}{\emph{Integrative miRNA and gene expression profiling analysis of human quiescent hepatic stellate cells.}} Scientific Reports. Advanced online publication June 22, 2015, doi: 10.1038/srep11549.
+	\item Coll M, Taghdouini AE, Perea L, Mannaerts I, Vila-Casadesús M, Blaya D, Rodrigo-Torres D, Affò S, Morales-Ibanez O, Graupera I, Lozano JJ, Najimi M, Sokal E, Lambrecht J, Ginès P, van Grusnven LA, Sancho-Bru P. \href{http://www.nature.com/srep/2015/150622/srep11549/full/srep11549.html}{\texiti{Integrative miRNA and gene expression profiling analysis of human quiescent hepatic stellate cells.}} Scientific Reports. Advanced online publication June 22, 2015, doi: 10.1038/srep11549.
+	\item Bofill-De Ros X, Santos M, \textbf{Vila-Casadesús M}, Villanueva E, Andreu N, Dierssen M, Fillat C. \textit{\href{http://www.biomedcentral.com/1471-2164/16/907}{Genome-wide miR-155 and miR-802 target gene identification in the hippocampus of Ts65Dn Down syndrome mouse model by miRNA sponges.}} BMC Genomics 2015, 16:907 (advanced online publcation November 6, 2015, doi: 10.1186/s12864-015-2160-6).
+	\item Blaya D, Coll M, Rodrigo-Torres D, \textbf{Vila-Casadesús M}, Altamirano J, Llopis M, Graupera I, Perea L, Aguilar B, Díaz A, Banales JM, Claria J, Lozano JJ,  Bataller R, Caballería J, Ginès P, Sancho-Bru P. \textit{\href{http://gut.bmj.com/content/early/2016/05/10/gutjnl-2015-311314.full?sid=499c0134-bc03-44b2-a603-a035a981814d}{Integrative MicroRNA Profiling in Alcoholic Hepatitis Reveals a Role for microRNA-182 in Liver Injury and Inflammation}}. Gut (advanced online publication 10 May 2016; doi:10.1136/gutjnl-2015-311314).
 }
 
 
 }
 \keyword{ package }
 \seealso{
-\code{\link[miRData:miRData-package]{miRData}}, \code{\link[miRData:miRData-package]{methods}}, \code{\link[miRData:miRData-package]{gplots}}, 
-\code{\link[miRData:miRData-package]{gtools}}, \code{\link[miRData:miRData-package]{network}}, \code{\link[miRData:miRData-package]{WriteXLS}}, \code{\link[miRData:miRData-package]{Hmisc}}, \code{\link[miRData:miRData-package]{RankProd}}, \code{\link[miRData:miRData-package]{GOstats}}, \code{\link[miRData:miRData-package]{limma}}, \code{\link[miRData:miRData-package]{scatterplot3d}}, \code{\link[miRData:miRData-package]{RamiGO}}, \code{\link[miRData:miRData-package]{circlize}}, \code{\link[miRData:miRData-package]{VennDiagram}}, \code{\link[miRData:miRData-package]{xtable}}, \code{\link[miRData:miRData-package]{ReactomePA}}, \code{\link[miRData:miRData-package]{DESeq}}
+\code{\link[miRData:miRData-package]{miRData}}, \code{\link[methods:methods-package]{methods}}, 
+\code{\link[gplots:gplots-package]{gplots}}, \code{\link[gtools:gtools-package]{gtools}}, 
+\code{\link[network:network-package]{network}}, \code{\link[pheatmap:pheatmap-package]{pheatmap}},
+\code{\link[WriteXLS:WriteXLS-package]{WriteXLS}}, \code{\link[Hmisc:Hmisc-package]{Hmisc}},
+\code{\link[mvoutlier:mvoutlier-package]{mvoutlier}}, \code{\link[pROC:pROC-package]{pROC}},
+\code{\link[verification:verification-package]{verification}}, \code{\link[glmnet:glmnet-package]{glmnet}},
+\code{\link[survival:survival-package]{survival}}, \code{\link[mclust:mclust-package]{mclust}},
+\code{\link[RankProd:RankProd-package]{RankProd}}, \code{\link[GOstats:GOstats-package]{GOstats}}, 
+\code{\link[limma:limma-package]{limma}}, \code{\link[scatterplot3d:scatterplot3d-package]{scatterplot3d}}, 
+\code{\link[RamiGO:RamiGO-package]{RamiGO}}, \code{\link[circlize:circlize-package]{circlize}}, 
+\code{\link[VennDiagram:VennDiagram-package]{VennDiagram}}, \code{\link[xtable:xtable-package]{xtable}}, 
+\code{\link[ReactomePA:ReactomePA-package]{ReactomePA}}, \code{\link[fgsea:fgsea-package]{fgsea}}, 
+\code{\link[DESeq:DESeq-package]{DESeq}}, \code{\link[GO.db:GO.db-package]{GO.db}},
+\code{\link[KEGG.db:KEGG.db-package]{KEGG.db}}
 }
+
+
+
+
+

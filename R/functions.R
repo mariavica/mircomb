@@ -730,7 +730,7 @@ addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,sub
 
 
  ## addcorrelation before removing d.influences
-addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, alternative="two.sided") {
+addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, alternative="less") {
 
 	obj@net<-data.frame()
 	obj@info[["pcomb.method"]]<-NULL
