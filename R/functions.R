@@ -1421,7 +1421,7 @@ removeSamp <- function (obj, dataset, samples=NA, genes=NA, keep=FALSE) {
 
 
 
-addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="BH", var.t.test=FALSE, trend=FALSE) {
+addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="BH", var.t.test=FALSE) {
 
 #	require(gtools)
 	#per poder determinar els grups a comparar
@@ -2019,7 +2019,7 @@ addSig <- function (obj, dataset, FC=NA, logratio=foldchange2logratio(FC), slope
 
 
 
-addDatabase <- function (obj, database="microCosm_v5_18_numeric",pval.ref=1,dat.sum=1) {
+addDatabase <- function (obj, database, pval.ref=1, dat.sum=1) {
 	obj@info[["pcomb.method"]]<-NULL
 	obj@info[["padjust.method"]]<-NULL
 	obj@info[["dat.sum"]]<-dat.sum
