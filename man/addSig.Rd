@@ -3,7 +3,7 @@
 \title{
 Select significant miRNAs or mRNAs
 }
-\description{Select significant miRNAs or mRNAs that will be used for correlationg their expression.
+\description{Select significant miRNAs or mRNAs that will be used for correlating their expression.
 }
 \usage{
 addSig(obj, dataset, FC=NA, logratio=foldchange2logratio(FC), slope=NA, pval=NA,
@@ -26,7 +26,7 @@ addSig(obj, dataset, FC=NA, logratio=foldchange2logratio(FC), slope=NA, pval=NA,
 \item{corObject}{The same \kbd{corObject} with the slots \kbd{sig.miRNA} or \kbd{sig.mRNA} including the names of the miRNAs or mRNAs that will be used for correlation.}
 }
 \seealso{
-\code{\link{addDiffexp}}
+\code{\link{corObject-class}}, \code{\link{addDiffexp}}, \code{\link{addCorrelation}}
 }
 \examples{
 data(data.obj)
