@@ -12,8 +12,8 @@ Set of functions and databases useful for computing the miRNA targets from miRNA
 \tabular{ll}{
 Package: \tab information\cr
 Type: \tab Package\cr
-Version: \tab 0.6.4\cr
-Date: \tab 2015-06-18\cr
+Version: \tab 0.8.8\cr
+Date: \tab 2017-04-18\cr
 License: \tab GPL-3\cr
 }
 
@@ -49,8 +49,7 @@ The package has been published in PLoS ONE:
   \item Vila-Casadesús M, Gironella M*, Lozano JJ*.  \textit{\href{http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0151127}{MiRComb: an R package to analyze miRNA-mRNA interactions. Examples across five digestive cancers.}} PLoS ONE 11(3): e0151127. (doi: 10.1371/journal.pone.0151127).
 }
 
-Files can be downloaded here: \href{https://sourceforge.net/projects/mircomb/files/?source=navbar}{Link} and via GitHub. Main page: \url{http://mircomb.sourceforge.net}.
-
+Files can be downloaded here: \url{https://sourceforge.net/projects/mircomb/files/?source=navbar} and via GitHub using the following command: \kbd{devtools::install_github("mariavica/miRComb")}.
 
 The use of the package has been reported in the following publications:
 \enumerate{
@@ -59,6 +58,7 @@ The use of the package has been reported in the following publications:
 	\item Blaya D, Coll M, Rodrigo-Torres D, \textbf{Vila-Casadesús M}, Altamirano J, Llopis M, Graupera I, Perea L, Aguilar B, Díaz A, Banales JM, Claria J, Lozano JJ,  Bataller R, Caballería J, Ginès P, Sancho-Bru P. \textit{\href{http://gut.bmj.com/content/early/2016/05/10/gutjnl-2015-311314.full?sid=499c0134-bc03-44b2-a603-a035a981814d}{Integrative MicroRNA Profiling in Alcoholic Hepatitis Reveals a Role for microRNA-182 in Liver Injury and Inflammation}}. Gut (advanced online publication 10 May 2016; doi:10.1136/gutjnl-2015-311314).
 }
 
+The main page of \kbd{miRComb} package is \url{http://mircomb.sourceforge.net} (it includes some additional tools).
 
 }
 \keyword{ package }
