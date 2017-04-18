@@ -39,7 +39,7 @@ specification of the alternative hypothesis: \kbd{"less"} (default), \kbd{"two-s
 
 
 \details{
-A more complete version of the \kbd{\link{addCorrelation}} function, but significantly slower (specially \kbd{kendall} correlation). Use always \code{\link{addCorrelation}} function whenever it is possible.
+A more complete version of the \code{\link{addCorrelation}} function, but significantly slower (specially \kbd{kendall} correlation). Use always \code{\link{addCorrelation}} function whenever it is possible.
 
 If \kbd{d.influences = TRUE}, a 3-dimension matrix is added to the \kbd{info} slot, labeled \kbd{"influenting.sample"}. First dimension: miRNA names; second dimension: mRNA names; third dimension: sample names; fill: Cook's Distance for a specific sample in a specific miRNA-mRNA linear regression (defined by the dimension label-names).}
 

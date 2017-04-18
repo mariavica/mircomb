@@ -51,7 +51,7 @@ a  \kbd{corObject} with a \kbd{diffexp.miRNA} or \kbd{diffexp.mRNA} slot added, 
 %\url{http://www.bioconductor.org/packages/release/bioc/html/voom.html}
 %}
 \seealso{
-\code{\link{corObject-class}},\code{\link{package:limma}, \code{\link{package:RankProd}}, \code{\link{voom}}, \code{\link{t.test}}, \code{\link{wilcoxon}}, \code{\link{aov}}, \code{\link{p.adjust}}
+\code{\link{corObject-class}},\code{\link{package:limma}, \code{\link{package:RankProd}}, \code{\link{voom}}, \code{\link[stats]{t.test}}, \code{\link{wilcoxon}}, \code{\link{aov}}, \code{\link[stats]{p.adjust}}
 }
 \examples{
 data(miRNA)

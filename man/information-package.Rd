@@ -46,16 +46,16 @@ Contributor: Pau Erola (C++ code)
 The package has been published in PLoS ONE:
 
 \itemize{
-  \item Vila-Casadesús M, Gironella M*, Lozano JJ*.  \textit{\href{http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0151127}{MiRComb: an R package to analyze miRNA-mRNA interactions. Examples across five digestive cancers.}} PLoS ONE 11(3): e0151127. (doi: 10.1371/journal.pone.0151127).
+  \item Vila-Casadesús M, Gironella M*, Lozano JJ*.  \href{http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0151127}{MiRComb: an R package to analyze miRNA-mRNA interactions. Examples across five digestive cancers.} PLoS ONE 11(3): e0151127. (doi: 10.1371/journal.pone.0151127).
 }
 
 Files can be downloaded here: \url{https://sourceforge.net/projects/mircomb/files/?source=navbar} and via GitHub using the following command: \kbd{devtools::install_github("mariavica/miRComb")}.
 
 The use of the package has been reported in the following publications:
 \enumerate{
-	\item Coll M, Taghdouini AE, Perea L, Mannaerts I, Vila-Casadesús M, Blaya D, Rodrigo-Torres D, Affò S, Morales-Ibanez O, Graupera I, Lozano JJ, Najimi M, Sokal E, Lambrecht J, Ginès P, van Grusnven LA, Sancho-Bru P. \href{http://www.nature.com/srep/2015/150622/srep11549/full/srep11549.html}{\texiti{Integrative miRNA and gene expression profiling analysis of human quiescent hepatic stellate cells.}} Scientific Reports. Advanced online publication June 22, 2015, doi: 10.1038/srep11549.
-	\item Bofill-De Ros X, Santos M, \textbf{Vila-Casadesús M}, Villanueva E, Andreu N, Dierssen M, Fillat C. \textit{\href{http://www.biomedcentral.com/1471-2164/16/907}{Genome-wide miR-155 and miR-802 target gene identification in the hippocampus of Ts65Dn Down syndrome mouse model by miRNA sponges.}} BMC Genomics 2015, 16:907 (advanced online publcation November 6, 2015, doi: 10.1186/s12864-015-2160-6).
-	\item Blaya D, Coll M, Rodrigo-Torres D, \textbf{Vila-Casadesús M}, Altamirano J, Llopis M, Graupera I, Perea L, Aguilar B, Díaz A, Banales JM, Claria J, Lozano JJ,  Bataller R, Caballería J, Ginès P, Sancho-Bru P. \textit{\href{http://gut.bmj.com/content/early/2016/05/10/gutjnl-2015-311314.full?sid=499c0134-bc03-44b2-a603-a035a981814d}{Integrative MicroRNA Profiling in Alcoholic Hepatitis Reveals a Role for microRNA-182 in Liver Injury and Inflammation}}. Gut (advanced online publication 10 May 2016; doi:10.1136/gutjnl-2015-311314).
+	\item Coll M, Taghdouini AE, Perea L, Mannaerts I, Vila-Casadesús M, Blaya D, Rodrigo-Torres D, Affò S, Morales-Ibanez O, Graupera I, Lozano JJ, Najimi M, Sokal E, Lambrecht J, Ginès P, van Grusnven LA, Sancho-Bru P. \href{http://www.nature.com/srep/2015/150622/srep11549/full/srep11549.html}{Integrative miRNA and gene expression profiling analysis of human quiescent hepatic stellate cells.} Scientific Reports. Advanced online publication June 22, 2015, doi: 10.1038/srep11549.
+	\item Bofill-De Ros X, Santos M, \textbf{Vila-Casadesús M}, Villanueva E, Andreu N, Dierssen M, Fillat C. \href{http://www.biomedcentral.com/1471-2164/16/907}{Genome-wide miR-155 and miR-802 target gene identification in the hippocampus of Ts65Dn Down syndrome mouse model by miRNA sponges.} BMC Genomics 2015, 16:907 (advanced online publcation November 6, 2015, doi: 10.1186/s12864-015-2160-6).
+	\item Blaya D, Coll M, Rodrigo-Torres D, \textbf{Vila-Casadesús M}, Altamirano J, Llopis M, Graupera I, Perea L, Aguilar B, Díaz A, Banales JM, Claria J, Lozano JJ,  Bataller R, Caballería J, Ginès P, Sancho-Bru P. \href{http://gut.bmj.com/content/early/2016/05/10/gutjnl-2015-311314.full?sid=499c0134-bc03-44b2-a603-a035a981814d}{Integrative MicroRNA Profiling in Alcoholic Hepatitis Reveals a Role for microRNA-182 in Liver Injury and Inflammation}. Gut (advanced online publication 10 May 2016; doi:10.1136/gutjnl-2015-311314).
 }
 
 The main page of \kbd{miRComb} package is \url{http://mircomb.sourceforge.net} (it includes some additional tools).
