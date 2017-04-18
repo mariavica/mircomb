@@ -21,10 +21,10 @@ a \kbd{corObject}.
 method used for computing correlation: \kbd{"pearson"} or \kbd{"spearman"}. 
 }
   \item{subset.miRNA}{
-Optional, character vector with the names of the miRNAs to correlate.
+Optional, character vector with the names of the miRNAs to correlate.  It is recommended that miRNAs are added using \kbd{addSig} function.
 }
   \item{subset.mRNA}{
-Optional, character vector with the names of the mRNAs to correlate.
+Optional, character vector with the names of the mRNAs to correlate.  It is recommended that mRNAs are added using \kbd{addSig} function.
 }
   \item{common}{
 Optional, character vector with the names of the samples to correlate (the samples must appear in both miRNA and mRNA datasets.)
@@ -33,19 +33,19 @@ Optional, character vector with the names of the samples to correlate (the sampl
 compute a matrix with the Cook's Distance of each sample in each miRNA-mRNA correlatio.
 }
   \item{alternative}{
-specification of the alternative hypothesis: \kbd{"two-sided"}, \kbd{"less"} or \kbd{"greater"}.
+specification of the alternative hypothesis: \kbd{"less"} (default), \kbd{"two-sided"} or \kbd{"greater"}.
 }
 }
 
 
 \details{
-Slow version of the correlation function. Works on large datasets but is much more slow. Moreover, Kendall correlation is specially slow. Use always \code{\link{addCorrelation}} function if it is possible.
+A more complete version of the \kbd{\link{addCorrelation}} function, but significantly slower (specially \kbd{kendall} correlation). Use always \code{\link{addCorrelation}} function whenever it is possible.
 
-If \kbd{TRUE}, a 3-dimension matrix is added to the \kbd{info} slot, labeled \kbd{"influenting.sample"}. First dimension: miRNA names; second dimension: mRNA names; third dimension: sample names; fill: Cook's Distance for a specific sample in a specific miRNA-mRNA linear regression (defined by the dimension label-names).}
+If \kbd{d.influences = TRUE}, a 3-dimension matrix is added to the \kbd{info} slot, labeled \kbd{"influenting.sample"}. First dimension: miRNA names; second dimension: mRNA names; third dimension: sample names; fill: Cook's Distance for a specific sample in a specific miRNA-mRNA linear regression (defined by the dimension label-names).}
 
 
 \value{
-corObject the slots \kbd{"cor"} and \kbd{"pval"} filled. Optionally, a matrix named \kbd{"influenting.sample"} is added to the \kbd{info} slot.
+A \kbd{corObject} with the slots \kbd{"cor"} and \kbd{"pval"} filled. Optionally, a matrix named \kbd{"influenting.sample"} is added to the \kbd{info} slot.
 
 }
 
@@ -54,7 +54,7 @@ corObject the slots \kbd{"cor"} and \kbd{"pval"} filled. Optionally, a matrix na
 
 
 \seealso{
-\code{corObject-class},\code{\link{cor}}, \code{addCorrelation}, \code{cooks.distance}
+\code{corObject-class},\code{\link{cor}}, \code{\link{addCorrelation}}, \code{\link{addSig}}, \code{\link{cooks.distance}}
 }
 
 \examples{

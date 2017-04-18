@@ -1,35 +1,41 @@
 \name{addFoldchanges}
 \alias{addFoldchanges}
 \title{
-Add foldchanges to a cytofile
+Add foldchanges to the \kbd{net} slot
 }
 \description{
-Adds information regarding to miRNA and mRNA differential expression on the cytofile slot of a \kbd{corObject}}
+Adds information regarding to miRNA and mRNA differential expression on the \kbd{net} slot of a \kbd{corObject}}
 \usage{
 addFoldchanges(obj, add.pvals = FALSE)
 }
 \arguments{
   \item{obj}{
-	a \kbd{corObject} with a \kbd{cytofile}, \kbd{diffexp.miRNA} and \kbd{diffexp.mRNA} slots already defined.
+	a \kbd{corObject} with a \kbd{net}, \kbd{diffexp.miRNA} and \kbd{diffexp.mRNA} slots already defined.
 }
   \item{add.pvals}{
-	TRUE or FALSE. TRUE if p-values should be added to the net slot.
+	TRUE or FALSE (default). If TRUE, p values are added to the \kbd{net} slot.
 }
 
 }
 \value{
-	\item{corObject}{The same \kbd{corObject}, but with the following columns added in the {cytofile} slot:
+	a \kbd{corObject} with the following columns added in the {net} slot:
 	\itemize{
 		\item logratio.miRNA
 		\item logratio.mRNA
 		\item meanExp.miRNA
 		\item meanExp.mRNA
 	}
-}
+	plus, if add.pvals=TRUE:
+	\itemize{
+		\item pval.miRNA
+		\item pval.mRNA
+		\item adj.pval.miRNA
+		\item adj.pval.mRNA
+	}
 }
 
 \seealso{
-\code{addDiffexp}
+\code{\link{corObject-class}}, \code{\link{addDiffexp}}, \code{\link{addDiffexp}}, 
 }
 \examples{
 ## obtain minimal net slot

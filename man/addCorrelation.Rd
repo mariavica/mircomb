@@ -42,7 +42,7 @@ specification of the alternative hypothesis:  \kbd{"less"} (default), \kbd{"two-
 }
 
 \seealso{
-\code{corObject-class},\code{\link{cor}}, \code{\link{addCorrelation.R}}
+\code{\link{corObject-class}}, \code{\link{cor}}, \code{\link{addCorrelation.R}}, \code{\link{addSig}}
 }
 \examples{
 data(data.obj)

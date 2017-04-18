@@ -570,7 +570,7 @@ boxplotCorrelation <- function (obj, miRNA, mRNA, col.color=1, pos.leg="topright
 
 
 
-addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, d.influences=FALSE, alternative="two.sided", kfold.cv=FALSE) {
+addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, d.influences=FALSE, alternative="less", kfold.cv=FALSE) {
 
 	obj@net<-data.frame()
 	obj@info[["pcomb.method"]]<-NULL
