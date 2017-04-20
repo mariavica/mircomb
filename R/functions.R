@@ -545,6 +545,8 @@ boxplotSamples <- function (obj, subset, col.color=1, las=1, colors=c("turquoise
 
 #comprovar lo dels "..." que no sé si funciona
 boxplotCorrelation <- function (obj, miRNA, mRNA, col.color=1, pos.leg="topright", colors=c("turquoise","violet"), ...) {
+  
+  #make 4-figure layout
 	nf<-layout(mat=matrix(c(1:4),ncol=2,nrow=2),heights=c(1,3),widths=c(1,3))
 	par(mar=c(5.1, 4.1, 1.1, 2.1))
 	plot.new()
@@ -566,6 +568,10 @@ boxplotCorrelation <- function (obj, miRNA, mRNA, col.color=1, pos.leg="topright
 	plot(obj@dat.miRNA[miRNA,],obj@dat.mRNA[mRNA,],xlab=paste(miRNA," expression",sep=""),ylab=paste(mRNA," expression",sep=""),col=colors.plot,pch=19, ...)
 	legend(pos.leg,levels(as.factor(obj@pheno.mRNA[,col.color])),col=levels(factor(colors.plot)),pch=19, ...)
 	abline(lm(obj@dat.mRNA[mRNA,]~obj@dat.miRNA[miRNA,]), ...)
+	
+	#return to previous layout
+	nf<-layout(mat=matrix(c(1),ncol=1,nrow=1),heights=c(1),widths=c(1))
+	
 }
 
 
@@ -1421,7 +1427,7 @@ removeSamp <- function (obj, dataset, samples=NA, genes=NA, keep=FALSE) {
 
 
 
-addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="BH", var.t.test=FALSE) {
+addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="BH", var.t.test=FALSE, trend = FALSE ) {
 
 #	require(gtools)
 	#per poder determinar els grups a comparar

@@ -1,46 +1,41 @@
 \name{addSurv}
 \alias{addSurv}
 \title{
-Calculate hazard ratio -- STILL IN TEST!!! -- }
+Calculate hazard ratio}
 \description{
-Calculate hazard ratio of miRNAs or mRNAs from a corObject -- STILL IN TEST!!! --
+Calculate hazard ratio of miRNAs or mRNAs from a \kbd{corObject} using a Cox proportional hazards regression.
 }
 \usage{
 addSurv(obj, dataset, time, event, adjusting = NULL)
 }
 
 \arguments{
-  \item{obj}{a corObject.
-corObject}
+  \item{obj}{a \kbd{corObject}
   \item{dataset}{
 \kbd{"miRNA"} or \kbd{"mRNA"}.
 }
-  \item{time}{colname of the time column.
+  \item{time}{colname of the time column in the \kbd{pheno.miRNA} or \kbd{pheno.mRNA} slot
 }
-  \item{event}{colname of the event column.
+  \item{event}{colname of the event column in the \kbd{pheno.miRNA} or \kbd{pheno.mRNA} slot
 }
-  \item{adjusting}{(optional) colname of the adjusting variables.
+  \item{adjusting}{(optional) colname of the adjusting variables that will be used
 }
 
 
 }
 \value{
-\item{corObject}{ with a diffexp.miRNA or diffexp.mRNA slot added. The diffexp is a data.frame with:
+a \kbd{corObject} with a \kbd{diffexp.miRNA} or \kbd{diffexp.mRNA} slot added. The slot is a data.frame in which row names are the names of the miRNAs or mRNAs and has the following columns:
 	\itemize{
 		\item{coef}{: risk associated to the expression of the miRNA/mRNA}
 		\item{pval}{: \emph{p} values}
 		\item{adj.pval}{: \emph{p} values corrected for multiple testing (FDR)}
 	}
 
-	}
 
 }
-\references{
-\url{https://cran.r-project.org/web/packages/survival/index.html}
-
 }
 \seealso{
-\code{package:survival}
+\code{\link{package:survival}}, \code{\link{coxph}}
 }
 \examples{
 data(miRNA)

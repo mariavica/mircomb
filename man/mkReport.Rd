@@ -19,16 +19,17 @@ Title of the report
 }
 }
 \details{
-Documents myExampleReport.tex and myExampleReport.pdf will be created
+Documents \kbd{myExampleReport.tex} and \kbd{myExampleReport.pdf} will be created on the working directory.
+
+See PLoS ONE publication for more details: Vila-Casadesús et al., "MiRComb: an R package to analyse miRNA-mRNA interactions. Examples across five digestive cancers".  PLoS ONE, 2016.
 }
 
 \note{
 This function only works in Linux computers, with LaTeX and texlive already configured.
 
-Some known problems:
+Some known problems and solutions:
 \itemize{
-\item 
-f this happens:
+\item If this happens:
 \code{!  ==> Fatal error occurred, no output PDF file produced!}
 
 Try:
@@ -58,4 +59,4 @@ or just
 }
 \keyword{report}
 \keyword{LaTeX}
-\keyword{external file}
+\keyword{pdf}

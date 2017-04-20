@@ -10,10 +10,10 @@ combinePval(obj, pval.1 = "pval", pval.2 = "pval.database", method="stouffer",
  w=c(1,1))
 }
 \arguments{
-  \item{obj}{\kbd{corObject} with a \kbd{cytofile} slot defined. It must have at least two columns with \emph{p} values to combine.}
-  \item{pval.1}{column name (from the \kbd{cytofile} slot) of the first \emph{p} value. By default: the \emph{p} value of the correlation.}
-  \item{pval.2}{column name (from the \kbd{cytofile} slot) of the second \emph{p} value. By default: the \emph{p} value from MicroCosm database.}
-  \item{method}{\kbd{"stouffer"} or \kbd{"fisher"}}
+  \item{obj}{\kbd{corObject} with a \kbd{net} slot defined. It must have at least two columns with \emph{p} values to combine.}
+  \item{pval.1}{column name (from the \kbd{net} slot) of the first \emph{p} value. By default: the \emph{p} value of the correlation.}
+  \item{pval.2}{column name (from the \kbd{net} slot) of the second \emph{p} value. By default: the \emph{p} value from MicroCosm database.}
+  \item{method}{\kbd{"stouffer"} (default) or \kbd{"fisher"}}
   \item{w}{numeric vector of length two indicating the respective weights that will be applied to Stouffer combination. By default: no weighting.}
 }
 
@@ -35,7 +35,7 @@ t = -2 \left( \ln p_{1} + \ln p_{2} \right) \sim \chi_{4}^{2}
 
 
 \value{
-\item{corObject}{a \kbd{corObject} in which a column containing the combined \emph{p} values has been added to the \kbd{cytofile} slot.}
+a \kbd{corObject} in which a column containing the combined \emph{p} values has been added to the \kbd{net} slot.
 }
 \references{
 For more information about the combination methods, see: 
@@ -49,6 +49,9 @@ improves clinical outcome prediction of prostate cancer. BMC Bioinformatics, 12(
 2011.
 }
 
+\seealso{
+\code{\link{combinePval}}, \code{\link{p.adjust}} , \code{\link{addNet}} 
+}
 
 \examples{
 data(data.obj)

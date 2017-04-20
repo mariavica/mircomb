@@ -15,14 +15,14 @@ a \kbd{corObject}}
  \kbd{"miRNA"} or \kbd{"mRNA"}
 }
   \item{col.color}{
-number or name of the phenotype column which define the grouping variables.}
+number or name of the column in the \kbd{pheno.miRNA} or \kbd{pheno.mRNA} slot which define the grouping variables}
   \item{las}{las parameter
 }
-  \item{colors}{character vector indicating the colors to be used.
+  \item{colors}{character vector indicating the colors that will be used for each variable from \kbd{col.color}
 }
 }
 \seealso{
-\code{plotCordist}, \code{boxplotCorrelation}
+\code{\link{plotCordist}}, \code{\link{boxplotCorrelation}}
 }
 \examples{
 data(data.obj)

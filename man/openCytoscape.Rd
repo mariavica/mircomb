@@ -1,8 +1,8 @@
 \name{openCytoscape}
 \alias{openCytoscape}
 \title{
-Open cytoscape session with network loaded}
-\description{Open cytoscape session with network loaded
+Open cytoscape session with the network of miRNA-mRNA interactions}
+\description{Open cytoscape session and automatically load the network of miRNA-mRNA interactions.
 }
 \usage{
 openCytoscape(obj = NULL, pval.cutoff = 0.05, dat.sum =
@@ -12,16 +12,15 @@ openCytoscape(obj = NULL, pval.cutoff = 0.05, dat.sum =
 }
 \arguments{
   \item{obj}{
-corObject
+a \kbd{corObject}
 }
   \item{pval.cutoff}{
-minimum corrected p.value to take
+minimum corrected \emph{p} value of selected miRNA-mRNA interactions
 }
-  \item{dat.sum}{minimum ocurrences across databases
+  \item{dat.sum}{minimum ocurrences across databases of selected miRNA-mRNA interactions
 }
   \item{file}{
-file of a ".sif" network
-}
+name of the ".sif" network file that will be written. If \kbd{NULL}, file \kbd{"network_default.sif"} will be created
   \item{cytoscape.folder}{
 path where "cytoscape.jar" file is located
 }
@@ -38,9 +37,7 @@ character vector with the restricted mRNA
 
 
 }
-\details{
-Use a corObject with p.cutoff or file. If using directly from a corObject, a default "network_default.sif" file will be created in the working directory.
-}
+
 \references{
 \url{http://cytoscape.org/}
 }

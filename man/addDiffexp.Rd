@@ -7,7 +7,7 @@ Calculate miRNA or mRNA differential expression from a \kbd{corObject}
 }
 \usage{
 addDiffexp(obj, dataset, classes, method.dif = "t.test", method.adj = "BH",
- var.t.test = FALSE, trend = FALSE)
+  var.t.test = FALSE, trend = FALSE)
 }
 
 \arguments{

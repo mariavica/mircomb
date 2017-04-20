@@ -2,13 +2,14 @@
 \alias{addGlmnet}
 
 \title{
-Add elastic net estimates -- STILL IN TEST!!! --
+Add elastic net estimates
 }
 \description{
-Add elastic net estimates to a corObject -- STILL IN TEST!!! --
+Add elastic net estimates to a \kbd{corObject}
 }
 \usage{
-addGlmnet(obj, response = "mRNAs", alpha = 0.5, upper.limit = 0, cluster = "manual", plot = TRUE)
+addGlmnet(obj, response = "mRNAs", alpha = 0.5, upper.limit = 0,
+  cluster = "manual", plot = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

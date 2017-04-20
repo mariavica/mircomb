@@ -4,7 +4,7 @@
 \title{
 mRNA data expression
 }
-\description{mRNA data expression in log2-intensity units
+\description{mRNA data expression that can be used for example, in log2-intensity units
 }
 \usage{data(mRNA)}
 \format{

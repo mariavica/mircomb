@@ -2,10 +2,10 @@
 \alias{data.obj}
 \docType{data}
 \title{
-Example corObject
+Example of a \kbd{corObject}
 }
 \description{
-A corObject example, from vignette.
+Example of a \kbd{corObject} that was used for the main vignette.
 }
 \usage{data("data.obj")}
 \format{
