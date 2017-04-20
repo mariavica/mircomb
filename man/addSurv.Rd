@@ -10,7 +10,7 @@ addSurv(obj, dataset, time, event, adjusting = NULL)
 }
 
 \arguments{
-  \item{obj}{a \kbd{corObject}
+  \item{obj}{a \kbd{corObject}}
   \item{dataset}{
 \kbd{"miRNA"} or \kbd{"mRNA"}.
 }

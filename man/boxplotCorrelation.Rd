@@ -18,7 +18,7 @@ boxplotCorrelation(obj, miRNA, mRNA, col.color = 1, pos.leg = "topright",
 }
   \item{col.color}{number or name of the column in the \kbd{pheno.miRNA} or \kbd{pheno.mRNA} slot which define the grouping variables  
 }
-  \item{colors}{character vector indicating the colors that will be used for each variable  from \kbd{col.color
+  \item{colors}{character vector indicating the colors that will be used for each variable  from \kbd{col.color}
 }
  \item{pos.leg}{legend position: \kbd{"topright"}, \kbd{"bottomright"}, \kbd{"topleft"}, or \kbd{"bottomleft"} }
 

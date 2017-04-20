@@ -20,7 +20,7 @@ minimum corrected \emph{p} value of selected miRNA-mRNA interactions
   \item{dat.sum}{minimum ocurrences across databases of selected miRNA-mRNA interactions
 }
   \item{file}{
-name of the ".sif" network file that will be written. If \kbd{NULL}, file \kbd{"network_default.sif"} will be created
+name of the ".sif" network file that will be written. If \kbd{NULL}, file \kbd{"network_default.sif"} will be created}
   \item{cytoscape.folder}{
 path where "cytoscape.jar" file is located
 }

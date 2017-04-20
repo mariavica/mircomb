@@ -37,7 +37,7 @@ A \kbd{corObject} with new columns added to the \kbd{net} slot. The name and con
 	%\item custom database: \kbd{custom.dat}: "0" (not target) or "1" (target), according to the custom database.
 	%\item "PITA": "pita.score": score of the PITA database.
 
-
+}
 }
 \references{
 TargetScan: \url{http://www.targetscan.org/}

@@ -60,7 +60,7 @@ if TRUE, add the miRNAs that are regulating the selected mRNAs (only if correlat
 \value{
 a \kbd{corObject}, with an item of the \kbd{GO.results} slot added. The item is a data.frame with the named "type:ontology" and with the following columns:
 \itemize{
-	\item \kbd{Ontology: "BP" (Biological Process), "CC" (Cellular Component), "MF" (Molecular Function), "KEGG" or "REACTOME"
+	\item \kbd{Ontology}: "BP" (Biological Process), "CC" (Cellular Component), "MF" (Molecular Function), "KEGG" or "REACTOME"
 	\item \kbd{ID}: term ID
 	\item \kbd{Pvalue}: \emph{p} value
 	\item \kbd{OddsRatio}: number of mRNAs found/number of expected mRNAs
@@ -75,7 +75,7 @@ a \kbd{corObject}, with an item of the \kbd{GO.results} slot added. The item is 
 
 }
 \references{
-\code{package:GOstats}, \code{package:ReactomePA}
+\code{\link{package:GOstats}}, \code{\link{package:ReactomePA}}
 
 Falcon S and Gentleman R. Using GOstats to test gene list for GO term association. Bioinformatics, 23(7):257-8, 2007.
 
