@@ -32,7 +32,7 @@ a \kbd{corObject} with a \kbd{diffexp.miRNA} or \kbd{diffexp.mRNA} slot added. T
 	}
 
 
-}
+
 }
 \seealso{
 \code{\link{package:survival}}, \code{\link{coxph}}
