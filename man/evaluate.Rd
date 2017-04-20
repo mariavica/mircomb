@@ -6,7 +6,8 @@ Evaluate function}
 Evaluate in detail (STILL IN TEST!)
 }
 \usage{
-evaluate(obj, method = c("hypergeometric", "logistic", "GSEA"), databases = "all", adj.pval = 0.05, plot = TRUE, miRNAs = "all", mRNAs = "all", nperm = nperm)
+evaluate(obj, method = c("hypergeometric", "logistic", "GSEA"), databases = "all",
+  adj.pval = 0.05, plot = TRUE, miRNAs = "all", mRNAs = "all", nperm = nperm)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -69,5 +70,5 @@ evaluate(obj, method = c("hypergeometric", "logistic", "GSEA"), databases = "all
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+%\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
+%\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line

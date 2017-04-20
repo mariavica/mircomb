@@ -75,15 +75,13 @@ a \kbd{corObject}, with an item of the \kbd{GO.results} slot added. The item is 
 
 }
 \references{
-\code{\link{package:GOstats}}, \code{\link{package:ReactomePA}}
-
 Falcon S and Gentleman R. Using GOstats to test gene list for GO term association. Bioinformatics, 23(7):257-8, 2007.
 
 Yu G. ReactomePA: Reactome Pathway Analysis. R package version 1.10.1. 
 }
 
 \seealso{
-\code{package:GOstats}, \code{package:ReactomePA}
+\code{\link{package:GOstats}}, \code{\link{package:ReactomePA}}
 }
 \examples{
 data(data.obj)
