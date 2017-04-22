@@ -736,7 +736,7 @@ addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,sub
 
 
  ## addcorrelation before removing d.influences
-addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, alternative="less") {
+addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, alternative="less", norm=NULL) {
 
 	obj@net<-data.frame()
 	obj@info[["pcomb.method"]]<-NULL
@@ -748,20 +748,40 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 	if (is.null(common)) {
 		common<-intersect(colnames(obj@dat.mRNA),colnames(obj@dat.miRNA))
 	}
-
-
+	
 	#seleccionar subset dels comuns
 	if (length(subset.miRNA)>1) {
+				
 		subset.miRNA.sel<-intersect(subset.miRNA,rownames(obj@dat.miRNA))		
 		miRNA.data<-obj@dat.miRNA[subset.miRNA.sel,common]
-		if (!all(subset.mRNA==obj@sig.mRNA)) {obj@info[["miRNA.criteria"]]<-"manual!"} else {if ((obj@info[["miRNA.criteria"]][1]=="manual!") | (obj@info[["miRNA.criteria"]][1]=="All miRNA")) {obj@info[["miRNA.criteria"]]<-"stored for addSig (please check)"}}
-	}else {miRNA.data<-obj@dat.miRNA[,common]
+				
+		if (!all(subset.mRNA==obj@sig.mRNA)) {
+			obj@info[["miRNA.criteria"]]<-"manual!"
+		} else {
+			if ((obj@info[["miRNA.criteria"]][1]=="manual!") | (obj@info[["miRNA.criteria"]][1]=="All miRNA")) {
+				obj@info[["miRNA.criteria"]]<-"stored for addSig (please check)"
+			}
+		}
+	} else {
+		miRNA.data<-obj@dat.miRNA[,common]
 		if (class(miRNA.data)=="numeric") {
 			miRNA.data<-t(as.matrix(miRNA.data))
 			rownames(miRNA.data)<-rownames(obj@dat.miRNA)
-			}
+		}
 		subset.miRNA<-rownames(miRNA.data)
-		obj@info[["miRNA.criteria"]]<-"All miRNA"}
+		obj@info[["miRNA.criteria"]]<-"All miRNA"
+	}
+		
+	#aclarir si vénen de NGS per poder fer la transformacio adequada
+	if (obj@info[["miRNA.diffexp.method"]])[1]=="DESeq" | obj@info[["miRNA.diffexp.method"]][1]=="edgeR") {
+		norm<-obj@info[["miRNA.diffexp.method"]])[1]
+	}
+
+	if (!is.null(norm)) {
+		print("Warning, your data is NGS")
+		### fer aquí la transformació de miRNA.data ;)!
+	}
+
 
 	if (length(subset.mRNA)>1) {
 		subset.mRNA.sel<-intersect(subset.mRNA,rownames(obj@dat.mRNA))		
@@ -775,6 +795,18 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 	
 		subset.mRNA<-rownames(mRNA.data)
 		obj@info[["mRNA.criteria"]]<-"All mRNA"}
+	
+	
+	#aclarir si vénen de NGS per poder fer la transformacio adequada
+	if (obj@info[["mRNA.diffexp.method"]])[1]=="DESeq" | obj@info[["mRNA.diffexp.method"]][1]=="edgeR") {
+		norm<-obj@info[["mRNA.diffexp.method"]])[1]
+	}
+
+	if (!is.null(norm)) {
+		print("Warning, your data is NGS")
+		### fer aquí la transformació de mRNA.data ;)!
+	}
+
 
 	### fer les correlacions
 	correlation.matrix<-matrix(NA,nrow=nrow(miRNA.data),ncol=nrow(mRNA.data))
