@@ -7,7 +7,7 @@ Calculate miRNA or mRNA differential expression from a \kbd{corObject}
 }
 \usage{
 addDiffexp(obj, dataset, classes, method.dif = "t.test", method.adj = "BH",
-  var.t.test = FALSE, trend = FALSE)
+  var.t.test = FALSE, trend = FALSE, norm = NULL)
 }
 
 \arguments{
@@ -23,11 +23,16 @@ column name of the \kbd{pheno.miRNA} or \kbd{pheno.mRNA} encoding the contrast t
   \item{method.adj}{
 multiple testing correction method used (only for \kbd{method.dif} = \kbd{"t.test"}, \kbd{"wilcoxon"}, \kbd{"limma"} or \kbd{"anova"}. One of \kbd{"holm"}, \kbd{"hochberg"}, \kbd{"hommel"}, \kbd{"bonferroni"}, \kbd{"BH"}, \kbd{"BY"}, \kbd{"fdr"}, \kbd{"none"} (see \kbd{\link{p.adjust}}).}
   \item{var.t.test}{
-TRUE or FALSE (default). Only for \kbd{method.dif} = \kbd{"t.test"}. If TRUE, considers equality of variances in a T-test. 
+\kbd{TRUE} or \kbd{FALSE} (default). Only for \kbd{method.dif} = \kbd{"t.test"}. If \kbd{TRUE}, considers equality of variances in a T-test. 
 }
   \item{trend}{
-if TRUE use "limma-trend" method (only for \kbd{method.dif} = \kbd{"t.test"}). Recommended for log-normalised counts)
+if \kbd{TRUE} use "limma-trend" method (only for \kbd{method.dif} = \kbd{"t.test"}). Recommended for log-normalised counts)
 }
+  \item{norm}{
+\kbd{NULL} (default) (in implementation, this feature will help to integrate and normalise NGS data for the correlation)
+}
+
+	
 }
 \value{
 a  \kbd{corObject} with a \kbd{diffexp.miRNA} or \kbd{diffexp.mRNA} slot added, where the rownames of the data.frame are the names of the miRNAs or mRNAs. This slot is a data.frame with the following columns:
