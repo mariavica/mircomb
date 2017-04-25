@@ -3540,7 +3540,7 @@ evaluate <- function ( obj, method=c("hypergeometric", "logistic", "GSEA"), data
       result[,k+1]<-targets#[result$miRNA]
       result[,k+2]<-phyper(targets-1, pred.targets, size-pred.targets, cor, lower.tail=FALSE )
       result[,k+3]<-p.adjust(result[,k+2],method="BH")
-      result[,k+4]<-size * targets / (pred.targets * cor) 
+      result[,k+4]<-(size-cor) * targets / ((pred.targets-targets) * cor) 
       
       
       #### per test fisher
