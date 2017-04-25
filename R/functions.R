@@ -263,7 +263,7 @@ plotCorrelation <- function (obj, miRNA, mRNA, type="cor",samples="all",col.colo
 	
 	if (type=="cor") {
 
-		nf<-layout(mat=matrix(c(1),ncol=1,nrow=1))
+	#	nf<-layout(mat=matrix(c(1),ncol=1,nrow=1))
 		par(mar=c(5.1, 4.1, 4.1, 2.1))
 	#	plot.new()
 
