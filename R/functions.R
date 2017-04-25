@@ -3383,7 +3383,7 @@ GOanalysis <- function (obj, type, ontology, pval.cutoff = 0.05, dat.sum=obj@inf
 	if (type=="REACTOME") {
 
 		mRNA.id<-mRNA.id[which(!is.na(mRNA.id)==TRUE)]
-		df1<-summary(enrichPathway(gene=mRNA.id, organism=organism, pvalueCutoff=0.05, readable=TRUE))
+		df1<-summary(enrichPathway(gene=mRNA.id, organism=organism, pvalueCutoff=1, readable=TRUE))
 
 		GO.results<-data.frame(df1)
 
