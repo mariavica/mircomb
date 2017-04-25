@@ -38,7 +38,7 @@ minimum occurrences between databases.
 Optional, character vector: name of the dataframe containing additional interactions (usually mRNA-mRNA interactions) that will also be displayed.
 }
   \item{vertex.cex}{
-Optional, character vector: name of the dataframe containing the relative size for each node in the network. 
+Optional, character vector: name of the dataframe containing the relative size for each node in the network. For example \kbd{"interact.table"}.
 }
   \item{n}{
 maximum number of interactions.
@@ -48,7 +48,7 @@ Size of the node
 }
 }
 
-\details{The colurs are representative of the interactions.}
+\details{The colurs are representative of the interactions. \kbd{"interact.table"} can be loaded from \kbd{miRData} package using \kbd{data(interact.table)}.}
 
 \value{
 A network Plot
