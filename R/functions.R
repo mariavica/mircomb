@@ -4204,7 +4204,7 @@ cat("
 \\centering
 ")
 cat(a)
-cat(paste("\\caption{Plot of ",n," top correlations, sorted by adjusted p-value. Databases used: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", "))," (each miRNA-mRNA pair has to appear at least ",obj@info[["dat.sum"]]," times).}",sep=""))
+cat(paste("\\caption{Plot of ",n," top correlations, sorted by adjusted p-value. Databases used: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", "))," (each miRNA-mRNA pair has to appear at least ",dat.sum.table," times).}",sep=""))
 cat("
 \\end{figure}
 ")
@@ -4261,7 +4261,7 @@ if (!is.null(pairs.good$logratio.miRNA) & !is.null(pairs.good$logratio.mRNA)) {
 pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
 pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
 
-	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.miRNA","FC.mRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs (sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrrr",display=c("s","s","s","f","e","f","f","d")),table.placement="!h",
+	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.miRNA","FC.mRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs (sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",dat.sum.table," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrrr",display=c("s","s","s","f","e","f","f","d")),table.placement="!h",
 include.rownames=FALSE,latex.environments="center")
 }
 
@@ -4271,7 +4271,7 @@ if (!is.null(pairs.good$logratio.miRNA) & is.null(pairs.good$logratio.mRNA)) {
 #pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
 pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
 
-	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.miRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrr",display=c("s","s","s","f","e","f","d")),table.placement="!h",
+	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.miRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",dat.sum.table," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrr",display=c("s","s","s","f","e","f","d")),table.placement="!h",
 include.rownames=FALSE,latex.environments="center")
 }
 
@@ -4281,7 +4281,7 @@ if (is.null(pairs.good$logratio.miRNA) & !is.null(pairs.good$logratio.mRNA)) {
 pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
 #pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
 
-	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.mRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrr",display=c("s","s","s","f","e","f","d")),table.placement="!h",
+	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.mRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",dat.sum.table," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrr",display=c("s","s","s","f","e","f","d")),table.placement="!h",
 include.rownames=FALSE,latex.environments="center")
 }
 
@@ -4291,7 +4291,7 @@ if (is.null(pairs.good$logratio.miRNA) & is.null(pairs.good$logratio.mRNA)) {
 #pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
 #pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
 
-	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrr",display=c("s","s","s","f","e","d")),table.placement="!h",
+	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",dat.sum.table," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrr",display=c("s","s","s","f","e","d")),table.placement="!h",
 include.rownames=FALSE,latex.environments="center")
 
 }
