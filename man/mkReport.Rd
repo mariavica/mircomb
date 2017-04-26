@@ -5,7 +5,7 @@ Creates a pdf report}
 \description{
 Creates a pdf report summarizing the contents of the \code{corObject}}
 \usage{
-mkReport(obj, file, title = "Default \\\\texttt{miRComb} output")
+mkReport(obj, file, title = "Default \\\\texttt{miRComb} output", dat.sum.table = NULL)
 }
 \arguments{
   \item{obj}{
@@ -16,6 +16,9 @@ name of the file, for example "myExampleReport"
 }
   \item{title}{
 Title of the report
+}
+  \item{dat.sum.table}{
+Minimum \kbd{dat.sum} that will be applied to Table 9 and Figure 6.
 }
 }
 \details{
