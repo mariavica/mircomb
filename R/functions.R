@@ -4177,14 +4177,15 @@ cat("
 \\end{figure}
 ")
 
-
-
+if (is.null(dat.sum.table)) {
+  dat.sum.table<-obj@info[["dat.sum"]]
+}
 
 # top 11 correlations
 n<-15
 cyto<-obj@net
 top11<-cyto[with(cyto, order(cor)),]
-top11<-top11[which(top11$dat.sum>=obj@info[["dat.sum"]])[1:n],]
+top11<-top11[which(top11$dat.sum>=dat.sum.table)[1:n],]
 top11$miRNA<-as.character(top11$miRNA)
 top11$mRNA<-as.character(top11$mRNA)
 
@@ -4194,7 +4195,6 @@ for (i in 1:n) {
 	dev.off()
 
 }
-
 
 
 a<-paste(paste("\\includegraphics[width=0.3\\textwidth]{cor",1:n,seed,".pdf}",sep=""),collapse="\n")
@@ -4247,8 +4247,12 @@ cat("
 ")
 
 
+if (is.null(dat.sum.table)) {
+  dat.sum.table<-obj@info[["dat.sum"]]
+}
 
-pairs.good<-obj@net[which(obj@net$dat.sum>=obj@info[["dat.sum"]]),]
+
+pairs.good<-obj@net[which(obj@net$dat.sum>=dat.sum.table),]
 pairs.good<-pairs.good[order(pairs.good$pval),]
 
 
