@@ -3753,7 +3753,7 @@ plotDensity <- function (obj, subset, col.color=1, colors=c("turquoise", "violet
 
 ##### Make a report
 
-mkReport <- function (obj, file, title="Default \\texttt{miRComb} output") {
+mkReport <- function (obj, file, title="Default \\texttt{miRComb} output", dat.sum.table=NULL) {
 
 	#set random seed
 	seed<-paste("_rndm_seed_",sample(1:100000)[1],sep="")
@@ -4141,18 +4141,18 @@ cat(paste("Total correlations &", nrow(obj@net) ,  "&", round(nrow(obj@net)/nrow
 cat(paste("Total negative correlations &", length(which(obj@net$cor<0)) ,  "&", round(length(which(obj@net$cor<0))/nrow(obj@net)*100,2) ,"\\\\")
 )
 
-cat(paste("Total correlations p$<$0.05 &", length(which(obj@net$pval<0.05)) ,  "&", round(length(which(obj@net$pval<0.05))/nrow(obj@net)*100,2) ,"\\\\")
+cat(paste("Total negative correlations p$<$0.05 &", length(which(obj@net$pval<0.05 & obj@net$cor<0)) ,  "&", round(length(which(obj@net$pval<0.05))/nrow(obj@net)*100,2) ,"\\\\")
 )
 
-cat(paste("Total correlations p$<$0.01 &", length(which(obj@net$pval<0.01)) ,  "&", round(length(which(obj@net$pval<0.01))/nrow(obj@net)*100,2) ,"\\\\")
+cat(paste("Total negative correlations p$<$0.01 &", length(which(obj@net$pval<0.01& obj@net$cor<0)) ,  "&", round(length(which(obj@net$pval<0.01))/nrow(obj@net)*100,2) ,"\\\\")
 )
 
 
 
-cat(paste("Total correlations adj.p$<$0.05 &", length(which(obj@net$adj.pval<0.05)) ,  "&", round(length(which(obj@net$adj.pval<0.05))/nrow(obj@net)*100,2) ,"\\\\")
+cat(paste("Total negative correlations adj.p$<$0.05 &", length(which(obj@net$adj.pval<0.05& obj@net$cor<0)) ,  "&", round(length(which(obj@net$adj.pval<0.05))/nrow(obj@net)*100,2) ,"\\\\")
 )
 
-cat(paste("Total correlations adj.p$<$0.01 &", length(which(obj@net$adj.pval<0.01)) ,  "&", round(length(which(obj@net$adj.pval<0.01))/nrow(obj@net)*100,2) ,"\\\\")
+cat(paste("Total negative correlations adj.p$<$0.01 &", length(which(obj@net$adj.pval<0.01& obj@net$cor<0)) ,  "&", round(length(which(obj@net$adj.pval<0.01))/nrow(obj@net)*100,2) ,"\\\\")
 )
 
 
