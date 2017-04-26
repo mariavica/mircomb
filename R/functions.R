@@ -4373,7 +4373,7 @@ cat("
 ")
 cat(paste("\\includegraphics[width=0.9\\textwidth]{",paste("barplot_miRNA",seed,".pdf",sep=""),"}",sep=""))
 
-cat(paste("\\caption{Barplot showing the number of mRNA targets per each miRNA (each bar represents a miRNA and it is sorted by number of targets). MiRNA-mRNA interactions have pval-corrected$<$0.05 and predicted at least ",obj@info[["dat.sum"]]," time on the following databases:",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),". Red line (and right axis) represents the percentage of deregulated mRNAs that are targeted by the miRNAs.}",sep=""))
+cat(paste("\\caption{Barplot showing the number of mRNA targets per each miRNA (each bar represents a miRNA and they are sorted by number of targets). MiRNA-mRNA interactions have pval-corrected$<$0.05 and predicted at least ",obj@info[["dat.sum"]]," time on the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),". Red line (and right axis) represents the percentage of deregulated mRNAs that are cumulatively targeted by the miRNAs.}",sep=""))
 cat("
 \\end{figure}
 ")
