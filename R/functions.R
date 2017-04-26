@@ -4257,7 +4257,7 @@ pairs.good<-pairs.good[order(pairs.good$pval),]
 
 
 ##### The content of the table will vary depending on which available information we have
-if (!is.null(pairs.good$FC.miRNA) & !is.null(pairs.good$FC.mRNA)) {
+if (!is.null(pairs.good$logratio.miRNA) & !is.null(pairs.good$logratio.mRNA)) {
 pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
 pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
 
@@ -4267,9 +4267,9 @@ include.rownames=FALSE,latex.environments="center")
 
 
 
-if (!is.null(pairs.good$FC.miRNA) & is.null(pairs.good$FC.mRNA)) {
-pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
-#pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
+if (!is.null(pairs.good$logratio.miRNA) & is.null(pairs.good$logratio.mRNA)) {
+#pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
+pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
 
 	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.miRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrr",display=c("s","s","s","f","e","f","d")),table.placement="!h",
 include.rownames=FALSE,latex.environments="center")
@@ -4277,9 +4277,9 @@ include.rownames=FALSE,latex.environments="center")
 
 
 
-if (is.null(pairs.good$FC.miRNA) & !is.null(pairs.good$FC.mRNA)) {
-#pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
-pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
+if (is.null(pairs.good$logratio.miRNA) & !is.null(pairs.good$logratio.mRNA)) {
+pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
+#pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
 
 	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.mRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrr",display=c("s","s","s","f","e","f","d")),table.placement="!h",
 include.rownames=FALSE,latex.environments="center")
@@ -4287,7 +4287,7 @@ include.rownames=FALSE,latex.environments="center")
 
 
 
-if (is.null(pairs.good$FC.miRNA) & is.null(pairs.good$FC.mRNA)) {
+if (is.null(pairs.good$logratio.miRNA) & is.null(pairs.good$logratio.mRNA)) {
 #pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
 #pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
 
