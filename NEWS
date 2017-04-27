@@ -1,3 +1,10 @@
+CHANGES IN VERSION 0.8.9
+------------------------
+
+    o Reactome analysis in GOanalysis function fixed (updates all the reactomes, not only the significant (adj.pval<0.05) ones).
+    o evaluate function bug fixes in hypergeometric option (still in test).
+
+
 CHANGES IN VERSION 0.8.8
 ------------------------
 
