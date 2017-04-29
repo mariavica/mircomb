@@ -774,7 +774,7 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 		
 	#aclarir si vénen de NGS per poder fer la transformacio adequada
 	if (obj@info[["miRNA.diffexp.method"]][1]=="DESeq" | obj@info[["miRNA.diffexp.method"]][1]=="edgeR") {
-		norm<-obj@info[["miRNA.diffexp.method"]])[1]
+		norm<-obj@info[["miRNA.diffexp.method"]][1]
 	}
 
 	if (!is.null(norm)) {
@@ -798,8 +798,8 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 	
 	
 	#aclarir si vénen de NGS per poder fer la transformacio adequada
-	if (obj@info[["mRNA.diffexp.method"]])[1]=="DESeq" | obj@info[["mRNA.diffexp.method"]][1]=="edgeR") {
-		norm<-obj@info[["mRNA.diffexp.method"]])[1]
+	if (obj@info[["mRNA.diffexp.method"]][1]=="DESeq" | obj@info[["mRNA.diffexp.method"]][1]=="edgeR") {
+		norm<-obj@info[["mRNA.diffexp.method"]][1]
 	}
 
 	if (!is.null(norm)) {
