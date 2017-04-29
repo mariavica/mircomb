@@ -1,5 +1,6 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 \usepackage[utf8]{inputenc}
+\renewcommand{\baselinestretch}{1.1}
 
 %\usepackage[left=1.5cm,top=2.5cm,right=1.5cm,bottom=2.5cm]{geometry}
 
@@ -52,9 +53,9 @@
 
 \section{Workflow}
 
-This package provides a workflow for miRNA target analysis. Data about the miRNA databases is stores in a separate package --\texttt{miRData}--, which is is automatically loaded with \texttt{miRComb}.
+This package provides a workflow for miRNA target analysis. Data about the miRNA databases is stored in a separate package --\texttt{miRData}--, which is is automatically loaded with \texttt{miRComb}.
 
-The main workflow of the package is represented in the following figure. We start from two datasets, where correlations are computed. Then they are combined with a database --microCosm or others-- and a functional analysis of the results can be performed.
+The main workflow of the package is represented on the following figure. We start from two datasets, where correlations are computed. Then they are combined with a database --microCosm or others-- and a functional analysis of the results can be performed.
 
 See full article: \texttt{miRComb} \cite{vila-casadesus_mircomb:_2016}
 
