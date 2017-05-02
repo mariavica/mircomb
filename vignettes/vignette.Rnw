@@ -1,4 +1,4 @@
-\documentclass[12pt]{article}
+\documentclass{article}
 \usepackage[utf8]{inputenc}
 \renewcommand{\baselinestretch}{1.1}
 
