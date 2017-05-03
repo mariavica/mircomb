@@ -4,7 +4,7 @@
 Plot hierarchical clustering of miRNA or mRNA samples
 }
 \description{
-Plot hierarchical clustering of miRNA or mRNA samples
+Plot the hierarchical clustering tree of the miRNA or mRNA samples according to the euclidean distance between them.
 }
 \usage{
 plotHclust(obj, subset)
@@ -20,11 +20,11 @@ a \kbd{corObject}.
 
 }
 \value{
-A plot.
+A plot of the hierarchical clustering tree of the miRNA or mRNA samples according to the euclidean distance between them.
 }
 
 \seealso{
-\code{\link{plot3d}}, \code{\link{plotPca}}, \code{dist}, \code{\link{plotCordist}}
+\code{\link{plot3d}}, \code{\link{plotPca}}, \code{\link{dist}}, \code{\link{plotCordist}}
 }
 \examples{
 data(data.obj)

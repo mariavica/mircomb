@@ -4,7 +4,7 @@
 Plot correlations
 }
 \description{
-Plot the correlation of a miRNA and mRNA and/or the diagnostic plots of the linear regression.}
+Plot the correlation of a miRNA and mRNA with their linear regression}
 \usage{
 plotCorrelation(obj, miRNA, mRNA, type = "cor", samples = "all",
   col.color = 1, i.legend = !is.na(col.color), pos.legend = "topright",
@@ -48,7 +48,7 @@ Position of the text for sample names from \code{\link{text}}. Values of ‘1’
 }
 
 \value{
-A correlation plot.
+A scatter plot showing the correlation of the miRNA and mRNA expression of a miRNA-mRNA pair. A line representing the linear regression between both variables is also plotted.
 }
 
 \examples{

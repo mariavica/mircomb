@@ -27,11 +27,7 @@ translatemiRNAs(x, from = NULL, to = "21")
 %%  ~~ If necessary, more details than the description above ~~
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A data frame containing the original name of the translated name for each miRNA.
 }
 \references{
 %% ~put references to the literature/web site here ~
@@ -44,7 +40,7 @@ translatemiRNAs(x, from = NULL, to = "21")
 }
 
 \seealso{
-\code{checkmiRNAs}
+\code{\link{checkmiRNAs}}
 }
 \examples{
 translatemiRNAs(c("hsa-let-7b","not-a-miRNA","hsa-miR-200c"), from="6.0", to="21")

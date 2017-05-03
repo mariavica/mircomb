@@ -16,7 +16,7 @@ Brief report of a \kbd{corObject}
 
 
 \value{
-Simple version of printing of the report.
+Simple version of printing of the report of a \kbd{corObject}.
 }
 
 \seealso{

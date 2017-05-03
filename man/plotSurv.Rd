@@ -1,10 +1,10 @@
 \name{plotSurv}
 \alias{plotSurv}
 \title{
-Plot kaplan-meier curve
+Plot Kaplan-Meier curve
 }
 \description{
-Plot kaplan-meier curve
+Plot Kaplan-Meier curve of miRNA or mRNA
 }
 \usage{
 plotSurv(obj, subset, item, time, event)
@@ -31,13 +31,13 @@ name or number of the column in the pheno slot that contains the censoring (0=ce
 
 }
 \value{
-A plot.
+A plot with the Kaplan-Meier.
 }
 \references{
 \code{survival} package: https://cran.r-project.org/web/packages/survival/index.html
 }
 \seealso{
-\code{\link{plot3d}}, \code{\link{plotPca}}, \code{dist}, \code{\link{plotCordist}}
+\code{\link{addSurv}}
 }
 \examples{
 #data(data.obj)

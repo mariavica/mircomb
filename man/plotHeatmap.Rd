@@ -4,7 +4,7 @@
 \title{
 Plot heatmaps}
 \description{
-Plot heatmaps of the top "n" miRNA, mRNA o both miRNA-mRNA pairs.
+Plot heatmaps of the top "n" miRNAs or mRNAs from selected miRNA-mRNA pairs
 }
 \usage{
 plotHeatmap(obj, class, n = 50, col.color = 1, min.exp = NULL, main = NULL, pval.cutoff = NULL, grouping.col = NULL, grouping.row = NULL, order = "pval", cex.lab = 0.75)
@@ -14,12 +14,12 @@ plotHeatmap(obj, class, n = 50, col.color = 1, min.exp = NULL, main = NULL, pval
 a \kbd{corObject}
 }
   \item{class}{
-\kbd{"miRNA"}, \kbd{"mRNA"} or \kbd{"both"}.
+\kbd{"miRNA"}, \kbd{"mRNA"} or \kbd{"both"}. When \kbd{"both"}, the heatmap is a mixture of miRNAs and mRNAs.
 }
   \item{n}{
 number of items to plot.
 }
-  \item{col.color}{character vector, column name or number which contains that will be used to label the samples between groups.}
+  \item{col.color}{character vector, column name or number which contains that will be used to label the samples.}
   \item{min.exp}{
 (optional) minimum mean expression of the items to be plotted}
   \item{main}{
@@ -30,11 +30,11 @@ number of items to plot.
 (optional) factor or character vector indicating predefined groups}
   \item{grouping.row}{
 (optional) factor or character vector indicating predefined groups}
-  \item{order}{criteria used to select the "top" miRNAs or mRNAs. "pval" or "FDR" (default), or "logratio" or "FC". Only for class="miRNA" or "mRNA"}
+  \item{order}{criteria used to select the "top" miRNAs or mRNAs. \kbd{"pval"} or \kbd{"adj.pval"} (default), or \kbd{"logratio"} or \kbd{"FC"}. Only for class="miRNA" or "mRNA"}
   \item{cex.lab}{cex of the label axis. Default is 0.75}
 }
 \value{
-A plot.
+A plot with the heatmap of the selected miRNAs or mRNAs.
 }
 
 \seealso{

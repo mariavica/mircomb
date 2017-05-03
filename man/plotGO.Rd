@@ -30,7 +30,7 @@ name of the TIFF figure.
 }
 
 \value{
-A file with the GO terms plotted.
+A file with the GO terms plotted, organised hierarchicaly and highlighting the significant ones.
 }
 \examples{
 
