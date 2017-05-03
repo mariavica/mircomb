@@ -26,7 +26,7 @@ name of the column in the pheno slot used for coloring the samples.
 In case of a two-level factor grouping, colors to be used.
 }
   \item{pos.leg}{
-legend position, \bkd{"bottomright"}, \bkd{"topright"}, \bkd{"bottomleft"} or \bkd{"topleft"}
+legend position, \kbd{"bottomright"}, \kbd{"topright"}, \kbd{"bottomleft"} or \kbd{"topleft"}
 }
   \item{names}{FALSE or TRUE. Plot names of the samples.
 }

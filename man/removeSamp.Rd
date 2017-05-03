@@ -10,7 +10,7 @@ removeSamp(obj, dataset, samples = NA, genes = NA, keep=FALSE)
 }
 \arguments{
   \item{obj}{
-a \kbd{corObject}
+a \kbd{corObject}}
   \item{dataset}{
 \kbd{"miRNA"} or \kbd{"mRNA"}}
   \item{samples}{

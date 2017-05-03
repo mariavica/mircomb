@@ -35,7 +35,7 @@ A data.frame with the selected miRNA-mRNA pairs.
 }
 
 \seealso{
-\code{\link{writeCsv}, \code{\link{writeExcel}}, \code{\link{writeSif}}
+\code{\link{writeCsv}}, \code{\link{writeExcel}}, \code{\link{writeSif}}
 }
 
 \examples{
