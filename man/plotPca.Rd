@@ -1,4 +1,4 @@
-º\name{plotPca}
+\name{plotPca}
 \alias{plotPca}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
