@@ -37,12 +37,16 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes,shadows,arrows}
 
+\usepackage[font=small,labelfont=bf]{caption}
+\setlength{\captionmargin}{32pt}
+
 
 \title{miRComb - An R package for analyzing miRNA-mRNA interactions}
 \author{Maria Vila-Casadesús, Juanjo Lozano}
 %\VignetteIndexEntry{miRComb Vignette}
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \maketitle
 
 %\begin{abstract}
@@ -97,6 +101,7 @@ See full article: \texttt{miRComb} \cite{vila-casadesus_mircomb:_2016}
 \end{center}
 \end{figure}
 \vspace{0.5cm}
+
 
 
 
@@ -169,6 +174,7 @@ plotCordist(data.obj,subset="mRNA",type="dist")
 @
 
 \begin{figure}[!h]
+\setkeys{Gin}{width=0.5\textwidth}
 \centering
 <<fig=TRUE,echo=FALSE,eval=TRUE>>=
 plotCordist(data.obj,subset="mRNA",type="dist")
@@ -189,6 +195,7 @@ boxplotSamples(data.obj,subset="mRNA")
 @
 
 \begin{figure}[!h]
+\setkeys{Gin}{width=0.5\textwidth}
 \centering
 <<fig=TRUE,echo=FALSE,eval=TRUE>>=
 boxplotSamples(data.obj,subset="mRNA",las=2)
@@ -203,6 +210,7 @@ plotPca(data.obj,subset="mRNA")
 @
 
 \begin{figure}[!h]
+\setkeys{Gin}{width=0.5\textwidth}
 \centering
 <<fig=TRUE,echo=FALSE,eval=TRUE>>=
 plotPca(data.obj,subset="mRNA")
@@ -227,6 +235,8 @@ plotHeatmap(data.obj,"mRNA")
 @
 
 \begin{figure}[!h]
+\setkeys{Gin}{width=0.75\textwidth}
+\centering
 <<fig=TRUE,echo=FALSE,eval=TRUE>>=
 plotHeatmap(data.obj,"mRNA")
 @
@@ -276,6 +286,7 @@ plotCorrelation(data.obj,miRNA="hsa-miR-107",mRNA="A2ML1",type="residuals")
 @
 
 \begin{figure}[!h]
+\setkeys{Gin}{width=0.5\textwidth}
 \centering
 <<fig=TRUE,echo=FALSE,eval=TRUE>>=
 plotCorrelation(data.obj,miRNA="hsa-miR-107",mRNA="A2ML1",type="cor",col.color="group",sample.names=TRUE)
@@ -285,6 +296,7 @@ plotCorrelation(data.obj,miRNA="hsa-miR-107",mRNA="A2ML1",type="cor",col.color="
 \end{figure}
 
 \begin{figure}[!h]
+\setkeys{Gin}{width=0.75\textwidth}
 \centering
 <<fig=TRUE,echo=FALSE,eval=TRUE>>=
 plotCorrelation(data.obj,miRNA="hsa-miR-107",mRNA="A2ML1",type="residuals")
@@ -296,6 +308,7 @@ plotCorrelation(data.obj,miRNA="hsa-miR-107",mRNA="A2ML1",type="residuals")
 
 
 \begin{figure}[!h]
+\setkeys{Gin}{width=0.5\textwidth}
 \centering
 <<fig=TRUE,echo=FALSE,eval=TRUE>>=
 boxplotCorrelation(data.obj,miRNA="hsa-miR-107",mRNA="A2ML1")
@@ -407,7 +420,7 @@ topTable(data.obj,"miRNA",names=TRUE,pval.cutoff=0.05,plot=TRUE)
 @
 
 \begin{figure}[!h]
-\setkeys{Gin}{width=1\textwidth}
+\setkeys{Gin}{width=0.75\textwidth}
 \centering
 <<echo=FALSE,fig=TRUE,eval=TRUE>>=
 topTable(data.obj,"miRNA",names=TRUE,pval.cutoff=0.05,plot=TRUE)
@@ -425,7 +438,7 @@ plotNetwork(data.obj,pval.cutoff=0.01,dat.sum=1)
 @
 
 \begin{figure}[!h]
-\setkeys{Gin}{width=1\textwidth}
+\setkeys{Gin}{width=0.5\textwidth}
 \centering
 <<echo=FALSE,fig=TRUE,eval=TRUE>>=
 plotNetwork(data.obj,pval.cutoff=0.01,dat.sum=1)
@@ -441,7 +454,7 @@ plotNetwork(data.obj,pval.cutoff=0.05,names=FALSE)
 @
 
 \begin{figure}[!h]
-\setkeys{Gin}{width=1\textwidth}
+\setkeys{Gin}{width=0.5\textwidth}
 \centering
 <<echo=FALSE,fig=TRUE,eval=TRUE>>=
 plotNetwork(data.obj,pval.cutoff=0.05,names=FALSE)
@@ -458,7 +471,7 @@ plotNetwork(data.obj,pval.cutoff=0.05,names=TRUE,sub.miRNA=hub,vertex.cex="inter
 @
 
 \begin{figure}[!h]
-\setkeys{Gin}{width=1\textwidth}
+\setkeys{Gin}{width=0.5\textwidth}
 \centering
 <<echo=FALSE,fig=TRUE,eval=TRUE>>=
 hub<-names(topTable(data.obj,"miRNA"))[1]

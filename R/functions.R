@@ -2375,8 +2375,6 @@ if (length(col.color)==1) {
 		#heatmap.2(triming(xmat)[cc.row,cc.col], col=redgreen(75), scale="row", ColSideColors=cc.color[cc.col], Colv=FALSE, Rowv=FALSE, key=TRUE, symkey=FALSE, density.info="none", trace="none", cexRow=0.75, main=paste("Top",n,class),labCol=NA)
 			heatmap.2(triming(xmat), col=greenred(75), scale="row", ColSideColors=cc.color, key=TRUE, symkey=FALSE, density.info="none", trace="none", cexRow=cex.lab, main=main,labCol=NA,dendrogram="both",distfun=function(x) as.dist(1-cor(t(x), method="pearson")),hclustfun=function(x) hclust(x,method="average") , margins=c(10,10))
 
-
-			print("jpka")
 			leg<-levels(as.factor(obj@pheno.mRNA[,col.color]))
 
 			legend("topright",leg,col=levels(as.factor(cc.color)),lwd=7)
