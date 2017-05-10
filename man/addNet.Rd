@@ -12,11 +12,17 @@ addNet(obj)
   \item{obj}{a \kbd{corObject} with the slots \kbd{pval} and \kbd{cor} already defined}
 }
 
-\details{The \kbd{net} slot is a \kbd{data.frame} where each row represents a potential miRNA-mRNA interaction. The row names are the concatenation of the miRNA and mRNA name (format "miRNA:mRNA") and the columns contain all the available information for each pair. Net is sorted by miRNA name and then by mRNA name.}
+\details{
+The \kbd{net} slot is a \kbd{data.frame} where each row represents a potential miRNA-mRNA interaction. The row names are the concatenation of the miRNA and mRNA name (format "miRNA:mRNA") and the columns contain all the available information for each pair. The data.frame is sorted by miRNA name and then by mRNA name. See \code{\link{addFoldchanges}}, \code{\link{addDatabase}}, \code{\link{addScore}} and \code{\link{correctPval}} functions that help to add more information to the  \kbd{net} slot.}  
 
 \value{
  A \kbd{data.frame} with the \kbd{cytofile} slot filled.
 }
+
+\seealso{
+ \code{\link{corObject-class}}, \code{\link{addFoldchanges}}, \code{\link{addDatabase}}, \kbd{\code{addScore}} and \code{\link{correctPval}}
+}
+
 \examples{
 data(data.obj)
 data.obj@net <- data.frame()

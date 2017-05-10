@@ -39,13 +39,13 @@ method used for computing distance from \kbd{dist} function:  This must be one o
 }
 }
 \value{
-A plot.
+A plot of the matrix of distances (or correlations) between samples. A hierarchical clustering of the samples can also be performed to sort the rows and columns.
 }
 \references{
 \url{http://www.phaget4.org/R/image_matrix.html}
 }
 \seealso{
-\code{\link{plot3d}}, \code{\link{plotPca}}, \code{dist}
+\code{\link{plot3d}}, \code{\link{plotPca}}, \code{\link{dist}}
 }
 \examples{
 data(data.obj)

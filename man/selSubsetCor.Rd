@@ -2,10 +2,10 @@
 \alias{selSubsetCor}
 
 \title{
-Show relevant miRNA-mRNA interactions
+Select relevant miRNA-mRNA interactions
 }
 \description{
-Show differentially expressed miRNAs or mRNAs, according to your criteria}
+Select differentially expressed miRNAs or mRNAs, according to your criteria}
 \usage{
 selSubsetCor(obj, pval.cutoff = 1, dat.sum = 0, sub.miRNA = NULL,
  sub.mRNA = NULL)
@@ -13,25 +13,29 @@ selSubsetCor(obj, pval.cutoff = 1, dat.sum = 0, sub.miRNA = NULL,
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{obj}{
-a \code{corObject}
+a \kbd{corObject}
 }
   \item{pval.cutoff}{
-minimum adj.pval to consider
+maximum adj.pval of the selected miRNA-mRNA pairs
 }
   \item{dat.sum}{
-minimum number of concurrences across databases
+minimum number of concurrences across databases of the selected miRNA-mRNA pairs
 }
   \item{sub.miRNA}{
-optional character vector, limit to these miRNAs
+(optional) character vector, limit to these miRNAs
 }
   \item{sub.mRNA}{
-optional character vector, limit to these mRNAs
+(optional) character vector, limit to these mRNAs
 }
 
 }
 
 \value{
 A data.frame with the selected miRNA-mRNA pairs.
+}
+
+\seealso{
+\code{\link{writeCsv}}, \code{\link{writeExcel}}, \code{\link{writeSif}}
 }
 
 \examples{

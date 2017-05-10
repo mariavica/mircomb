@@ -14,7 +14,7 @@ writeExcel(obj, name, pval.cutoff = 0.05, dat.sum = obj@info[["dat.sum"]],
 }
   \item{name}{the name of the file to write.
 }
-  \item{pval.cutoff}{minimum corrected \emph{p} value to take.
+  \item{pval.cutoff}{maximum corrected \emph{p} value to take.
 }
   \item{dat.sum}{number of minimum ocurrences across databases.
 }
@@ -28,7 +28,7 @@ It writes an excel document with the selected pairs.
 }
 \value{An excel file.}
 \seealso{
-\code{\link{writeCsv}}
+\code{\link{writeCsv}}, \code{\link{writeSif}}, \code{\link{selSubsetCor}}, \code{\link{selSubsetExprs}}
 }
 \examples{
 ## do not run

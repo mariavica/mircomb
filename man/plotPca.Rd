@@ -5,7 +5,8 @@
 PCA with miRNA or mRNA data
 }
 \description{
-PCA with miRNA or mRNA data}
+Plot Principal Components Analysis of miRNA or mRNA data
+}
 \usage{
 plotPca(obj, subset, col.color = 1, colors = c("turquoise", "violet"), pos.leg="topleft",
 	names = FALSE, ...)
@@ -25,7 +26,7 @@ name of the column in the pheno slot used for coloring the samples.
 In case of a two-level factor grouping, colors to be used.
 }
   \item{pos.leg}{
-legend position.
+legend position, \kbd{"bottomright"}, \kbd{"topright"}, \kbd{"bottomleft"} or \kbd{"topleft"}
 }
   \item{names}{FALSE or TRUE. Plot names of the samples.
 }
@@ -35,7 +36,12 @@ further arguments.
 }
 
 \value{
-A pca plot}
+A pca plot showing the principal components analysis (PCA) of miRNA or mRNA data.}
+
+
+\seealso{
+\code{\link{plot3d}}
+}
 
 \examples{
 data(data.obj)

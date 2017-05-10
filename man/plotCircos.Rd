@@ -3,7 +3,7 @@
 \title{
 Circos plot}
 \description{
-Do a standard circos plot
+Plot a circos plot showing the miRNA-mRNA interactions
 }
 \usage{
 plotCircos(obj, pval.cutoff = 0.05, dat.sum = obj@info[["dat.sum"]],
@@ -11,15 +11,15 @@ plotCircos(obj, pval.cutoff = 0.05, dat.sum = obj@info[["dat.sum"]],
 }
 \arguments{
   \item{obj}{
-a \kbd{corObject} whith a cytofile slot
+a \kbd{corObject} whith a \kbd{net} slot already definded
 }
   \item{pval.cutoff}{
-maximum corrected \emph{p} value allowed}
+maximum corrected \emph{p} value of the selected miRNA-mRNA pairs}
   \item{dat.sum}{
-numeric, minimum concordance across databases
+numeric, minimum concordance across databases of the selected miRNA-mRNA pairs
 }
   \item{n}{
-numeric, limit to the first "n" pairs (sorted by corrected \emph{p} value)
+(optional) numeric. If specified, limit to the first "n" pairs (sorted by corrected \emph{p} value)
 }
   \item{sub.miRNA}{
 (optional) character vector, include only pairs containing these miRNAs.
@@ -32,12 +32,12 @@ numeric, limit to the first "n" pairs (sorted by corrected \emph{p} value)
 a plot
 }
 \references{
-\url{www.circos.ca}
+\url{www.circos.ca} : Krzywinski MI, Schein JE, Birol I, Connors J, Gascoyne R, Horsman D, Jones SJ, Marra MA. Circos: An information aesthetic for comparative genomics. Genome Research, 2009.
 
 \url{http://cran.r-project.org/web/packages/circlize/index.html}
 }
 \seealso{
-\kbd{plot}
+\code{\link{data(genes_human_h37)}}, \code{\link{mirnas_human_17_h37}}
 }
 \examples{
 data(data.obj)

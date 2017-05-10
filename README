@@ -1,0 +1,65 @@
+###################################################
+ #### README for miRComb and miRData packages ####
+################################################### 
+
+
+I. Package installation -----------------------
+
+I.a. Linux/Mac users --------------------
+
+Download miRComb and miRData to your local folder. Into R session, type: 
+
+install.packages("miRData_x.x.tar.gz")
+install.packages("miRComb_x.x.tar.gz")
+
+Other R/Bioconductor packages are needed, if you want to install all of them, type:
+
+install.packages(c("gplots","gtools","network","WriteXLS","Hmisc","glmnet",
+ "scatterplot3d", "VennDiagram","xtable","survival","pheatmap","mvoutiler","mclust",
+ "pROC","mvoutlier")) 
+ 
+source("http://www.bioconductor.org/biocLite.R")
+
+biocLite(c("RankProd","GOstats","limma","RamiGO","circlize","ReactomePA","DESeq",
+ "GO.db"))
+
+
+I.b. Windows users ------------------
+
+MiRComb and miRData packages can be downloaded here to your local folder:
+http://sourceforge.net/projects/mircomb/files/WindowsVersions/ 
+
+Into R session type:
+
+install.packages("miRData_x.x.zip")
+install.packages("miRComb_x.x.zip")
+
+Other R/Bioconductor packages are needed, if you want to install all of them, type:
+
+
+install.packages(c("gplots","gtools","network","WriteXLS","Hmisc","glmnet",
+ "scatterplot3d", "VennDiagram","xtable","survival","pheatmap","mvoutiler","mclust",
+ "pROC","mvoutlier")) 
+ 
+source("http://www.bioconductor.org/biocLite.R")
+
+biocLite(c("RankProd","GOstats","limma","RamiGO","circlize","ReactomePA","DESeq",
+ "GO.db"))
+
+
+II. Use -------- 
+If the package has been useful for you, we will be very grateful if you can
+cite our article:
+
+Vila-Casadesús M, Gironella M, Lozano JJ (2016) MiRComb: An R Package to 
+Analyse miRNA-mRNA Interactions. Examples across Five Digestive Cancers. 
+PLoS ONE 11(3): e0151127. doi:10.1371/journal.pone.0151127 
+
+
+III. Comments / problems ------------------------ 
+If you have any other question/problem regarding to installation, or you
+have further comments don't hesitate to write us (maria.vila@ciberehd.org):
+we will try to answer as soon as possible.
+
+
+Many thanks and enjoy the software!

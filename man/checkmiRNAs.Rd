@@ -2,10 +2,9 @@
 \alias{checkmiRNAs}
 
 \title{
-See from which miRNA version are your miRNAs encoded.
-}
+Compare a list of miRNAs with different miRBase versions}
 \description{
-Plots the percentage of coincidences across different miRBase versions.
+Compare a list of miRNAs with different miRBase versions and plot the percentage of coincidences accross them.
 }
 \usage{
 checkmiRNAs(v.miRNAs, to.dataframe = FALSE)
@@ -16,19 +15,18 @@ checkmiRNAs(v.miRNAs, to.dataframe = FALSE)
 	character vector with the miRNA names to test.
 }
   \item{to.dataframe}{
-	give the table in a
+	\kbd{FALSE} (default) or \kbd{TRUE}. If \kbd{TRUE}, give a data.frame with the name of all miRBase versions and percentage of coincidences. If \kbd{FALSE}, only plots the result.
 }
 }
 \details{
-Update to at least miRData_0.5.0 if the function is not working 
+This function needs \kbd{miRData} v_0.5.0 or greater to work. Update \kbd{miRData} if needed.
+
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
+ If \kbd{to.dataframe=TRUE} a data.frame with the name of all miRBase versions and percentage of coincidences.
+ 
+ If \kbd{to.dataframe=FALSE} a bar plot showing the name of all miRBase versions (x-axis) and percentage of coincidences (y-axis).
+ }
 \references{
 %% ~put references to the literature/web site here ~
 }
@@ -41,6 +39,7 @@ Update to at least miRData_0.5.0 if the function is not working
 
 
 \seealso{
+\code{\link{translatemiRNAs}}
 
 }
 \examples{

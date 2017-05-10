@@ -18,7 +18,11 @@ plotMA(obj, subset, sample1 = NULL, sample2 = NULL, cex.lab = 1, cex.axis = 1 )
   \item{cex.lab}{cex of the label axis. Default is 1}
   \item{cex.axis}{cex of the axis. Default is 1}
 }
-\value{A MA plot.}
+\value{A MA plot of the selected two samples}
+
+\seealso{
+\code{\link{plot3d}}, \code{\link{plotPca}}, \code{boxplotSamples}
+}
 \examples{
 data(data.obj)
 plotMA(data.obj,"miRNA",sample1=1,sample2=2)

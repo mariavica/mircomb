@@ -11,4 +11,4 @@ OBJECTS = pearson.o
 .c.o: ; $(C) $(OPTS) -c $<
 
 clean:
-	-rm *.o *.so
+-rm *.o *.so

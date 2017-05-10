@@ -10,9 +10,9 @@ removeSamp(obj, dataset, samples = NA, genes = NA, keep=FALSE)
 }
 \arguments{
   \item{obj}{
-corObject}
+a \kbd{corObject}}
   \item{dataset}{
-"miRNA" or "mRNA"}
+\kbd{"miRNA"} or \kbd{"mRNA"}}
   \item{samples}{
 colnames of the samples to be removed.
 }
@@ -30,7 +30,7 @@ Genes are removed from miRNAdat/mRNAdat slots. Samples are removed from both phe
 Take into account that minimum number of required samples is 2, otherwise the function will give an error.
 }
 \value{
-\item{corObject}{with the selected samples removed}
+a \kbd{corObject} with the selected samples already removed.
 }
 
 \examples{

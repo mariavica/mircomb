@@ -3,7 +3,7 @@
 \docType{data}
 \title{miRNA data expression
 }
-\description{miRNA data expression, in log2-intensity units
+\description{miRNA data expression that can be used for example, in log2-intensity units
 }
 \usage{data(miRNA)}
 \format{

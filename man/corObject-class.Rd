@@ -34,7 +34,7 @@ Objects can be created by calls of the form \code{new("corObject", ...)}.
 No methods defined with class "corObject" in the signature.
 }
 \details{
-MiRNAs should be named according to miRBase 17, and mRNAs should be named according to HUGO gene symbol nomenclature.
+In this version, miRNAs should be preferntially named according to miRBase 17, and mRNAs should be named according to HUGO gene symbol nomenclature.
 }
 
 

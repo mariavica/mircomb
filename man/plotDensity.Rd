@@ -5,7 +5,7 @@
 Plot miRNA or mRNA density
 }
 \description{
-Plot miRNA or mRNA density, groping as you want}
+Plot miRNA or mRNA density per sample}
 \usage{
 plotDensity(obj, subset, col.color=1, colors=c("turquoise", "violet"))
 }
@@ -26,7 +26,7 @@ In case of a two-level factor grouping, colors to be used.
 
 }
 \value{
-A density plot
+A density plot showing the densites per sample of the miRNA or mRNA dataset.
 }
 \examples{
 data(data.obj)

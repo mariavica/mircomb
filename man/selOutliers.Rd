@@ -1,52 +1,47 @@
 \name{selOutliers}
 \alias{selOutliers}
 \title{
-select outliers from PCA
+select outliers based on PCA analysis
 }
 \description{
-select outliers from PCA
+select outliers from miRNA or mRNA samples based on PCA analysis
+
 }
 \usage{
 selOutliers(obj, subset, method = "aq.plot", delete = FALSE, add.pheno = TRUE, n.dim = 2)
 }
 \arguments{
   \item{obj}{
-a corObject.
+a \kbd{corObject}
 }
   \item{subset}{
-"miRNA" or "mRNA".
-}
+\kbd{"miRNA"} or \kbd{"mRNA"}}
   \item{method}{
-"aq.plot"
+method used to select the outliers \kbd{"aq.plot"}
 }
   \item{delete}{
 TRUE or FALSE. If TRUE, outlier samples are removed.
 }
   \item{add.pheno}{
-TRUE or FALSE. If TRUE, "is.outlier" column is added to pheno slot and then a pcaPlot highlighting outlier samples is produced.
+TRUE or FALSE. If TRUE, \kbd{"is.outlier"} column is added to pheno slot and then a PCA plot highlighting outlier samples is produced.
 }
   \item{n.dim}{
 number of components of the PCA to use.
 }
 }
 \details{
-
-
-%%  ~~ If necessary, more details than the description above ~~
+This is an implementation of mvoutlier package. Check the origninal source for more information.
 }
 \value{
 \itemize{
 	\item If delete=FALSE and add.pheno=FALSE, character vector with the names of the outlier samples.
-	\item If delete=FALSE and add.pheno=TRUE, a corOjbect with a column called is.outlier added to the pheno slot indicating if a sample is outlier or not.
-	\item If delete=TRUE, a corObject without the outlier samples in the data and pheno slot.
+	\item If delete=FALSE and add.pheno=TRUE, a \kbd{corObject} with a column called is.outlier added to the pheno slot indicating if a sample is outlier or not.
+	\item If delete=TRUE, a \kbd{corObject} without the outlier samples in the data and pheno slot.
 }
-}
-\references{
-https://cran.r-project.org/web/packages/mvoutlier/index.html
 }
 
 \seealso{
-\code{mvoutlier}, \code{\link{plotPca}}
+\code{\link{mvoutlier}}, \code{\link{plotPca}}
 }
 \examples{
 data(data.obj)

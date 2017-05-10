@@ -55,9 +55,9 @@ The article of the package is \cite{vila-casadesus_mircomb:_2016}.
 \tableofcontents
 
 \section*{Brief comment}
-The main analysis is described in the miRComb main vignette, only variations of this description are included in this file.
+The main analysis is described in the \texttt{miRComb} main vignette, only variations of that description are included in this file.
 
-The article of the package is \cite{vila-casadesus_mircomb:_2016}.
+The article describing the package with example data has been published in PLoS ONE \cite{vila-casadesus_mircomb:_2016}.
 
 \section{Time analysis}
 
@@ -129,9 +129,9 @@ data.obj<-correctPval(data.obj, pval="pval",method.adj="BH")
 
 
 
-\section{Unpaired miRNA and mRNA data}
+\section{Non-matched miRNA and mRNA data}
 
-In the case of unpaired data, no correlation can be computed, but individual p-values from differential expression analysis can be combined to only one p-value. This combined p-value highlights the miRNA-mRNA pairs more deregulated. In ideal conditions, these pairs should be similar to the ones computed by the correlation method.
+In the case of non-matched data, no correlation can be computed, but individual p-values from differential expression analysis can be combined to only one p-value. This combined p-value highlights the miRNA-mRNA pairs more deregulated. In ideal conditions, these pairs should be similar to the ones computed by the correlation method.
 
 
 <<echo=TRUE, eval=TRUE>>=

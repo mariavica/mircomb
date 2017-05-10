@@ -3,35 +3,39 @@
 \title{
 Calculate differential expression}
 \description{
-Calculate differential expression from a corObject
+Calculate miRNA or mRNA differential expression from a \kbd{corObject}
 }
 \usage{
 addDiffexp(obj, dataset, classes, method.dif = "t.test", method.adj = "BH",
- var.t.test = FALSE, trend = FALSE)
+  var.t.test = FALSE, trend = FALSE, norm = NULL)
 }
 
 \arguments{
   \item{obj}{
-corObject}
+a \kbd{corObject}}
   \item{dataset}{
 \kbd{"miRNA"} or \kbd{"mRNA"}
 }
   \item{classes}{
-column name of the column to compare in the phenodata slot. The column must contain \kbd{"0"} (reference) and \kbd{"1"} (case). Missing values are also allowed.}
-  \item{method.dif}{
-\kbd{"t.test"}, \kbd{"wilcoxon"}, \kbd{"limma"}, \kbd{"rankprod"}, \kbd{"anova"} or \kbd{"only.fc"}
+column name of the \kbd{pheno.miRNA} or \kbd{pheno.mRNA} encoding the contrast to make. The column must contain \kbd{"0"} (reference) and \kbd{"1"} (case). Missing values are also allowed. More levels are accepted for \kbd{"anova"} method.}
+  \item{method.dif}{method used for differential expression: \kbd{"t.test"}, \kbd{"wilcoxon"}, \kbd{"limma"}, \kbd{"rankprod"}, \kbd{"anova"} or \kbd{"only.fc"}
 }
   \item{method.adj}{
-Multiple testing correction method used (only for \kbd{"t.test"}, \kbd{"wilcoxon"} or \kbd{"limma"}. One of \kbd{"holm"}, \kbd{"hochberg"}, \kbd{"hommel"}, \kbd{"bonferroni"}, \kbd{"BH"}, \kbd{"BY"}, \kbd{"fdr"}, \kbd{"none"}.}
+multiple testing correction method used (only for \kbd{method.dif} = \kbd{"t.test"}, \kbd{"wilcoxon"}, \kbd{"limma"} or \kbd{"anova"}. One of \kbd{"holm"}, \kbd{"hochberg"}, \kbd{"hommel"}, \kbd{"bonferroni"}, \kbd{"BH"}, \kbd{"BY"}, \kbd{"fdr"}, \kbd{"none"} (see \kbd{\link{p.adjust}}).}
   \item{var.t.test}{
-TRUE or FALSE (default). If TRUE, considers equality of variances in a T-test. 
+\kbd{TRUE} or \kbd{FALSE} (default). Only for \kbd{method.dif} = \kbd{"t.test"}. If \kbd{TRUE}, considers equality of variances in a T-test. 
 }
   \item{trend}{
-if TRUE and method.dif="limma", use "limma-trend" method. (Recommended for log-normalised counts)
+if \kbd{TRUE} use "limma-trend" method (only for \kbd{method.dif} = \kbd{"t.test"}). Recommended for log-normalised counts)
 }
+  \item{norm}{
+\kbd{NULL} (default) (in implementation, this feature will help to integrate and normalise NGS data for the correlation)
+}
+
+	
 }
 \value{
-\item{corObject}{ with a diffexp.miRNA or diffexp.mRNA slot added. The diffexp is a data.frame with:
+a  \kbd{corObject} with a \kbd{diffexp.miRNA} or \kbd{diffexp.mRNA} slot added, where the rownames of the data.frame are the names of the miRNAs or mRNAs. This slot is a data.frame with the following columns:
 	\itemize{
 		\item{FC}{: foldchange}
 		\item{logratio}{: logratio}
@@ -42,19 +46,19 @@ if TRUE and method.dif="limma", use "limma-trend" method. (Recommended for log-n
 * If method "anova" is selected, then the proportion of SS related to factor is showed instead of FC and logratio.
 ** If method "only.fc" is selected, then only FC and logratio are computed (useful if there is no enough samples to perform a statistical test).
 
-	}
 
 }
-\references{
-\url{http://www.bioconductor.org/packages/release/bioc/html/limma.html}
+%\references{
+%\url{http://www.bioconductor.org/packages/release/bioc/html/limma.html}
 
-\url{http://www.bioconductor.org/packages/release/bioc/html/RankProd.html}
+%\url{http://www.bioconductor.org/packages/release/bioc/html/RankProd.html}
 
-\url{http://www.bioconductor.org/packages/release/bioc/html/voom.html}
-}
+%\url{http://www.bioconductor.org/packages/release/bioc/html/voom.html}
+%}
 \seealso{
-\code{package:limma}, \code{package:RankProd}
+\code{\link{corObject-class}},\code{\link{package:limma}}, \code{\link{package:RankProd}}, \code{\link{voom}}, \code{\link[stats]{t.test}}, \code{\link{wilcoxon}}, \code{\link{aov}}, \code{\link[stats]{p.adjust}}
 }
+
 \examples{
 data(miRNA)
 data(mRNA)
@@ -70,13 +74,7 @@ head(minimal.diffexp@diffexp.miRNA)
 
 minimal.diffexp<-addDiffexp(minimal.diffexp, "mRNA", classes="DvH",
  method.dif="limma")
-
-minimal.diffexp<-addSig(minimal.diffexp,"miRNA",pval=1)
-minimal.diffexp<-addSig(minimal.diffexp,"mRNA",pval=1)
-
-minimal<-addNet(minimal.diffexp)
-minimal<-addFoldchanges(minimal)
-head(minimal@net)
+head(minimal.diffexp@diffexp.mRNA)
 
 }
 \keyword{differential}

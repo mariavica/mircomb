@@ -14,7 +14,7 @@ writeCsv(obj, name, pval.cutoff = 1, dat.sum =
 }
   \item{name}{the name of the file to write.
 }
-  \item{pval.cutoff}{minimum corrected \emph{p} value to take.
+  \item{pval.cutoff}{maximum corrected \emph{p} value to take.
 }
   \item{dat.sum}{number of minimum ocurrences across databases.
 }
@@ -27,8 +27,9 @@ writeCsv(obj, name, pval.cutoff = 1, dat.sum =
 \value{A csv file.}
 
 \seealso{
-\code{\link{writeExcel}}
+\code{\link{writeExcel}}, \code{\link{writeSif}}, \code{\link{selSubsetCor}}, \code{\link{selSubsetExprs}}
 }
+
 \examples{
 ## do not run
 #data(data.obj)

@@ -263,7 +263,7 @@ plotCorrelation <- function (obj, miRNA, mRNA, type="cor",samples="all",col.colo
 	
 	if (type=="cor") {
 
-		nf<-layout(mat=matrix(c(1),ncol=1,nrow=1))
+	#	nf<-layout(mat=matrix(c(1),ncol=1,nrow=1))
 		par(mar=c(5.1, 4.1, 4.1, 2.1))
 	#	plot.new()
 
@@ -545,6 +545,8 @@ boxplotSamples <- function (obj, subset, col.color=1, las=1, colors=c("turquoise
 
 #comprovar lo dels "..." que no sé si funciona
 boxplotCorrelation <- function (obj, miRNA, mRNA, col.color=1, pos.leg="topright", colors=c("turquoise","violet"), ...) {
+  
+  #make 4-figure layout
 	nf<-layout(mat=matrix(c(1:4),ncol=2,nrow=2),heights=c(1,3),widths=c(1,3))
 	par(mar=c(5.1, 4.1, 1.1, 2.1))
 	plot.new()
@@ -566,11 +568,15 @@ boxplotCorrelation <- function (obj, miRNA, mRNA, col.color=1, pos.leg="topright
 	plot(obj@dat.miRNA[miRNA,],obj@dat.mRNA[mRNA,],xlab=paste(miRNA," expression",sep=""),ylab=paste(mRNA," expression",sep=""),col=colors.plot,pch=19, ...)
 	legend(pos.leg,levels(as.factor(obj@pheno.mRNA[,col.color])),col=levels(factor(colors.plot)),pch=19, ...)
 	abline(lm(obj@dat.mRNA[mRNA,]~obj@dat.miRNA[miRNA,]), ...)
+	
+	#return to previous layout
+	nf<-layout(mat=matrix(c(1),ncol=1,nrow=1),heights=c(1),widths=c(1))
+	
 }
 
 
 
-addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, d.influences=FALSE, alternative="two.sided", kfold.cv=FALSE) {
+addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, d.influences=FALSE, alternative="less", kfold.cv=FALSE) {
 
 	obj@net<-data.frame()
 	obj@info[["pcomb.method"]]<-NULL
@@ -730,7 +736,7 @@ addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,sub
 
 
  ## addcorrelation before removing d.influences
-addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, alternative="two.sided") {
+addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, alternative="less", norm=NULL) {
 
 	obj@net<-data.frame()
 	obj@info[["pcomb.method"]]<-NULL
@@ -742,20 +748,40 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 	if (is.null(common)) {
 		common<-intersect(colnames(obj@dat.mRNA),colnames(obj@dat.miRNA))
 	}
-
-
+	
 	#seleccionar subset dels comuns
 	if (length(subset.miRNA)>1) {
+				
 		subset.miRNA.sel<-intersect(subset.miRNA,rownames(obj@dat.miRNA))		
 		miRNA.data<-obj@dat.miRNA[subset.miRNA.sel,common]
-		if (!all(subset.mRNA==obj@sig.mRNA)) {obj@info[["miRNA.criteria"]]<-"manual!"} else {if ((obj@info[["miRNA.criteria"]][1]=="manual!") | (obj@info[["miRNA.criteria"]][1]=="All miRNA")) {obj@info[["miRNA.criteria"]]<-"stored for addSig (please check)"}}
-	}else {miRNA.data<-obj@dat.miRNA[,common]
+				
+		if (!all(subset.mRNA==obj@sig.mRNA)) {
+			obj@info[["miRNA.criteria"]]<-"manual!"
+		} else {
+			if ((obj@info[["miRNA.criteria"]][1]=="manual!") | (obj@info[["miRNA.criteria"]][1]=="All miRNA")) {
+				obj@info[["miRNA.criteria"]]<-"stored for addSig (please check)"
+			}
+		}
+	} else {
+		miRNA.data<-obj@dat.miRNA[,common]
 		if (class(miRNA.data)=="numeric") {
 			miRNA.data<-t(as.matrix(miRNA.data))
 			rownames(miRNA.data)<-rownames(obj@dat.miRNA)
-			}
+		}
 		subset.miRNA<-rownames(miRNA.data)
-		obj@info[["miRNA.criteria"]]<-"All miRNA"}
+		obj@info[["miRNA.criteria"]]<-"All miRNA"
+	}
+		
+	#aclarir si vénen de NGS per poder fer la transformacio adequada
+	if (obj@info[["miRNA.diffexp.method"]][1]=="DESeq" | obj@info[["miRNA.diffexp.method"]][1]=="edgeR") {
+		norm<-obj@info[["miRNA.diffexp.method"]][1]
+	}
+
+	if (!is.null(norm)) {
+		print("Warning, your data is NGS")
+		### fer aquí la transformació de miRNA.data ;)!
+	}
+
 
 	if (length(subset.mRNA)>1) {
 		subset.mRNA.sel<-intersect(subset.mRNA,rownames(obj@dat.mRNA))		
@@ -769,6 +795,18 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 	
 		subset.mRNA<-rownames(mRNA.data)
 		obj@info[["mRNA.criteria"]]<-"All mRNA"}
+	
+	
+	#aclarir si vénen de NGS per poder fer la transformacio adequada
+	if (obj@info[["mRNA.diffexp.method"]][1]=="DESeq" | obj@info[["mRNA.diffexp.method"]][1]=="edgeR") {
+		norm<-obj@info[["mRNA.diffexp.method"]][1]
+	}
+
+	if (!is.null(norm)) {
+		print("Warning, your data is NGS")
+		### fer aquí la transformació de mRNA.data ;)!
+	}
+
 
 	### fer les correlacions
 	correlation.matrix<-matrix(NA,nrow=nrow(miRNA.data),ncol=nrow(mRNA.data))
@@ -1421,7 +1459,7 @@ removeSamp <- function (obj, dataset, samples=NA, genes=NA, keep=FALSE) {
 
 
 
-addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="BH", var.t.test=FALSE, trend=FALSE) {
+addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="BH", var.t.test=FALSE, trend = FALSE ) {
 
 #	require(gtools)
 	#per poder determinar els grups a comparar
@@ -2019,7 +2057,7 @@ addSig <- function (obj, dataset, FC=NA, logratio=foldchange2logratio(FC), slope
 
 
 
-addDatabase <- function (obj, database="microCosm_v5_18_numeric",pval.ref=1,dat.sum=1) {
+addDatabase <- function (obj, database, pval.ref=1, dat.sum=1) {
 	obj@info[["pcomb.method"]]<-NULL
 	obj@info[["padjust.method"]]<-NULL
 	obj@info[["dat.sum"]]<-dat.sum
@@ -2337,8 +2375,6 @@ if (length(col.color)==1) {
 		#heatmap.2(triming(xmat)[cc.row,cc.col], col=redgreen(75), scale="row", ColSideColors=cc.color[cc.col], Colv=FALSE, Rowv=FALSE, key=TRUE, symkey=FALSE, density.info="none", trace="none", cexRow=0.75, main=paste("Top",n,class),labCol=NA)
 			heatmap.2(triming(xmat), col=greenred(75), scale="row", ColSideColors=cc.color, key=TRUE, symkey=FALSE, density.info="none", trace="none", cexRow=cex.lab, main=main,labCol=NA,dendrogram="both",distfun=function(x) as.dist(1-cor(t(x), method="pearson")),hclustfun=function(x) hclust(x,method="average") , margins=c(10,10))
 
-
-			print("jpka")
 			leg<-levels(as.factor(obj@pheno.mRNA[,col.color]))
 
 			legend("topright",leg,col=levels(as.factor(cc.color)),lwd=7)
@@ -3345,7 +3381,7 @@ GOanalysis <- function (obj, type, ontology, pval.cutoff = 0.05, dat.sum=obj@inf
 	if (type=="REACTOME") {
 
 		mRNA.id<-mRNA.id[which(!is.na(mRNA.id)==TRUE)]
-		df1<-summary(enrichPathway(gene=mRNA.id, organism=organism, pvalueCutoff=0.05, readable=TRUE))
+		df1<-summary(enrichPathway(gene=mRNA.id, organism=organism, pvalueCutoff=1, readable=TRUE))
 
 		GO.results<-data.frame(df1)
 
@@ -3502,7 +3538,7 @@ evaluate <- function ( obj, method=c("hypergeometric", "logistic", "GSEA"), data
       result[,k+1]<-targets#[result$miRNA]
       result[,k+2]<-phyper(targets-1, pred.targets, size-pred.targets, cor, lower.tail=FALSE )
       result[,k+3]<-p.adjust(result[,k+2],method="BH")
-      result[,k+4]<-size * targets / (pred.targets * cor) 
+      result[,k+4]<-(size-cor) * targets / ((pred.targets-targets) * cor) 
       
       
       #### per test fisher
@@ -3715,7 +3751,7 @@ plotDensity <- function (obj, subset, col.color=1, colors=c("turquoise", "violet
 
 ##### Make a report
 
-mkReport <- function (obj, file, title="Default \\texttt{miRComb} output") {
+mkReport <- function (obj, file, title="Default \\texttt{miRComb} output", dat.sum.table=NULL) {
 
 	#set random seed
 	seed<-paste("_rndm_seed_",sample(1:100000)[1],sep="")
@@ -4103,18 +4139,18 @@ cat(paste("Total correlations &", nrow(obj@net) ,  "&", round(nrow(obj@net)/nrow
 cat(paste("Total negative correlations &", length(which(obj@net$cor<0)) ,  "&", round(length(which(obj@net$cor<0))/nrow(obj@net)*100,2) ,"\\\\")
 )
 
-cat(paste("Total correlations p$<$0.05 &", length(which(obj@net$pval<0.05)) ,  "&", round(length(which(obj@net$pval<0.05))/nrow(obj@net)*100,2) ,"\\\\")
+cat(paste("Total negative correlations p$<$0.05 &", length(which(obj@net$pval<0.05 & obj@net$cor<0)) ,  "&", round(length(which(obj@net$pval<0.05))/nrow(obj@net)*100,2) ,"\\\\")
 )
 
-cat(paste("Total correlations p$<$0.01 &", length(which(obj@net$pval<0.01)) ,  "&", round(length(which(obj@net$pval<0.01))/nrow(obj@net)*100,2) ,"\\\\")
+cat(paste("Total negative correlations p$<$0.01 &", length(which(obj@net$pval<0.01& obj@net$cor<0)) ,  "&", round(length(which(obj@net$pval<0.01))/nrow(obj@net)*100,2) ,"\\\\")
 )
 
 
 
-cat(paste("Total correlations adj.p$<$0.05 &", length(which(obj@net$adj.pval<0.05)) ,  "&", round(length(which(obj@net$adj.pval<0.05))/nrow(obj@net)*100,2) ,"\\\\")
+cat(paste("Total negative correlations adj.p$<$0.05 &", length(which(obj@net$adj.pval<0.05& obj@net$cor<0)) ,  "&", round(length(which(obj@net$adj.pval<0.05))/nrow(obj@net)*100,2) ,"\\\\")
 )
 
-cat(paste("Total correlations adj.p$<$0.01 &", length(which(obj@net$adj.pval<0.01)) ,  "&", round(length(which(obj@net$adj.pval<0.01))/nrow(obj@net)*100,2) ,"\\\\")
+cat(paste("Total negative correlations adj.p$<$0.01 &", length(which(obj@net$adj.pval<0.01& obj@net$cor<0)) ,  "&", round(length(which(obj@net$adj.pval<0.01))/nrow(obj@net)*100,2) ,"\\\\")
 )
 
 
@@ -4139,14 +4175,15 @@ cat("
 \\end{figure}
 ")
 
-
-
+if (is.null(dat.sum.table)) {
+  dat.sum.table<-obj@info[["dat.sum"]]
+}
 
 # top 11 correlations
 n<-15
 cyto<-obj@net
 top11<-cyto[with(cyto, order(cor)),]
-top11<-top11[which(top11$dat.sum>=obj@info[["dat.sum"]])[1:n],]
+top11<-top11[which(top11$dat.sum>=dat.sum.table)[1:n],]
 top11$miRNA<-as.character(top11$miRNA)
 top11$mRNA<-as.character(top11$mRNA)
 
@@ -4158,7 +4195,6 @@ for (i in 1:n) {
 }
 
 
-
 a<-paste(paste("\\includegraphics[width=0.3\\textwidth]{cor",1:n,seed,".pdf}",sep=""),collapse="\n")
 
 cat("
@@ -4166,7 +4202,7 @@ cat("
 \\centering
 ")
 cat(a)
-cat(paste("\\caption{Plot of ",n," top correlations, sorted by adjusted p-value. Databases used: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", "))," (each miRNA-mRNA pair has to appear at least ",obj@info[["dat.sum"]]," times).}",sep=""))
+cat(paste("\\caption{Plot of ",n," top correlations, sorted by adjusted p-value. Databases used: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", "))," (each miRNA-mRNA pair has to appear at least ",dat.sum.table," times).}",sep=""))
 cat("
 \\end{figure}
 ")
@@ -4209,47 +4245,51 @@ cat("
 ")
 
 
+if (is.null(dat.sum.table)) {
+  dat.sum.table<-obj@info[["dat.sum"]]
+}
 
-pairs.good<-obj@net[which(obj@net$dat.sum>=obj@info[["dat.sum"]]),]
+
+pairs.good<-obj@net[which(obj@net$dat.sum>=dat.sum.table),]
 pairs.good<-pairs.good[order(pairs.good$pval),]
 
 
 ##### The content of the table will vary depending on which available information we have
-if (!is.null(pairs.good$FC.miRNA) & !is.null(pairs.good$FC.mRNA)) {
+if (!is.null(pairs.good$logratio.miRNA) & !is.null(pairs.good$logratio.mRNA)) {
 pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
 pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
 
-	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.miRNA","FC.mRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs (sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrrr",display=c("s","s","s","f","e","f","f","d")),table.placement="!h",
+	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.miRNA","FC.mRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs (sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",dat.sum.table," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrrr",display=c("s","s","s","f","e","f","f","d")),table.placement="!h",
 include.rownames=FALSE,latex.environments="center")
 }
 
 
 
-if (!is.null(pairs.good$FC.miRNA) & is.null(pairs.good$FC.mRNA)) {
-pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
-#pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
-
-	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.miRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrr",display=c("s","s","s","f","e","f","d")),table.placement="!h",
-include.rownames=FALSE,latex.environments="center")
-}
-
-
-
-if (is.null(pairs.good$FC.miRNA) & !is.null(pairs.good$FC.mRNA)) {
+if (!is.null(pairs.good$logratio.miRNA) & is.null(pairs.good$logratio.mRNA)) {
 #pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
 pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
 
-	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.mRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrr",display=c("s","s","s","f","e","f","d")),table.placement="!h",
+	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.miRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",dat.sum.table," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrr",display=c("s","s","s","f","e","f","d")),table.placement="!h",
 include.rownames=FALSE,latex.environments="center")
 }
 
 
 
-if (is.null(pairs.good$FC.miRNA) & is.null(pairs.good$FC.mRNA)) {
+if (is.null(pairs.good$logratio.miRNA) & !is.null(pairs.good$logratio.mRNA)) {
+pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
+#pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
+
+	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","FC.mRNA","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",dat.sum.table," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrrr",display=c("s","s","s","f","e","f","d")),table.placement="!h",
+include.rownames=FALSE,latex.environments="center")
+}
+
+
+
+if (is.null(pairs.good$logratio.miRNA) & is.null(pairs.good$logratio.mRNA)) {
 #pairs.good$FC.miRNA<-logratio2foldchange(pairs.good$logratio.miRNA)
 #pairs.good$FC.mRNA<-logratio2foldchange(pairs.good$logratio.mRNA)
 
-	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrr",display=c("s","s","s","f","e","d")),table.placement="!h",
+	print(xtable(pairs.good[1:45,c("miRNA","mRNA","cor","adj.pval","dat.sum")],caption=paste("Top 45 miRNA-mRNA pairs(sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",dat.sum.table," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),".",sep=""),align="rrrrrr",display=c("s","s","s","f","e","d")),table.placement="!h",
 include.rownames=FALSE,latex.environments="center")
 
 }
@@ -4331,7 +4371,7 @@ cat("
 ")
 cat(paste("\\includegraphics[width=0.9\\textwidth]{",paste("barplot_miRNA",seed,".pdf",sep=""),"}",sep=""))
 
-cat(paste("\\caption{Barplot for miRNAs, pval-corrected$<$0.05 and Targets=",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),"(minimum coincidences between databases:",obj@info[["dat.sum"]],"). Red line (and right axis) represents the percentage of deregulated mRNAs that are targeted by the miRNAs.}",sep=""))
+cat(paste("\\caption{Barplot showing the number of mRNA targets per each miRNA (each bar represents a miRNA and they are sorted by number of targets). MiRNA-mRNA interactions have pval-corrected$<$0.05 and predicted at least ",obj@info[["dat.sum"]]," time on the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),". Red line (and right axis) represents the percentage of deregulated mRNAs that are cumulatively targeted by the miRNAs.}",sep=""))
 cat("
 \\end{figure}
 ")

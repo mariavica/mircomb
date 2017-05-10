@@ -17,8 +17,7 @@ writeSif(obj, file, pval.cutoff = 0.05, dat.sum =
   \item{file}{
 file to write.
 }
-  \item{pval.cutoff}{
-minimum corrected \emph{p} value to take.
+  \item{pval.cutoff}{maximum corrected \emph{p} value to take.
 }
   \item{dat.sum}{number of minimum ocurrences across databases
 }
@@ -39,7 +38,7 @@ minimum corrected \emph{p} value to take.
 \references{
 www.cytoscape.org}
 \seealso{
-\code{\link{writeCsv}}, \code{\link{writeExcel}}, \code{\link{openCytoscape}}
+\code{\link{writeCsv}}, \code{\link{writeSif}}, \code{\link{selSubsetCor}}, \code{\link{selSubsetExprs}}, \code{\link{openCytoscape}}
 }
 \examples{
 

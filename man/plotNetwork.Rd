@@ -17,28 +17,28 @@ plotNetwork(obj, pval.cutoff = 0.05, score.cutoff = NULL, sub.miRNA = NULL,
 a \kbd{corObject}.
 }
   \item{pval.cutoff}{
-\emph{p} value cutoff.
+\emph{p} value cutoff of the selected miRNA-mRNA interactions.
 }
   \item{score.cutoff}{
-maximum score.
+maximum score of the selcted miRNA-mRNA interactions.
 }
   \item{sub.miRNA}{
-Optional, character vector with the names of the miRNAs to correlate.
+(optional) character vector with the names of the miRNAs to be included on the plot.
 }
   \item{sub.mRNA}{
-Optional, character vector with the names of the miRNAs to correlate.
+(optional) character vector with the names of the mRNAs to be included on the plot.
 }
   \item{names}{
 Plot the names of the miRNAs and mRNAs. TRUE or FALSE.
 }
   \item{dat.sum}{
-minimum occurrences between databases.
+minimum occurrences between databases of the selected miRNA-mRNA interactions.
 }
   \item{add.other}{
 Optional, character vector: name of the dataframe containing additional interactions (usually mRNA-mRNA interactions) that will also be displayed.
 }
   \item{vertex.cex}{
-Optional, character vector: name of the dataframe containing the relative size for each node in the network. 
+Optional, character vector: name of the dataframe containing the relative size for each node in the network. For example \kbd{"interact.table"}.
 }
   \item{n}{
 maximum number of interactions.
@@ -48,11 +48,16 @@ Size of the node
 }
 }
 
-\details{The colurs are representative of the interactions.}
+\details{The colurs are representative of the interactions. \kbd{"interact.table"} can be loaded from \kbd{miRData} package using \kbd{data(interact.table)}.}
 
 \value{
-A network Plot
+A network of the selected miRNA-mRNA interactions. Circles represent miRNAs and squares mRNAs; red fill means upregulated miRNA/mRNA, while green fill means downregulated miRNA/mRNA; lines indicate the miRNA-mRNA pairs; red line means positive score and green line means negative score; arrow width is proportional to the number of appearances on the databases.
 }
+
+\seealso{
+\code{\link{boxplotCorrelation}}, \code{\link{plotCorrelation}}
+}
+
 \examples{
 data(data.obj)
 data(interact.table)
