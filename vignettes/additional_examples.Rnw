@@ -189,7 +189,6 @@ toLatex(sessionInfo())
 %\bibliography{/home/maria/Projecte/mybib}
 
 \bibliography{
-
 @article{vila-casadesus_mircomb:_2016,
 	title = {{MiRComb}: {An} {R} {Package} to {Analyse} {miRNA}-{mRNA} {Interactions}. {Examples} across {Five} {Digestive} {Cancers}},
 	volume = {11},
@@ -204,9 +203,30 @@ toLatex(sessionInfo())
 	month = mar,
 	year = {2016},
 	keywords = {Colorectal cancer, Digestive regulation, gene regulation, Hepatocellular Carcinoma, MAPK signaling cascades, messenger RNA, MicroRNAs, Principal component analysis},
-	pages = {e0151127}
+	pages = {e0151127}}
+	
+	
+@article{affo_transcriptome_2013,
+	title = {Transcriptome analysis identifies {TNF} superfamily receptors as potential therapeutic targets in alcoholic hepatitis},
+	volume = {62},
+	issn = {, 1468-3288},
+	url = {http://gut.bmj.com/content/62/3/452},
+	doi = {10.1136/gutjnl-2011-301146},
+	language = {en},
+	number = {3},
+	urldate = {2014-10-16},
+	journal = {Gut},
+	author = {Affò, Silvia and Dominguez, Marlene and Lozano, Juan José and Sancho-Bru, Pau and Rodrigo-Torres, Daniel and Morales-Ibanez, Oriol and Moreno, Montserrat and Millán, Cristina and Loaeza-del-Castillo, Aurora and Altamirano, José and García-Pagán, Juan Carlos and Arroyo, Vicente and Ginès, Pere and Caballería, Juan and Schwabe, Robert F. and Bataller, Ramon},
+	month = jan,
+	year = {2013},
+	pmid = {22637703},
+	keywords = {acute liver failure, alcohol, Alcoholic liver disease, alcohol-induced injury, ascites, chronic liver disease, Cytokines, fibrogenesis, fibrosis, fluid retention in liver disease, hepatic fibrosis, hepatic haemodynamics, hepatic stellate cell, hepato-renal syndrome, liver, liver cirrhosis, liver injury, liver regeneration, Microarray Analysis, portal hypertension, stem cells},
+	pages = {452--460},
+	file = {Full Text PDF:/Users/bioinfo/Library/Application Support/Firefox/Profiles/ualuylmq.default/zotero/storage/CTJRNH7V/Affò et al. - 2013 - Transcriptome analysis identifies TNF superfamily .pdf:application/pdf;Snapshot:/Users/bioinfo/Library/Application Support/Firefox/Profiles/ualuylmq.default/zotero/storage/EKNSSVTG/452.html:text/html}
 }
 
+	
+	
 }
 
 
