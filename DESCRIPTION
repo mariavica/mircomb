@@ -1,7 +1,7 @@
 Package: miRComb
 Type: Package
 Title: An R package for analyzing miRNA-mRNA interactions
-Version: 0.8.9
+Version: 0.9.0
 Date: 2017-04-25
 Authors@R: c(person("Maria", "Vila-Casadesús", role = c("aut", "cre"), email = "maria.vila@ciberehd.org"),
  person("Juanjo", "Lozano", role = c("aut","ths"), email= "juanjo.lozano@ciberehd.org"),
