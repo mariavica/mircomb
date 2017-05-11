@@ -182,11 +182,24 @@ toLatex(sessionInfo())
 @
 
 
-\addcontentsline{toc}{section}{Bibliography}
-\bibliographystyle{unsrt}
+%\addcontentsline{toc}{section}{Bibliography}
+%\bibliographystyle{unsrt}
 %\bibliographystyle{plainnat}
-\bibliography{/media/mvila/Iomega_HDD/docs/zotero}
+%\bibliography{/media/mvila/Iomega_HDD/docs/zotero}
 %\bibliography{/home/maria/Projecte/mybib}
+
+\begin{thebibliography}{1}
+
+\bibitem{vila-casadesus_mircomb:_2016} Vila-Casadesús M, Gironella M, and Lozano JJ. {\em MiRComb: An R Package to Analyse miRNA-mRNA Interactions. Examples across Five Digestive Cancers}. PLOS ONE, 11(3):e0151127, March 2016.
+
+\bibitem{affo_transcriptome_2013} Affò S, Dominguez M, Lozano JJ, Sancho-Bru P, Rodrigo-Torres D, Morales-Ibanez O, Moreno M, Millán C, Loaeza-del Castillo A, Altamirano J, García-Pagán JC, Arroyo V, Ginès P, Caballería J, Schwabe RF, and Bataller R. {\em Transcriptome analysis identifies TNF superfamily receptors as potential therapeutic targets in alcoholic hepatitis}. Gut, 62(3):452–460, March 2013.
+
+%\bibitem{shannon_cytoscape:_2003} Shannon P, Markiel A, Ozier O, Baliga NS, Wang JT, Ramage D, Amin N, Schwikowski B, and Ideker T. {\em Cytoscape: A Software Environment for Integrated Models of Biomolecular Interaction Networks}. Genome Research, 13(11):2498–2504, November 2003.
+
+%\bibitem{gade_graph_2011} Gade S, Porzelius C, Fälth M, Brase JC, Wuttig D, Kuner R, Binder H, Sültmann H, Bei$\beta$barth T. {\em Graph based fusion of miRNA and mRNA expression data improves clinical outcome prediction in prostate cancer}. BMC Bioinformatics. 2011 Dec;12(1):488.
+
+\end{thebibliography}
+
 
 
 \end{document}
