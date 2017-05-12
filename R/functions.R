@@ -3752,6 +3752,9 @@ plotDensity <- function (obj, subset, col.color=1, colors=c("turquoise", "violet
 ##### Make a report
 
 mkReport <- function (obj, file, title="Default \\texttt{miRComb} output", dat.sum.table=NULL) {
+	
+	cat("Doesn't work locally? Try loading your \".RData\" file in our server, and we will make the pdf report for you (up to 100Mb):\n")
+	cat("http://bioinfo.ciberehd.org/mircomb/mkreport.html")
 
 	#set random seed
 	seed<-paste("_rndm_seed_",sample(1:100000)[1],sep="")
