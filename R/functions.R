@@ -206,7 +206,6 @@ plotHclust <- function (obj, subset) {
 
 plotCorrelation <- function (obj, miRNA, mRNA, type="cor",samples="all",col.color=1,i.legend=!is.na(col.color), pos.legend="topright", sample.names=FALSE, pos.sample.names=1, cex.main=1.35, alternative="two.sided", colors=c("turquoise","violet")) {
 
-
 	if (samples=="all") {
 		comm<-intersect(colnames(obj@dat.mRNA),colnames(obj@dat.miRNA))
 	} else {comm<-samples}
