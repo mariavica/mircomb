@@ -3465,7 +3465,7 @@ GOanalysis <- function (obj, type, ontology, pval.cutoff = 0.05, dat.sum=obj@inf
 }
 
 
-topTable <- function (obj, class, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]], score.cutoff=NULL, plot=FALSE, names=FALSE, n=NULL, remove.names=FALSE) {
+topTable <- function (obj, class, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]], score.cutoff=NULL, plot=FALSE, names=FALSE, n=NULL, remove.names=FALSE, table.items = NULL) {
 
 	sel<-1:nrow(obj@net)
 	if (!is.null(obj@net$adj.pval)) {
@@ -3495,7 +3495,12 @@ topTable <- function (obj, class, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]
 			perc.regulated<-vector()
 			freq<-vector()
 			for (i in 1:length(mirs)) {
-				freq[i]<-paste(sub$mRNA[sub$miRNA==mirs[i]],collapse=", ")
+				if (is.null(table.items)) {
+				  freq[i]<-paste(sub$mRNA[sub$miRNA==mirs[i]],collapse=", ")
+				}
+			  else {
+				  freq[i]<-paste(sub$mRNA[sub$miRNA==mirs[i]][1:table.items],collapse=", ")
+				}
 				total.regulated<-unique(c(total.regulated,as.character(sub$mRNA[sub$miRNA==mirs[i]])))
 				perc.regulated[i]<-length(total.regulated)
 			}
@@ -3517,7 +3522,13 @@ topTable <- function (obj, class, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]
 			perc.regulated<-vector()
 			freq<-vector()
 			for (i in 1:length(mrnas)) {
-				freq[i]<-paste(sub$miRNA[sub$mRNA==mrnas[i]],collapse=", ")
+			  if (is.null(table.items)) {
+			    freq[i]<-paste(sub$miRNA[sub$mRNA==mrnas[i]],collapse=", ")
+			  }
+			  else {
+			    freq[i]<-paste(sub$miRNA[sub$mRNA==mrnas[i]][1:table.items],collapse=", ")
+			  }
+			  #				freq[i]<-paste(sub$miRNA[sub$mRNA==mrnas[i]],collapse=", ")
 				total.regulated<-unique(c(total.regulated,sub$miRNA[sub$mRNA==mrnas[i]]))
 				perc.regulated[i]<-length(total.regulated)
 
