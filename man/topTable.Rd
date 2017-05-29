@@ -34,6 +34,8 @@ FALSE or TRUE. Apart from the frequence, add the names of the hits. (In this cas
 }
   \item{remove.names}{in case of a plot, omit x-axis labels.
 }
+  \item{table.items}{when names=TRUE, number of items to be included on the table.
+}
 }
 \details{
 If \kbd{plot=FALSE} then the table is displayed, if \kbd{plot=TRUE} the table is not displayed and a barplot is plotted. If names=FALSE a vector is returned, if \kbd{names=TRUE}, a \kbd{data.frame} is returned.
