@@ -685,7 +685,6 @@ addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,sub
 
 
 
-
  ## addcorrelation before removing d.influences
 addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, alternative="less", norm=NULL) {
 
@@ -825,8 +824,19 @@ rownames(correlation.matrix)<-rownames(miRNA.data)
 colnames(correlation.matrix)<-rownames(mRNA.data)
 
 # matrix of p-values (P)
-pval.matrix <- matrix(out$pval,nrow=nrow(miRNA.data),ncol=nrow(mRNA.data))     
-pval.matrix <- pt(pval.matrix, ncol(mRNA.data)-2)
+pval.matrix <- matrix(out$pval,nrow=nrow(miRNA.data),ncol=nrow(mRNA.data))
+
+if (alternative=="less") {
+  pval.matrix <- pt(pval.matrix, ncol(mRNA.data)-2)
+}
+if (alternative=="greater") {
+  pval.matrix <- 1-pt(pval.matrix, ncol(mRNA.data)-2)
+}
+if (alternative=="two.sided") {
+  pval.matrix.two <- matrix(abs(out$pval),nrow=nrow(miRNA.data),ncol=nrow(mRNA.data))
+  pval.matrix <- 1-pt(pval.matrix.two, ncol(mRNA.data)-2)
+}
+
 rownames(pval.matrix)<-rownames(miRNA.data)
 colnames(pval.matrix)<-rownames(mRNA.data)
 
