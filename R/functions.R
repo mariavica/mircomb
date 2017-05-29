@@ -3499,7 +3499,7 @@ topTable <- function (obj, class, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]
 				  freq[i]<-paste(sub$mRNA[sub$miRNA==mirs[i]],collapse=", ")
 				}
 			  else {
-				  freq[i]<-paste(sub$mRNA[sub$miRNA==mirs[i]][1:min(table.items,length(sub$miRNA==mirs[i]))],collapse=", ")
+				  freq[i]<-paste(sub$mRNA[sub$miRNA==mirs[i]][1:min(table.items,length(which(sub$miRNA==mirs[i])))],collapse=", ")
 				}
 				total.regulated<-unique(c(total.regulated,as.character(sub$mRNA[sub$miRNA==mirs[i]])))
 				perc.regulated[i]<-length(total.regulated)
@@ -3526,7 +3526,7 @@ topTable <- function (obj, class, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]
 			    freq[i]<-paste(sub$miRNA[sub$mRNA==mrnas[i]],collapse=", ")
 			  }
 			  else {
-			    freq[i]<-paste(sub$miRNA[sub$mRNA==mrnas[i]][1:min(table.items,length(sub$mRNA==mrnas[i]))],collapse=", ")
+			    freq[i]<-paste(sub$miRNA[sub$mRNA==mrnas[i]][1:min(table.items,length(which(sub$mRNA==mrnas[i])))],collapse=", ")
 			  }
 			  #				freq[i]<-paste(sub$miRNA[sub$mRNA==mrnas[i]],collapse=", ")
 				total.regulated<-unique(c(total.regulated,sub$miRNA[sub$mRNA==mrnas[i]]))
