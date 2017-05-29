@@ -834,7 +834,7 @@ if (alternative=="greater") {
 }
 if (alternative=="two.sided") {
   pval.matrix.two <- matrix(abs(out$pval),nrow=nrow(miRNA.data),ncol=nrow(mRNA.data))
-  pval.matrix <- 1-pt(pval.matrix.two, ncol(mRNA.data)-2)
+  pval.matrix <- (1-pt(pval.matrix.two, ncol(mRNA.data)-2))*2
 }
 
 rownames(pval.matrix)<-rownames(miRNA.data)
