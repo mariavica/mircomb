@@ -7,8 +7,9 @@ Select differentially expressed miRNAs or mRNAs
 \description{
 Select differentially expressed miRNAs or mRNAs, according to your criteria}
 \usage{
-selSubsetExprs(obj, dataset, FC = NA, logratio = foldchange2logratio(FC), slope = NA , pval = NA, adj.pval = NA, min.meanExp = NA,
- up = FALSE, dw = FALSE)
+selSubsetExprs(obj, dataset, FC = NA, logratio = foldchange2logratio(FC),
+  slope = NA , pval = NA, adj.pval = NA, min.meanExp = NA,
+  up = FALSE, dw = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

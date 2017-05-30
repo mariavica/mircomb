@@ -6,7 +6,8 @@ Volcano plot
 \description{
 Volcano plot of miRNA or mRNA differential expression analysis}
 \usage{
-plotVolcano(obj, subset, FC1 = 1.5, FC2 = 2, FDR = 0.05, cex = 1, cex.lab = 1, cex.axis = 1 )
+plotVolcano(obj, subset, FC1 = 1.5, FC2 = 2, FDR = 0.05, cex = 1,
+   cex.lab = 1, cex.axis = 1 )
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

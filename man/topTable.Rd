@@ -6,7 +6,8 @@ Print or plot the top connected miRNA/mRNA}
 }
 \usage{
 topTable(obj, class, pval.cutoff = 0.05, dat.sum =
-    obj@info[["dat.sum"]], score.cutoff = NULL, plot = FALSE, names = FALSE, n = NULL, remove.names = FALSE)
+    obj@info[["dat.sum"]], score.cutoff = NULL, plot = FALSE,
+    names = FALSE, n = NULL, remove.names = FALSE)
 }
 \arguments{
   \item{obj}{
