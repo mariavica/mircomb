@@ -41,7 +41,7 @@ checkmiRNAs <- function ( v.miRNAs, to.dataframe=FALSE ) {
 }
 
 
-translatemiRNAs <- function ( x , from = NULL, to = "21") {
+translatemiRNAs <- function ( x , from = NULL, to = "21", force.translation = FALSE, species = NULL) {
 
 	if (!exists("versions.mirnas")) { data(versions.mirnas) }
 	
@@ -3198,7 +3198,7 @@ writeExcel <- function (obj, name, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"
 }
 
 
-writeCsv <- function (obj, name, pval.cutoff=1, dat.sum=obj@info[["dat.sum"]], slot="net", pval="adj.pval") {
+writeCsv <- function (obj, name, pval.cutoff=1, cor=NULL, alternative="less", dat.sum=obj@info[["dat.sum"]], slot="net", pval="adj.pval") {
 	#libary(WriteXLS)
 
 	if (slot == "net") {
@@ -3206,6 +3206,18 @@ writeCsv <- function (obj, name, pval.cutoff=1, dat.sum=obj@info[["dat.sum"]], s
 		if (!is.null(dat.sum)) {
 			seldat<- which(obj@net[,"dat.sum"] >= dat.sum)
 			sel <- intersect(sel,seldat)
+		}
+		if (!is.null(cor)) {
+		  if (alternative=="less") {
+		    selcor<-which(obj@net$cor <= cor)
+		  }
+		  if (alternative=="greater") {
+		    selcor<-which(obj@net$cor >= cor)
+		  }
+		  if (alternative=="two.sided") {
+		    selcor<-which(abs(obj@net$cor) >= abs(cor))		    
+		  }
+		  sel <- intersect(sel,selcor)  
 		}
 		write.datt<-data.frame(obj@net[sel,])
 	}

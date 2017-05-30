@@ -20,11 +20,18 @@ translatemiRNAs(x, from = NULL, to = "21")
 }
   \item{to}{
  character vector, version of the miRBase of the miRNAs to translate. Must be one of: "6.0", "7.0", "7.1", "8.0", "8.1", "8.2", "9.0", "9.1", "9.2", "10.0", "10.1", "11.0", "12.0", "13.0", "14", "15", "16", "17", "18", "19", "20", "21"
+}
+  \item{force.translation}{if \kbd{TRUE}, translate known miRNAs from other versions besides from the selected one to final version. Default is \kbd{FALSE}.
+ }
+  \item{species}{ if some of the miRNAs appear as "miR-xx", indicate which species is.
+}
+  \item{plot}{ if version = unknown, make a plot that helps to identify the version of the miRNAs.
+}
+
 
 }
-}
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+If \kbd{from="unknown"} a plot is shown.
 }
 \value{
 A data frame containing the original name of the translated name for each miRNA.
