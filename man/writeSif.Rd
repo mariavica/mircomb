@@ -7,10 +7,9 @@ Write a SIF file
 \description{Export the network (from \kbd{cytofile} slot) to a SIF file.
 }
 \usage{
-writeSif(obj, file, pval.cutoff = 0.05, dat.sum =
-                 obj@info[["dat.sum"]], add.other = NULL, sub.miRNA =
-                 NULL, sub.mRNA = NULL, expand = FALSE, vertex.cex =
-                 "interact.table")
+writeSif(obj, file, pval.cutoff = 0.05, cor = NULL, alternative = "less",
+        dat.sum = obj@info[["dat.sum"]], add.other = NULL, sub.miRNA = NULL,
+        sub.mRNA = NULL, expand = FALSE, vertex.cex = "interact.table")
 }
 \arguments{
   \item{obj}{a \kbd{corObject}.}
@@ -18,6 +17,10 @@ writeSif(obj, file, pval.cutoff = 0.05, dat.sum =
 file to write.
 }
   \item{pval.cutoff}{maximum corrected \emph{p} value to take.
+}
+  \item{cor}{correlation cutoff.
+}
+  \item{alternative}{\kbd{"less"}: select correlations lower than correlation cutoff; \kbd{"greater"}: select correlations greater than correlation cutoff; or \kbd{"two.sided"}: select correlations with absolute value greater than correlation cutoff.
 }
   \item{dat.sum}{number of minimum ocurrences across databases
 }

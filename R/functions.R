@@ -3156,7 +3156,7 @@ circos.genomicLink(data.frame(links.filt[,1:3],1), data.frame(links.filt[,4:6],1
 
 
 
-writeExcel <- function (obj, name, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]], slot="net", pval="adj.pval") {
+writeExcel <- function (obj, name, pval.cutoff=0.05, cor=NULL, alternative="less", dat.sum=obj@info[["dat.sum"]], slot="net", pval="adj.pval") {
 	#libary(WriteXLS)
 
 	if (slot == "net") {
@@ -3164,6 +3164,19 @@ writeExcel <- function (obj, name, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"
 		if (!is.null(dat.sum)) {
 			res <- res[which(res$dat.sum>=dat.sum),]
 		}
+		if (!is.null(cor)) {
+		  if (alternative=="less") {
+		    selcor<-which(obj@net$cor <= cor)
+		  }
+		  if (alternative=="greater") {
+		    selcor<-which(obj@net$cor >= cor)
+		  }
+		  if (alternative=="two.sided") {
+		    selcor<-which(abs(obj@net$cor) >= abs(cor))		    
+		  }
+		  sel <- intersect(sel,selcor)  
+		}
+		
 
 		write.datt<-list(
 			#miRNAdat<-data.frame(obj@dat.miRNA),
@@ -3247,13 +3260,25 @@ writeCsv <- function (obj, name, pval.cutoff=1, cor=NULL, alternative="less", da
 }
 
 
-writeSif<- function( obj, file, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]], add.other=NULL, sub.miRNA=NULL, sub.mRNA=NULL, expand=FALSE, vertex.cex="interact.table") {
+writeSif<- function( obj, file, pval.cutoff=0.05, cor=NULL, alternative="less", dat.sum=obj@info[["dat.sum"]], add.other=NULL, sub.miRNA=NULL, sub.mRNA=NULL, expand=FALSE, vertex.cex="interact.table") {
 	sel<-which(obj@net$adj.pval<=pval.cutoff)
 	if (!is.null(dat.sum)) {
 		seldat<- which(obj@net[,"dat.sum"] >= dat.sum)
 		sel <- intersect(sel,seldat)
 	}
-		if (!is.null(sub.miRNA)) {
+	if (!is.null(cor)) {
+	  if (alternative=="less") {
+	    selcor<-which(obj@net$cor <= cor)
+	  }
+	  if (alternative=="greater") {
+	    selcor<-which(obj@net$cor >= cor)
+	  }
+	  if (alternative=="two.sided") {
+	    selcor<-which(abs(obj@net$cor) >= abs(cor))		    
+	  }
+	  sel <- intersect(sel,selcor)  
+	}
+			if (!is.null(sub.miRNA)) {
 			selmirna<-which(obj@net$miRNA %in% sub.miRNA)
 			sel <- intersect(sel,selmirna)
 		}
