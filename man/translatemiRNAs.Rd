@@ -8,7 +8,7 @@ Convert miRNA names between versions
 Convert miRNA names between versions
 }
 \usage{
-translatemiRNAs(x, from = NULL, to = "21")
+translatemiRNAs(x, from = NULL, to = "21", force.translation = FALSE, species = NULL)
 }
 
 \arguments{
