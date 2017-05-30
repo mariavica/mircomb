@@ -1809,12 +1809,12 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 
 
 
-addLong <- function (obj, dataset, classes, method.dif="time.point", method.adj="BH", var.t.test=FALSE, trend=FALSE) {
+addLong <- function (obj, dataset, classes, method.dif="time.point", method.adj="BH", var.t.test=FALSE) {
 
 #function similar to addDiffexp, but for
 
 	if (method.dif=="time.point") {
-		obj<-addDiffexp(obj, dataset=dataset, classes=classes, method.dif="t.test",method.adj=method.adj, var.t.test=var.t.test, trend=trend)
+		obj<-addDiffexp(obj, dataset=dataset, classes=classes, method.dif="t.test",method.adj=method.adj, var.t.test=var.t.test)
 
 		if (dataset == "miRNA") {
 			obj@info[["miRNA.diffexp.method"]][1]<-method.dif
@@ -1846,7 +1846,7 @@ addLong <- function (obj, dataset, classes, method.dif="time.point", method.adj=
 
 		slopes<-t(apply(dat,1,comp.long,time))
 
-		final<-data.frame(slope=slopes[,1], meanExp=apply(dat,1,mean), pval=slopes[,2], 			adj.pval=p.adjust(slopes[,2],method=method.adj))
+		final<-data.frame(slope=slopes[,1], meanExp=apply(dat,1,mean), pval=slopes[,2],adj.pval=p.adjust(slopes[,2],method=method.adj))
 
 		if (dataset == "miRNA") {
 			obj@diffexp.miRNA<-final
