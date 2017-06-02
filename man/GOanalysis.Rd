@@ -81,7 +81,7 @@ Yu G. ReactomePA: Reactome Pathway Analysis. R package version 1.10.1.
 }
 
 \seealso{
-\code{\link{package:GOstats}}, \code{\link{package:ReactomePA}}
+\code{package:GOstats}, \code{package:ReactomePA}
 }
 \examples{
 data(data.obj)

@@ -41,7 +41,7 @@ This is an implementation of mvoutlier package. Check the origninal source for m
 }
 
 \seealso{
-\code{\link{mvoutlier}}, \code{\link{plotPca}}
+\code{mvoutlier}, \code{\link{plotPca}}
 }
 \examples{
 data(data.obj)

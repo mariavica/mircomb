@@ -2331,7 +2331,9 @@ if (length(col.color)==1) {
 				stop("no matching order")
 			}
 		}
-
+		
+		
+		
 
 		xmat<-obj@dat.miRNA[sel.sort[1:n],]
 		rownames(xmat)<-gsub("hsa-","",rownames(xmat))
@@ -2342,7 +2344,6 @@ if (length(col.color)==1) {
 
 		if (is.null(main)) {main <- paste("Top",n,class)}
 		
-
 
 		if (!is.null(grouping.row)) {
 
