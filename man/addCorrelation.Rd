@@ -7,7 +7,7 @@ Correlate miRNA and mRNA expression
 }
 \usage{
 addCorrelation(obj, method = "pearson", subset.miRNA = obj@sig.miRNA,
-  subset.mRNA = obj@sig.mRNA, common = NULL, alternative = "less")
+  subset.mRNA = obj@sig.mRNA, common = NULL, alternative = "less", voom = FALSE)
 }
 
 \arguments{
@@ -27,9 +27,9 @@ Optional, character vector with the names of the samples to correlate (the sampl
 }
   \item{alternative}{
 specification of the alternative hypothesis:  \kbd{"less"} (default), \kbd{"two-sided"} or \kbd{"greater"}.
+  \item{voom}{
+If \kbd{TRUE}, normalise NGS data according to voom procedure (check \kbd{limma} package), default is \kbd{FALSE}.
 }
-
-
 }
 
 
