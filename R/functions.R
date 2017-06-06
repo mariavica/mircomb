@@ -583,7 +583,13 @@ addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,sub
 	  
 	  
 	}
-
+	
+	if (obj@info[["diffexp.mRNA.method"]][1] %in% c("DESeq","edgeR")) {
+	  
+	  
+	  
+	}
+	
 	
 	##### if the method is BaySeq, warning that the method is still in test
 	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("baySeq")) {
