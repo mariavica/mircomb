@@ -577,28 +577,6 @@ addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,sub
 		obj@info[["mRNA.criteria"]]<-"All mRNA"}
 	
 	
-	#### en cas de DESeq o edgeR, dividir els pesos
-	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("DESeq","edgeR")) {
-	  
-	  
-	  
-	}
-	
-	if (obj@info[["diffexp.mRNA.method"]][1] %in% c("DESeq","edgeR")) {
-	  
-	  
-	  
-	}
-	
-	
-	##### if the method is BaySeq, warning that the method is still in test
-	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("baySeq")) {
-    print("BaySeq still in test, try other method for NGS")
-	}
-		if (obj@info[["diffexp.mRNA.method"]][1] %in% c("baySeq")) {
-	  print("BaySeq still in test, try other method for NGS")
-	}
-	
 	
 	
 
@@ -747,17 +725,7 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 		subset.miRNA<-rownames(miRNA.data)
 		obj@info[["miRNA.criteria"]]<-"All miRNA"
 	}
-		
-	#aclarir si vénen de NGS per poder fer la transformacio adequada
-	if (obj@info[["miRNA.diffexp.method"]][1]=="DESeq" | obj@info[["miRNA.diffexp.method"]][1]=="edgeR") {
-		norm<-obj@info[["miRNA.diffexp.method"]][1]
-	}
-
-	if (!is.null(norm)) {
-		print("Warning, your data is NGS")
-		### fer aquí la transformació de miRNA.data ;)!
-	}
-
+	
 
 	if (length(subset.mRNA)>1) {
 		subset.mRNA.sel<-intersect(subset.mRNA,rownames(obj@dat.mRNA))		
@@ -773,16 +741,36 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 		obj@info[["mRNA.criteria"]]<-"All mRNA"}
 	
 	
-	#aclarir si vénen de NGS per poder fer la transformacio adequada
-	if (obj@info[["mRNA.diffexp.method"]][1]=="DESeq" | obj@info[["mRNA.diffexp.method"]][1]=="edgeR") {
-		norm<-obj@info[["mRNA.diffexp.method"]][1]
-	}
+	
+	#### en cas de DESeq o edgeR, dividir els pesos
+	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("DESeq","edgeR") | voom=TRUE) {
+	  if (!voom) {
+	    miRNA.data<-miRNA.data / obj@info[["weights.miRNA"]]
+	  } else {
+	    voom<-voom(obj@dat.miRNA)
+	    miRNA.data<-voom[rownames(miRNA.data),colnames(miRNA.data)]
+	  }
 
-	if (!is.null(norm)) {
-		print("Warning, your data is NGS")
-		### fer aquí la transformació de mRNA.data ;)!
 	}
-
+	
+	if (obj@info[["diffexp.mRNA.method"]][1] %in% c("DESeq","edgeR")  | voom=TRUE) {
+	  
+	  mRNA.data<-mRNA.data / obj@info[["weights.mRNA"]]  
+	  
+	}
+	
+	
+	##### if the method is BaySeq, warning that the method is still in test
+	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("baySeq")) {
+	  print("BaySeq still in test, try other method for NGS")
+	}
+	if (obj@info[["diffexp.mRNA.method"]][1] %in% c("baySeq")) {
+	  print("BaySeq still in test, try other method for NGS")
+	}
+	
+	
+	
+	
 
 	### fer les correlacions
 	correlation.matrix<-matrix(NA,nrow=nrow(miRNA.data),ncol=nrow(mRNA.data))
@@ -1790,7 +1778,6 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 		  
 		  obj@info[["mRNA.weights"]]<-d@.Data[[2]]$norm.factors
 		}
-		
 		
 
 		if (method.dif=="anova") {
