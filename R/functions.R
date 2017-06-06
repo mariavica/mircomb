@@ -1572,21 +1572,15 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 				pval=comparative$pval,
 				adj.pval=comparative$padj)
 			rownames(obj@diffexp.miRNA)<-comparative$id
+			
+			obj@info[["miRNA.weights"]]<-cds@phenoData@data$sizeFactor
 		}
 
-
 #library(DESeq2)
-
 #			cds<-newCountDataSet(round(mirdat,0),conds)
-
-
 #ddsFull <- DESeqDataSet( cds, design = ~ 0 + conds)
 
-
-
-
-
-
+		
 		if (method.dif=="edgeR") {
 			conds <- obj@pheno.miRNA[,classes][c(lev1,lev2)]
 			d <- DGEList(counts=mirdat,group=factor(conds))	
@@ -1603,7 +1597,6 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 # The default is "auto" which chooses "bin.spline" when > 200 tags and "power" otherwise.
 			d2 <- estimateGLMTagwiseDisp(d2,design.mat)
 
-
 			et12 <- exactTest(d1, pair=c("0","1")) # compare groups 1 and 2
 
 			obj@diffexp.miRNA<-data.frame(FC=logratio2foldchange(et12$table$logFC),
@@ -1611,10 +1604,9 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 				pval=et12$table$PValue,
 				adj.pval=p.adjust(et12$table$PValue,method="BH"))
 			rownames(obj@diffexp.miRNA)<-rownames(et12$table)
+			
+			obj@info[["miRNA.weights"]]<-d@.Data[[2]]$norm.factors
 		}
-
-
-
 
 
 
@@ -1633,15 +1625,11 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 			rownames(obj@diffexp.miRNA)<-comparative$id
 		}
 
-
-
 #		CD <- new("countData", data = mirdat, replicates = conds, libsizes = as.integer(apply(mirdat,2,sum)), groups = list(c1=conds))
 
 #cl <- NULL
 #CDP.NBML <- getPriors.NB(CD, samplesize = 1000, estimation = "QL", cl = cl)
 #CDPost.NBML <- getLikelihoods(CDP.NBML, prs=pr/sum(pr),  pET = 'BIC', cl = cl)
-
-
 
 #pr<-apply(mirdat,1,sum)
 
@@ -1649,20 +1637,11 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 
 #prs=rep(1/nrow(mirdat),nrow(mirdat))
 
-
-
 #rep(1/ncol(mirdat),ncol(mirdat))
-
-
 
 #bayseq_de = topCounts(CDPost.NBML, group=1, number=20)
 
-
 #CD@annotation <- as.data.frame(cname)
-
-
-
-
 
 
 		if (method.dif=="anova") {
@@ -1686,13 +1665,8 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 
 		}
 
-
-
-
-
 	#	if (method.dif=="time-course") {
 	#	linear <- 
-
 
 	#	}
 
@@ -1785,7 +1759,39 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 				pval=comparative$pval,
 				adj.pval=comparative$padj)
 			rownames(obj@diffexp.mRNA)<-comparative$id
+			
+			obj@info[["mRNA.weights"]]<-cds@phenoData@data$sizeFactor
 		}
+		
+		
+		if (method.dif=="edgeR") {
+		  conds <- obj@pheno.mRNA[,classes][c(lev1,lev2)]
+		  d <- DGEList(counts=mirdat,group=factor(conds))	
+		  design.mat <- model.matrix(~ 0 + d$samples$group)
+		  
+		  d <- calcNormFactors(d)
+		  d1 <- estimateCommonDisp(d, verbose=T)
+		  d1 <- estimateTagwiseDisp(d1)
+		  
+		  colnames(design.mat) <- levels(d$samples$group)
+		  d2 <- estimateGLMCommonDisp(d,design.mat)
+		  d2 <- estimateGLMTrendedDisp(d2,design.mat, method="auto")
+		  # You can change method to "auto", "bin.spline", "power", "spline", "bin.loess".
+		  # The default is "auto" which chooses "bin.spline" when > 200 tags and "power" otherwise.
+		  d2 <- estimateGLMTagwiseDisp(d2,design.mat)
+		  
+		  et12 <- exactTest(d1, pair=c("0","1")) # compare groups 1 and 2
+		  
+		  obj@diffexp.mRNA<-data.frame(FC=logratio2foldchange(et12$table$logFC),
+		                                logratio=et12$table$logFC,
+		                                pval=et12$table$PValue,
+		                                adj.pval=p.adjust(et12$table$PValue,method="BH"))
+		  rownames(obj@diffexp.mRNA)<-rownames(et12$table)
+		  
+		  obj@info[["mRNA.weights"]]<-d@.Data[[2]]$norm.factors
+		}
+		
+		
 
 		if (method.dif=="anova") {
 			pval.aov<-apply(mrdat,1,aov_pval,as.factor(obj@pheno.mRNA[,classes]))
@@ -1806,8 +1812,6 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 			rownames(obj@diffexp.mRNA)<-rownames(mrdat)
 
 		}
-
-
 
 
 		obj@diffexp.mRNA$meanExp<-apply(mrdat,1,mean)
