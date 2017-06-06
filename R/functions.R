@@ -575,6 +575,26 @@ addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,sub
 	
 		subset.mRNA<-rownames(mRNA.data)
 		obj@info[["mRNA.criteria"]]<-"All mRNA"}
+	
+	
+	#### en cas de DESeq o edgeR, dividir els pesos
+	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("DESeq","edgeR")) {
+	  
+	  
+	  
+	}
+
+	
+	##### if the method is BaySeq, warning that the method is still in test
+	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("baySeq")) {
+    print("BaySeq still in test, try other method for NGS")
+	}
+		if (obj@info[["diffexp.mRNA.method"]][1] %in% c("baySeq")) {
+	  print("BaySeq still in test, try other method for NGS")
+	}
+	
+	
+	
 
 	### fer les correlacions
 	correlation.matrix<-matrix(NA,nrow=nrow(miRNA.data),ncol=nrow(mRNA.data))
