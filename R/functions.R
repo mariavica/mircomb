@@ -690,7 +690,7 @@ addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,sub
 
 
  ## addcorrelation before removing d.influences
-addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, alternative="less", norm=NULL) {
+addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, alternative="less", voom=FALSE) {
 
 	obj@net<-data.frame()
 	obj@info[["pcomb.method"]]<-NULL
@@ -745,7 +745,7 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 	#### en cas de DESeq o edgeR, dividir els pesos
 	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("DESeq","edgeR") | voom=TRUE) {
 	  if (!voom) {
-	    miRNA.data<-t ( t(miRNA.data) / obj@info[["weights.miRNA"]] )
+	    miRNA.data<-t ( t(miRNA.data) / obj@info[["weights.miRNA"]][colnames(miRNA.data)] )
 	  } else {
 	    voom.d<-voom(obj@dat.miRNA)$E
 	    rownames(voom.d)<-rownames(obj@dat.miRNA)
@@ -756,7 +756,7 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 	
 	if (obj@info[["diffexp.mRNA.method"]][1] %in% c("DESeq","edgeR")  | voom=TRUE) {
 	  if (!voom) {
-	    mRNA.data<-t ( t(mRNA.data) / obj@info[["weights.mRNA"]] )
+	    mRNA.data<-t ( t(mRNA.data) / obj@info[["weights.mRNA"]][colnames(mRNA.data)] )
 	  } else {
 	    voom.d<-voom(obj@dat.mRNA)$E
 	    rownames(voom.d)<-rownames(obj@dat.mRNA)
