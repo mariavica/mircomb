@@ -2690,6 +2690,14 @@ if (is.null(obj@net$score)==TRUE) {
 	}
 }
 
+if (obj@info[["miRNA.diffexp.method"]][1]=="anova") {
+  cat("Colours of the plot won't render correctly if you've used anova method for differential expression in the miRNAs.\n")
+}	
+if (obj@info[["mRNA.diffexp.method"]][1]=="anova") {
+  cat("Colours of the plot won't render correctly if you've used anova method for differential expression in the mRNAs.\n")
+}	
+	
+	
 #	library(network)
 llistacomp<-obj@net
 
