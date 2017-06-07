@@ -1,7 +1,22 @@
+CHANGES IN VERSION 0.9.2
+------------------------
+
+    o plotNetwork function renders correctly data from addLong function (regression option).
+
+
+CHANGES IN VERSION 0.9.1
+------------------------
+
+    o translate function improved.
+    o writeCsv, writeExcel and writeSif now include filtering by correlation value.
+
+
 CHANGES IN VERSION 0.9.0
 ------------------------
 
     o Vignettes work with local bibliography (can be installed from GitHub).
+    o Fixed bug in addCorrelation (two.sided alternative working properly).
+    o topTable allows to limit the number of items when names=TRUE.
 
 
 CHANGES IN VERSION 0.8.9

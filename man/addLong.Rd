@@ -7,7 +7,7 @@ Time analysis of a \kbd{corObject}
 }
 \usage{
 addLong(obj, dataset, classes, method.dif = "time.point", method.adj = "BH",
- var.t.test = FALSE, trend = FALSE)
+ var.t.test = FALSE)
 }
 
 \arguments{

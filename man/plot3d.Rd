@@ -7,8 +7,8 @@ PCA plot in 3D
 \description{
 PCA plot in 3D}
 \usage{
-plot3d(obj, subset, col.color = 1, angle = 45, colors = c("violet", "turquoise"), lty = 0, 
-	cex.points = 1, ...)
+plot3d(obj, subset, col.color = 1, angle = 45, colors = c("violet", "turquoise"), 
+  lty = 0, cex.points = 1, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

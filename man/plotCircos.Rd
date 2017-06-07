@@ -37,7 +37,7 @@ a plot
 \url{http://cran.r-project.org/web/packages/circlize/index.html}
 }
 \seealso{
-\code{\link{data(genes_human_h37)}}, \code{\link{mirnas_human_17_h37}}
+\code{\link{genes_human_h37}}, \code{\link{mirnas_human_17_h37}}
 }
 \examples{
 data(data.obj)

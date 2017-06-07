@@ -45,7 +45,7 @@ https://cran.r-project.org/web/packages/glmnet/index.html
 }
 
 \seealso{
-\code{\link{corObject-class}}, \code{\link{package:glmnet}}
+\code{\link{corObject-class}}, \code{package:glmnet}
 }
 
 \examples{

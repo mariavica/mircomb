@@ -6,7 +6,7 @@ Write a csv file
 \description{Export the \kbd{cytofile} slot to a a csv file.
 }
 \usage{
-writeCsv(obj, name, pval.cutoff = 1, dat.sum =
+writeCsv(obj, name, pval.cutoff = 1, cor = NULL, alternative = "less", dat.sum =
                  obj@info[["dat.sum"]], slot = "net" , pval = "adj.pval")
 }
 \arguments{
@@ -15,6 +15,10 @@ writeCsv(obj, name, pval.cutoff = 1, dat.sum =
   \item{name}{the name of the file to write.
 }
   \item{pval.cutoff}{maximum corrected \emph{p} value to take.
+}
+  \item{cor}{correlation cutoff.
+}
+  \item{alternative}{\kbd{"less"}: select correlations lower than correlation cutoff; \kbd{"greater"}: select correlations greater than correlation cutoff; or \kbd{"two.sided"}: select correlations with absolute value greater than correlation cutoff.
 }
   \item{dat.sum}{number of minimum ocurrences across databases.
 }

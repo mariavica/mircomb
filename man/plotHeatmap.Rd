@@ -7,7 +7,9 @@ Plot heatmaps}
 Plot heatmaps of the top "n" miRNAs or mRNAs from selected miRNA-mRNA pairs
 }
 \usage{
-plotHeatmap(obj, class, n = 50, col.color = 1, min.exp = NULL, main = NULL, pval.cutoff = NULL, grouping.col = NULL, grouping.row = NULL, order = "pval", cex.lab = 0.75)
+plotHeatmap(obj, class, n = 50, col.color = 1, min.exp = NULL, main = NULL,
+   pval.cutoff = NULL, grouping.col = NULL, grouping.row = NULL, 
+  order = "pval", cex.lab = 0.75)
 }
 \arguments{
   \item{obj}{

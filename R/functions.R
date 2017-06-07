@@ -41,7 +41,7 @@ checkmiRNAs <- function ( v.miRNAs, to.dataframe=FALSE ) {
 }
 
 
-translatemiRNAs <- function ( x , from = NULL, to = "21") {
+translatemiRNAs <- function ( x , from = NULL, to = "21", force.translation = FALSE, species = NULL) {
 
 	if (!exists("versions.mirnas")) { data(versions.mirnas) }
 	
@@ -575,6 +575,10 @@ addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,sub
 	
 		subset.mRNA<-rownames(mRNA.data)
 		obj@info[["mRNA.criteria"]]<-"All mRNA"}
+	
+	
+	
+	
 
 	### fer les correlacions
 	correlation.matrix<-matrix(NA,nrow=nrow(miRNA.data),ncol=nrow(mRNA.data))
@@ -686,7 +690,7 @@ addCorrelation.R<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,sub
 
 
  ## addcorrelation before removing d.influences
-addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, alternative="less", norm=NULL) {
+addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subset.mRNA=obj@sig.mRNA,common=NULL, alternative="less", voom=FALSE) {
 
 	obj@net<-data.frame()
 	obj@info[["pcomb.method"]]<-NULL
@@ -721,17 +725,7 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 		subset.miRNA<-rownames(miRNA.data)
 		obj@info[["miRNA.criteria"]]<-"All miRNA"
 	}
-		
-	#aclarir si vénen de NGS per poder fer la transformacio adequada
-	if (obj@info[["miRNA.diffexp.method"]][1]=="DESeq" | obj@info[["miRNA.diffexp.method"]][1]=="edgeR") {
-		norm<-obj@info[["miRNA.diffexp.method"]][1]
-	}
-
-	if (!is.null(norm)) {
-		print("Warning, your data is NGS")
-		### fer aquí la transformació de miRNA.data ;)!
-	}
-
+	
 
 	if (length(subset.mRNA)>1) {
 		subset.mRNA.sel<-intersect(subset.mRNA,rownames(obj@dat.mRNA))		
@@ -747,16 +741,42 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 		obj@info[["mRNA.criteria"]]<-"All mRNA"}
 	
 	
-	#aclarir si vénen de NGS per poder fer la transformacio adequada
-	if (obj@info[["mRNA.diffexp.method"]][1]=="DESeq" | obj@info[["mRNA.diffexp.method"]][1]=="edgeR") {
-		norm<-obj@info[["mRNA.diffexp.method"]][1]
+	
+	#### en cas de DESeq o edgeR, dividir els pesos
+	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("DESeq","edgeR") | voom=TRUE) {
+	  if (!voom) {
+	    miRNA.data<-t ( t(miRNA.data) / obj@info[["weights.miRNA"]][colnames(miRNA.data)] )
+	  } else {
+	    voom.d<-voom(obj@dat.miRNA)$E
+	    rownames(voom.d)<-rownames(obj@dat.miRNA)
+	    colnames(voom.d)<-colnames(obj@dat.miRNA)
+	    miRNA.data<-voom.d[rownames(miRNA.data),colnames(miRNA.data)]
+	  }
 	}
-
-	if (!is.null(norm)) {
-		print("Warning, your data is NGS")
-		### fer aquí la transformació de mRNA.data ;)!
+	
+	if (obj@info[["diffexp.mRNA.method"]][1] %in% c("DESeq","edgeR")  | voom=TRUE) {
+	  if (!voom) {
+	    mRNA.data<-t ( t(mRNA.data) / obj@info[["weights.mRNA"]][colnames(mRNA.data)] )
+	  } else {
+	    voom.d<-voom(obj@dat.mRNA)$E
+	    rownames(voom.d)<-rownames(obj@dat.mRNA)
+	    colnames(voom.d)<-colnames(obj@dat.mRNA)
+	    mRNA.data<-voom.d[rownames(mRNA.data),colnames(mRNA.data)]
+	  }
 	}
-
+	
+	
+	##### if the method is BaySeq, warning that the method is still in test
+	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("baySeq")) {
+	  print("BaySeq still in test, try other method for NGS")
+	}
+	if (obj@info[["diffexp.mRNA.method"]][1] %in% c("baySeq")) {
+	  print("BaySeq still in test, try other method for NGS")
+	}
+	
+	
+	
+	
 
 	### fer les correlacions
 	correlation.matrix<-matrix(NA,nrow=nrow(miRNA.data),ncol=nrow(mRNA.data))
@@ -1546,21 +1566,15 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 				pval=comparative$pval,
 				adj.pval=comparative$padj)
 			rownames(obj@diffexp.miRNA)<-comparative$id
+			
+			obj@info[["miRNA.weights"]]<-cds@phenoData@data$sizeFactor
 		}
 
-
 #library(DESeq2)
-
 #			cds<-newCountDataSet(round(mirdat,0),conds)
-
-
 #ddsFull <- DESeqDataSet( cds, design = ~ 0 + conds)
 
-
-
-
-
-
+		
 		if (method.dif=="edgeR") {
 			conds <- obj@pheno.miRNA[,classes][c(lev1,lev2)]
 			d <- DGEList(counts=mirdat,group=factor(conds))	
@@ -1577,7 +1591,6 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 # The default is "auto" which chooses "bin.spline" when > 200 tags and "power" otherwise.
 			d2 <- estimateGLMTagwiseDisp(d2,design.mat)
 
-
 			et12 <- exactTest(d1, pair=c("0","1")) # compare groups 1 and 2
 
 			obj@diffexp.miRNA<-data.frame(FC=logratio2foldchange(et12$table$logFC),
@@ -1585,10 +1598,9 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 				pval=et12$table$PValue,
 				adj.pval=p.adjust(et12$table$PValue,method="BH"))
 			rownames(obj@diffexp.miRNA)<-rownames(et12$table)
+			
+			obj@info[["miRNA.weights"]]<-d@.Data[[2]]$norm.factors
 		}
-
-
-
 
 
 
@@ -1607,15 +1619,11 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 			rownames(obj@diffexp.miRNA)<-comparative$id
 		}
 
-
-
 #		CD <- new("countData", data = mirdat, replicates = conds, libsizes = as.integer(apply(mirdat,2,sum)), groups = list(c1=conds))
 
 #cl <- NULL
 #CDP.NBML <- getPriors.NB(CD, samplesize = 1000, estimation = "QL", cl = cl)
 #CDPost.NBML <- getLikelihoods(CDP.NBML, prs=pr/sum(pr),  pET = 'BIC', cl = cl)
-
-
 
 #pr<-apply(mirdat,1,sum)
 
@@ -1623,20 +1631,11 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 
 #prs=rep(1/nrow(mirdat),nrow(mirdat))
 
-
-
 #rep(1/ncol(mirdat),ncol(mirdat))
-
-
 
 #bayseq_de = topCounts(CDPost.NBML, group=1, number=20)
 
-
 #CD@annotation <- as.data.frame(cname)
-
-
-
-
 
 
 		if (method.dif=="anova") {
@@ -1660,13 +1659,8 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 
 		}
 
-
-
-
-
 	#	if (method.dif=="time-course") {
 	#	linear <- 
-
 
 	#	}
 
@@ -1759,7 +1753,38 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 				pval=comparative$pval,
 				adj.pval=comparative$padj)
 			rownames(obj@diffexp.mRNA)<-comparative$id
+			
+			obj@info[["mRNA.weights"]]<-cds@phenoData@data$sizeFactor
 		}
+		
+		
+		if (method.dif=="edgeR") {
+		  conds <- obj@pheno.mRNA[,classes][c(lev1,lev2)]
+		  d <- DGEList(counts=mirdat,group=factor(conds))	
+		  design.mat <- model.matrix(~ 0 + d$samples$group)
+		  
+		  d <- calcNormFactors(d)
+		  d1 <- estimateCommonDisp(d, verbose=T)
+		  d1 <- estimateTagwiseDisp(d1)
+		  
+		  colnames(design.mat) <- levels(d$samples$group)
+		  d2 <- estimateGLMCommonDisp(d,design.mat)
+		  d2 <- estimateGLMTrendedDisp(d2,design.mat, method="auto")
+		  # You can change method to "auto", "bin.spline", "power", "spline", "bin.loess".
+		  # The default is "auto" which chooses "bin.spline" when > 200 tags and "power" otherwise.
+		  d2 <- estimateGLMTagwiseDisp(d2,design.mat)
+		  
+		  et12 <- exactTest(d1, pair=c("0","1")) # compare groups 1 and 2
+		  
+		  obj@diffexp.mRNA<-data.frame(FC=logratio2foldchange(et12$table$logFC),
+		                                logratio=et12$table$logFC,
+		                                pval=et12$table$PValue,
+		                                adj.pval=p.adjust(et12$table$PValue,method="BH"))
+		  rownames(obj@diffexp.mRNA)<-rownames(et12$table)
+		  
+		  obj@info[["mRNA.weights"]]<-d@.Data[[2]]$norm.factors
+		}
+		
 
 		if (method.dif=="anova") {
 			pval.aov<-apply(mrdat,1,aov_pval,as.factor(obj@pheno.mRNA[,classes]))
@@ -1780,8 +1805,6 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 			rownames(obj@diffexp.mRNA)<-rownames(mrdat)
 
 		}
-
-
 
 
 		obj@diffexp.mRNA$meanExp<-apply(mrdat,1,mean)
@@ -1809,12 +1832,12 @@ addDiffexp <- function (obj, dataset, classes, method.dif="t.test", method.adj="
 
 
 
-addLong <- function (obj, dataset, classes, method.dif="time.point", method.adj="BH", var.t.test=FALSE, trend=FALSE) {
+addLong <- function (obj, dataset, classes, method.dif="time.point", method.adj="BH", var.t.test=FALSE) {
 
 #function similar to addDiffexp, but for
 
 	if (method.dif=="time.point") {
-		obj<-addDiffexp(obj, dataset=dataset, classes=classes, method.dif="t.test",method.adj=method.adj, var.t.test=var.t.test, trend=trend)
+		obj<-addDiffexp(obj, dataset=dataset, classes=classes, method.dif="t.test",method.adj=method.adj, var.t.test=var.t.test)
 
 		if (dataset == "miRNA") {
 			obj@info[["miRNA.diffexp.method"]][1]<-method.dif
@@ -1846,7 +1869,7 @@ addLong <- function (obj, dataset, classes, method.dif="time.point", method.adj=
 
 		slopes<-t(apply(dat,1,comp.long,time))
 
-		final<-data.frame(slope=slopes[,1], meanExp=apply(dat,1,mean), pval=slopes[,2], 			adj.pval=p.adjust(slopes[,2],method=method.adj))
+		final<-data.frame(slope=slopes[,1], meanExp=apply(dat,1,mean), pval=slopes[,2],adj.pval=p.adjust(slopes[,2],method=method.adj))
 
 		if (dataset == "miRNA") {
 			obj@diffexp.miRNA<-final
@@ -2331,7 +2354,9 @@ if (length(col.color)==1) {
 				stop("no matching order")
 			}
 		}
-
+		
+		
+		
 
 		xmat<-obj@dat.miRNA[sel.sort[1:n],]
 		rownames(xmat)<-gsub("hsa-","",rownames(xmat))
@@ -2342,7 +2367,6 @@ if (length(col.color)==1) {
 
 		if (is.null(main)) {main <- paste("Top",n,class)}
 		
-
 
 		if (!is.null(grouping.row)) {
 
@@ -2659,15 +2683,33 @@ plotNetwork <- function (obj, pval.cutoff=0.05, score.cutoff=NULL, sub.miRNA=NUL
 #vertex.cex="interact.table.human"
 
 if (is.null(obj@net$score)==TRUE) {
-	if ( !is.null(obj@net$logratio.miRNA) & !is.null(obj@net$logratio.mRNA) ) {
+	if ( (!is.null(obj@net$logratio.miRNA) | !is.null(obj@net$slope.miRNA)) & (!is.null(obj@net$logratio.mRNA) | !is.null(obj@net$slope.mRNA) ) ) {
 		obj<-addScore(obj)
 	} else {
 		obj@net$score<-1
 	}
 }
 
+if (obj@info[["miRNA.diffexp.method"]][1]=="anova") {
+  cat("Colours of the plot won't render correctly if you've used anova method for differential expression in the miRNAs.\n")
+}	
+if (obj@info[["mRNA.diffexp.method"]][1]=="anova") {
+  cat("Colours of the plot won't render correctly if you've used anova method for differential expression in the mRNAs.\n")
+}	
+	
+	
 #	library(network)
 llistacomp<-obj@net
+
+## if there are scores coming from addLong function, treat them as logratios
+if ("slope.miRNA" %in% colnames(llistacomp)) {
+  colnames(llistacomp)[which(colnames(llistacomp)=="slope.miRNA")]<-"logratio.miRNA"
+}
+if ("slope.mRNA" %in% colnames(llistacomp)) {
+  colnames(llistacomp)[which(colnames(llistacomp)=="slope.mRNA")]<-"logratio.mRNA"
+}
+
+
 
 if (!is.null(sub.miRNA)) {
 	llistacomp<-llistacomp[llistacomp$miRNA %in% sub.miRNA,]
@@ -3156,7 +3198,7 @@ circos.genomicLink(data.frame(links.filt[,1:3],1), data.frame(links.filt[,4:6],1
 
 
 
-writeExcel <- function (obj, name, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]], slot="net", pval="adj.pval") {
+writeExcel <- function (obj, name, pval.cutoff=0.05, cor=NULL, alternative="less", dat.sum=obj@info[["dat.sum"]], slot="net", pval="adj.pval") {
 	#libary(WriteXLS)
 
 	if (slot == "net") {
@@ -3164,6 +3206,19 @@ writeExcel <- function (obj, name, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"
 		if (!is.null(dat.sum)) {
 			res <- res[which(res$dat.sum>=dat.sum),]
 		}
+		if (!is.null(cor)) {
+		  if (alternative=="less") {
+		    selcor<-which(obj@net$cor <= cor)
+		  }
+		  if (alternative=="greater") {
+		    selcor<-which(obj@net$cor >= cor)
+		  }
+		  if (alternative=="two.sided") {
+		    selcor<-which(abs(obj@net$cor) >= abs(cor))		    
+		  }
+		  sel <- intersect(sel,selcor)  
+		}
+		
 
 		write.datt<-list(
 			#miRNAdat<-data.frame(obj@dat.miRNA),
@@ -3198,7 +3253,7 @@ writeExcel <- function (obj, name, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"
 }
 
 
-writeCsv <- function (obj, name, pval.cutoff=1, dat.sum=obj@info[["dat.sum"]], slot="net", pval="adj.pval") {
+writeCsv <- function (obj, name, pval.cutoff=1, cor=NULL, alternative="less", dat.sum=obj@info[["dat.sum"]], slot="net", pval="adj.pval") {
 	#libary(WriteXLS)
 
 	if (slot == "net") {
@@ -3206,6 +3261,18 @@ writeCsv <- function (obj, name, pval.cutoff=1, dat.sum=obj@info[["dat.sum"]], s
 		if (!is.null(dat.sum)) {
 			seldat<- which(obj@net[,"dat.sum"] >= dat.sum)
 			sel <- intersect(sel,seldat)
+		}
+		if (!is.null(cor)) {
+		  if (alternative=="less") {
+		    selcor<-which(obj@net$cor <= cor)
+		  }
+		  if (alternative=="greater") {
+		    selcor<-which(obj@net$cor >= cor)
+		  }
+		  if (alternative=="two.sided") {
+		    selcor<-which(abs(obj@net$cor) >= abs(cor))		    
+		  }
+		  sel <- intersect(sel,selcor)  
 		}
 		write.datt<-data.frame(obj@net[sel,])
 	}
@@ -3235,13 +3302,25 @@ writeCsv <- function (obj, name, pval.cutoff=1, dat.sum=obj@info[["dat.sum"]], s
 }
 
 
-writeSif<- function( obj, file, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]], add.other=NULL, sub.miRNA=NULL, sub.mRNA=NULL, expand=FALSE, vertex.cex="interact.table") {
+writeSif<- function( obj, file, pval.cutoff=0.05, cor=NULL, alternative="less", dat.sum=obj@info[["dat.sum"]], add.other=NULL, sub.miRNA=NULL, sub.mRNA=NULL, expand=FALSE, vertex.cex="interact.table") {
 	sel<-which(obj@net$adj.pval<=pval.cutoff)
 	if (!is.null(dat.sum)) {
 		seldat<- which(obj@net[,"dat.sum"] >= dat.sum)
 		sel <- intersect(sel,seldat)
 	}
-		if (!is.null(sub.miRNA)) {
+	if (!is.null(cor)) {
+	  if (alternative=="less") {
+	    selcor<-which(obj@net$cor <= cor)
+	  }
+	  if (alternative=="greater") {
+	    selcor<-which(obj@net$cor >= cor)
+	  }
+	  if (alternative=="two.sided") {
+	    selcor<-which(abs(obj@net$cor) >= abs(cor))		    
+	  }
+	  sel <- intersect(sel,selcor)  
+	}
+			if (!is.null(sub.miRNA)) {
 			selmirna<-which(obj@net$miRNA %in% sub.miRNA)
 			sel <- intersect(sel,selmirna)
 		}
