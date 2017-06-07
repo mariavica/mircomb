@@ -2683,7 +2683,7 @@ plotNetwork <- function (obj, pval.cutoff=0.05, score.cutoff=NULL, sub.miRNA=NUL
 #vertex.cex="interact.table.human"
 
 if (is.null(obj@net$score)==TRUE) {
-	if ( !is.null(obj@net$logratio.miRNA) & !is.null(obj@net$logratio.mRNA) ) {
+	if ( (!is.null(obj@net$logratio.miRNA) | !is.null(obj@net$slope.miRNA)) & (!is.null(obj@net$logratio.mRNA) | !is.null(obj@net$slope.mRNA) ) ) {
 		obj<-addScore(obj)
 	} else {
 		obj@net$score<-1
@@ -2692,6 +2692,16 @@ if (is.null(obj@net$score)==TRUE) {
 
 #	library(network)
 llistacomp<-obj@net
+
+## if there are scores coming from addLong function, treat them as logratios
+if ("slope.miRNA" %in% colnames(llistacomp)) {
+  colnames(llistacomp)[which(colnames(llistacomp)=="slope.miRNA")]<-"logratio.miRNA"
+}
+if ("slope.mRNA" %in% colnames(llistacomp)) {
+  colnames(llistacomp)[which(colnames(llistacomp)=="slope.mRNA")]<-"logratio.mRNA"
+}
+
+
 
 if (!is.null(sub.miRNA)) {
 	llistacomp<-llistacomp[llistacomp$miRNA %in% sub.miRNA,]
