@@ -741,40 +741,51 @@ addCorrelation<- function (obj,method="pearson",subset.miRNA=obj@sig.miRNA,subse
 		obj@info[["mRNA.criteria"]]<-"All mRNA"}
 	
 	
-	
-	#### en cas de DESeq o edgeR, dividir els pesos
-	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("DESeq","edgeR") | voom=TRUE) {
-	  if (!voom) {
-	    miRNA.data<-t ( t(miRNA.data) / obj@info[["weights.miRNA"]][colnames(miRNA.data)] )
-	  } else {
-	    voom.d<-voom(obj@dat.miRNA)$E
-	    rownames(voom.d)<-rownames(obj@dat.miRNA)
-	    colnames(voom.d)<-colnames(obj@dat.miRNA)
-	    miRNA.data<-voom.d[rownames(miRNA.data),colnames(miRNA.data)]
+	if (!is.null(obj@info[["diffexp.miRNA.method"]][1]) | voom==TRUE) {
+	  
+	  #### en cas de DESeq o edgeR, dividir els pesos
+	  if (obj@info[["diffexp.miRNA.method"]][1] %in% c("DESeq","edgeR") | voom==TRUE) {
+	    if (!voom) {
+	      miRNA.data<-t ( t(miRNA.data) / obj@info[["weights.miRNA"]][colnames(miRNA.data)] )
+	    } else {
+	      voom.d<-voom(obj@dat.miRNA)$E
+	      rownames(voom.d)<-rownames(obj@dat.miRNA)
+	      colnames(voom.d)<-colnames(obj@dat.miRNA)
+	      miRNA.data<-voom.d[rownames(miRNA.data),colnames(miRNA.data)]
+	    }
 	  }
-	}
-	
-	if (obj@info[["diffexp.mRNA.method"]][1] %in% c("DESeq","edgeR")  | voom=TRUE) {
-	  if (!voom) {
-	    mRNA.data<-t ( t(mRNA.data) / obj@info[["weights.mRNA"]][colnames(mRNA.data)] )
-	  } else {
-	    voom.d<-voom(obj@dat.mRNA)$E
-	    rownames(voom.d)<-rownames(obj@dat.mRNA)
-	    colnames(voom.d)<-colnames(obj@dat.mRNA)
-	    mRNA.data<-voom.d[rownames(mRNA.data),colnames(mRNA.data)]
+	  
+	  ##### if the method is BaySeq, warning that the method is still in test
+	  if (obj@info[["diffexp.miRNA.method"]][1] %in% c("baySeq")) {
+	    print("BaySeq still in test, try other method for NGS")
 	  }
+	  
 	}
 	
 	
-	##### if the method is BaySeq, warning that the method is still in test
-	if (obj@info[["diffexp.miRNA.method"]][1] %in% c("baySeq")) {
-	  print("BaySeq still in test, try other method for NGS")
-	}
-	if (obj@info[["diffexp.mRNA.method"]][1] %in% c("baySeq")) {
-	  print("BaySeq still in test, try other method for NGS")
-	}
+	if (!is.null(obj@info[["diffexp.mRNA.method"]][1]) | voom==TRUE) {
 	
+	  #### en cas de DESeq o edgeR, dividir els pesos
+   	if (obj@info[["diffexp.mRNA.method"]][1] %in% c("DESeq","edgeR")  | voom==TRUE) {
+  	  if (!voom) {
+  	    mRNA.data<-t ( t(mRNA.data) / obj@info[["weights.mRNA"]][colnames(mRNA.data)] )
+  	  } else {
+	      voom.d<-voom(obj@dat.mRNA)$E
+	      rownames(voom.d)<-rownames(obj@dat.mRNA)
+  	    colnames(voom.d)<-colnames(obj@dat.mRNA)
+  	    mRNA.data<-voom.d[rownames(mRNA.data),colnames(mRNA.data)]
+  	  }
+  	}
 	
+	  ##### if the method is BaySeq, warning that the method is still in test
+	  if (obj@info[["diffexp.mRNA.method"]][1] %in% c("baySeq")) {
+	    print("BaySeq still in test, try other method for NGS")
+	  }
+	  
+	  
+	} 
+	
+
 	
 	
 

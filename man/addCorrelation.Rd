@@ -27,6 +27,7 @@ Optional, character vector with the names of the samples to correlate (the sampl
 }
   \item{alternative}{
 specification of the alternative hypothesis:  \kbd{"less"} (default), \kbd{"two-sided"} or \kbd{"greater"}.
+}
   \item{voom}{
 If \kbd{TRUE}, normalise NGS data according to voom procedure (check \kbd{limma} package), default is \kbd{FALSE}.
 }
