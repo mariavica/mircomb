@@ -1,4 +1,4 @@
-# MiRComb
+# MiRComb R package
 
 
 There are two ways of installing miRComb from GitHub:
@@ -26,3 +26,9 @@ install.packages(c("gplots","gtools","network","WriteXLS","Hmisc","glmnet","scat
 source("http://www.bioconductor.org/biocLite.R")
 biocLite(c("RankProd","GOstats","limma","RamiGO","circlize","ReactomePA","DESeq","DO.db")) 
 ```
+
+If the package has been useful for you, we will be very grateful if you can cite our article:
+
+Vila-Casadesús M, Gironella M, Lozano JJ (2016) MiRComb: An R Package to Analyse miRNA-mRNA Interactions. Examples across Five Digestive Cancers. PLoS ONE 11(3): e0151127. doi:10.1371/journal.pone.0151127
+
+Send any comments and suggestions to: maria.vila@ciberehd.org, many thanks!
