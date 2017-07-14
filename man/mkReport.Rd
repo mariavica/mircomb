@@ -5,7 +5,7 @@ Creates a pdf report}
 \description{
 Creates a pdf report summarizing the contents of the \code{corObject}}
 \usage{
-mkReport(obj, file, title = "Default \\\\texttt{miRComb} output", dat.sum.table = NULL)
+mkReport(obj, file, title = "Default \\\\texttt{miRComb} output", dat.sum.table = NULL, ddir = getwd() )
 }
 \arguments{
   \item{obj}{
@@ -20,6 +20,9 @@ Title of the report
   \item{dat.sum.table}{
 Minimum \kbd{dat.sum} that will be applied to Table 9 and Figure 6.
 }
+  \item{ddir}{output directory for the tex file. By default: current working directory
+}
+
 }
 \details{
 Documents \kbd{myExampleReport.tex} and \kbd{myExampleReport.pdf} will be created on the working directory.
