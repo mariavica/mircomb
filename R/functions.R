@@ -3799,7 +3799,9 @@ summary.corObject <- function (object, ...) {
 
 ##### Make a report
 
-mkReport <- function (obj, file, title="Default \\texttt{miRComb} output", dat.sum.table=NULL) {
+mkReport <- function (obj, file, title="Default \\texttt{miRComb} output", dat.sum.table=NULL, ddir= getwd() ) {
+  
+  ddir<-paste(ddir,"/",sep="")
 	
 	cat("Doesn't work locally? Try loading your \".RData\" file in our server, and we will make the pdf report for you (up to 100Mb):\n")
 	cat("http://bioinfo.ciberehd.org/mircomb/mkreport.html")
@@ -3813,7 +3815,7 @@ mkReport <- function (obj, file, title="Default \\texttt{miRComb} output", dat.s
 
 	n.samp<-25
 
-	sink(paste(file,".tex",sep=""))
+	sink(paste(ddir,file,".tex",sep=""))
 
 	cat("
 \\documentclass[a4paper,11pt]{article}
@@ -3896,11 +3898,11 @@ if (nrow(obj@pheno.miRNA)<=n.samp) {
 
 
 
-pdf(paste("pcamiRNA",seed,".pdf",sep=""))
+pdf(paste(ddir,"pcamiRNA",seed,".pdf",sep=""))
 plotPca(obj,"miRNA")
 dev.off()
 
-pdf(paste("densmiRNA",seed,".pdf",sep=""))
+pdf(paste(ddir,"densmiRNA",seed,".pdf",sep=""))
 plotDensity(obj,"miRNA")
 dev.off()
 
@@ -3909,9 +3911,9 @@ cat("
 \\begin{figure}[!h]
 \\centering
 ")
-cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste("pcamiRNA",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste(ddir,"pcamiRNA",seed,".pdf",sep=""),"}",sep=""))
 cat("\\hspace{0.02\\textwidth}")
-cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste("densmiRNA",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste(ddir,"densmiRNA",seed,".pdf",sep=""),"}",sep=""))
 
 
 cat("
@@ -3957,11 +3959,11 @@ if (nrow(obj@pheno.mRNA)<=n.samp) {
 
 
 
-pdf(paste("pcamRNA",seed,".pdf",sep=""))
+pdf(paste(ddir,"pcamRNA",seed,".pdf",sep=""))
 plotPca(obj,"mRNA")
 dev.off()
 
-pdf(paste("densmRNA",seed,".pdf",sep=""))
+pdf(paste(ddir,"densmRNA",seed,".pdf",sep=""))
 plotDensity(obj,"mRNA")
 dev.off()
 
@@ -4017,13 +4019,13 @@ cat("
 
 
 if (obj@info[["miRNA.diffexp.method"]][1] != "anova") {
-pdf(paste("mamiRNA",seed,".pdf",sep=""))
+pdf(paste(ddir,"mamiRNA",seed,".pdf",sep=""))
 plot(obj@diffexp.miRNA$logratio,-log10(obj@diffexp.miRNA$pval),xlab="logratio",ylab="-log10(pval)",pch=19,cex=0.75)
 points(obj@diffexp.miRNA[obj@sig.miRNA,"logratio"],-log10(obj@diffexp.miRNA[obj@sig.miRNA,"pval"]),col="red",pch=19,cex=0.75)
 dev.off()
 }
 
-pdf(paste("heatmapmiRNA",seed,".pdf",sep=""))
+pdf(paste(ddir,"heatmapmiRNA",seed,".pdf",sep=""))
 plotHeatmap(obj,"miRNA")
 dev.off()
 
@@ -4031,10 +4033,10 @@ cat("
 \\begin{figure}[!h]
 \\centering
 ")
-cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste("heatmapmiRNA",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste(ddir,"heatmapmiRNA",seed,".pdf",sep=""),"}",sep=""))
 cat("\\hspace{0.02\\textwidth}")
 if (obj@info[["miRNA.diffexp.method"]][1] != "anova") {
-cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste("mamiRNA",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste(ddir,"mamiRNA",seed,".pdf",sep=""),"}",sep=""))
 }
 cat(paste("\\caption[]{A) Heatmap vith the top 50 most significant miRNAs (sorted by adjusted p-value). B) Volcano plot showing the selected miRNAs.}
 \\end{figure}
@@ -4084,12 +4086,12 @@ points(obj@diffexp.mRNA[obj@sig.mRNA,"logratio"],-log10(obj@diffexp.mRNA[obj@sig
 dev.off()
 }
 
-pdf(paste("heatmapmRNA",seed,".pdf",sep=""))
+pdf(paste(ddir,"heatmapmRNA",seed,".pdf",sep=""))
 plotHeatmap(obj,"mRNA")
 dev.off()
 
 
-pdf(paste("pcamRNA",seed,".pdf",sep=""))
+pdf(paste(ddir,"pcamRNA",seed,".pdf",sep=""))
 plotPca(obj,"mRNA")
 dev.off()
 
@@ -4097,10 +4099,10 @@ cat("
 \\begin{figure}[!h]
 \\centering
 ")
-cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste("heatmapmRNA",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste(ddir,"heatmapmRNA",seed,".pdf",sep=""),"}",sep=""))
 cat("\\hspace{0.02\\textwidth}")
 if (obj@info[["mRNA.diffexp.method"]][1] != "anova") {
-cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste("mamRNA",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste(ddir,"mamRNA",seed,".pdf",sep=""),"}",sep=""))
 }
 cat(paste("\\caption[]{A) Heatmap vith the top 50 most significant mRNAs (sorted by adjusted p-value). B) Volcano plot showing the selected mRNAs.}
 \\end{figure}
@@ -4150,7 +4152,7 @@ sel<-which(obj@net$adj.pval<=0.01)
 cutoff001.corrected<-max(obj@net[sel,"cor"])
 
 
-pdf(paste("cordens",seed,".pdf",sep=""))
+pdf(paste(ddir,"cordens",seed,".pdf",sep=""))
 
 meth<-obj@info$correlation.type
 if (obj@info$correlation.type=="pearson") meth<-"Pearson"
@@ -4220,7 +4222,7 @@ cat("
 \\begin{figure}[!h]
 \\centering
 ")
-cat(paste("\\includegraphics[width=0.6\\textwidth]{",paste("cordens",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.6\\textwidth]{",paste(ddir,"cordens",seed,".pdf",sep=""),"}",sep=""))
 cat(paste("\\caption{Density of a total of ",nrow(obj@net)," miRNA-mRNA pairs. Dashed lines distinguish correlations whose p-value is lower than 0.05, dotted lines for 0.01. Black is for raw p-value and red for adjusted p-value.}",sep=""))
 cat("
 \\end{figure}
@@ -4239,14 +4241,14 @@ top11$miRNA<-as.character(top11$miRNA)
 top11$mRNA<-as.character(top11$mRNA)
 
 for (i in 1:n) {
-	pdf(paste("cor",i,seed,".pdf",sep=""))
+	pdf(paste(ddir,"cor",i,seed,".pdf",sep=""))
 	plotCorrelation(obj,miRNA=top11$miRNA[i],mRNA=top11$mRNA[i])
 	dev.off()
 
 }
 
 
-a<-paste(paste("\\includegraphics[width=0.3\\textwidth]{cor",1:n,seed,".pdf}",sep=""),collapse="\n")
+a<-paste(paste("\\includegraphics[width=0.3\\textwidth]{",ddir,"cor",1:n,seed,".pdf}",sep=""),collapse="\n")
 
 cat("
 \\begin{figure}[!h]
@@ -4273,17 +4275,17 @@ tarrs<-rownames(obj@net)[which(obj@net$dat.sum>=obj@info[["dat.sum"]])]
 
     venn.diagram(list(correlation = corrs, targets = tarrs),fill = c("red", "green"),
   alpha = c(0.5, 0.5), cex = 2,cat.fontface = 4,lty =2, fontfamily =3, 
-   filename = paste("venn",seed,".tiff",sep=""))
+   filename = paste(ddir,"venn",seed,".tiff",sep=""))
 
 
-system(paste("convert venn",seed,".tiff venn",seed,".pdf",sep=""))
+system(paste("convert ",ddir,"venn",seed,".tiff ",ddir,,"venn",seed,".pdf",sep=""))
 
 
 cat("
 \\begin{figure}[h]
 \\centering
 ")
-cat(paste("\\includegraphics[width=0.35\\textwidth]{",paste("venn",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.35\\textwidth]{",paste(ddir,"venn",seed,".pdf",sep=""),"}",sep=""))
 
 if (obj@info[["cor.alternative.hypothesis"]]!="both") {
 #cat(paste("\\caption{Venn Diagram. Database(s) selected: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", "))," (minimum coincidences across databases: ",obj@info[["dat.sum"]],"), Pval-adjusted cutoff: ",obj@info[["cor_criteria"]]["pval"],"}",sep=""))
@@ -4354,7 +4356,7 @@ include.rownames=FALSE,latex.environments="center")
 
 
 
-pdf(paste("circos",seed,".pdf",sep=""))
+pdf(paste(ddir,"circos",seed,".pdf",sep=""))
 plotCircos(obj,pval.cutoff=1,n=45)
 dev.off()
 
@@ -4362,7 +4364,7 @@ cat("
 \\begin{figure}[!h]
 \\centering
 ")
-cat(paste("\\includegraphics[width=0.75\\textwidth]{",paste("circos",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.75\\textwidth]{",paste(ddir,"circos",seed,".pdf",sep=""),"}",sep=""))
 
 cat(paste("\\caption{Circos plot for the first 45 miRNA-mRNA pairs (sorted by adjusted p-value) that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),". Blue: miRNAs, Orange: target mRNAs}",sep=""))
 cat("
@@ -4382,13 +4384,13 @@ cat("\\subsection{Network analysis}")
 
 if (length(which(obj@net$adj.pval<0.05 & obj@net$dat.sum>=obj@info[["dat.sum"]]))>0 ) {
 
-pdf(paste("network",seed,".pdf",sep=""))
+pdf(paste(ddir,"network",seed,".pdf",sep=""))
 plotNetwork(obj,names=FALSE,pval.cutoff=0.05,node.size=1)
 dev.off()
 
 } else {
 
-pdf(paste("network",seed,".pdf",sep=""))
+pdf(paste(ddir,"network",seed,".pdf",sep=""))
 plotNetwork(obj,names=FALSE,n=45,pval.cutoff=1,node.size=1.5)
 dev.off()
 
@@ -4401,7 +4403,7 @@ cat("
 \\begin{figure}[!h]
 \\centering
 ")
-cat(paste("\\includegraphics[width=0.9\\textwidth]{",paste("network",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.9\\textwidth]{",paste(ddir,"network",seed,".pdf",sep=""),"}",sep=""))
 
 cat(paste("\\caption{Network for all the miRNA-mRNA pairs that have: pval-corrected$<$0.05 and appear at least ",obj@info[["dat.sum"]]," times in the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),". Circles represent the miRNAs, and squares the mRNAs. Red fill means upregulated miRNAs/mRNAs, while green fill means downregulated miRNAs/mRNAs in comparative ",obj@info[["miRNA.diffexp.method"]][2],"; lines indicate the miRNA-mRNA pairs, red line means positive score and green line means negative score.}",sep=""))
 cat("
@@ -4412,7 +4414,7 @@ cat("
 if (length(which(obj@net$adj.pval<0.05 & obj@net$dat.sum>=obj@info[["dat.sum"]]))!=0) {
 
 
-pdf(paste("barplot_miRNA",seed,".pdf",sep=""),height=7/2)
+pdf(paste(ddir,"barplot_miRNA",seed,".pdf",sep=""),height=7/2)
 topTable(obj,"miRNA",names=TRUE,plot=TRUE)
 dev.off()
 
@@ -4420,7 +4422,7 @@ cat("
 \\begin{figure}[!h]
 \\centering
 ")
-cat(paste("\\includegraphics[width=0.9\\textwidth]{",paste("barplot_miRNA",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.9\\textwidth]{",paste(ddir,"barplot_miRNA",seed,".pdf",sep=""),"}",sep=""))
 
 cat(paste("\\caption{Barplot showing the number of mRNA targets per each miRNA (each bar represents a miRNA and they are sorted by number of targets). MiRNA-mRNA interactions have pval-corrected$<$0.05 and predicted at least ",obj@info[["dat.sum"]]," time on the following databases: ",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),". Red line (and right axis) represents the percentage of deregulated mRNAs that are cumulatively targeted by the miRNAs.}",sep=""))
 cat("
@@ -4580,7 +4582,7 @@ table(all)
 
 
 
-pdf(paste("piechart_mRNA",seed,".pdf",sep=""))
+pdf(paste(ddir,"piechart_mRNA",seed,".pdf",sep=""))
 a<-topTable(obj,"mRNA",names=FALSE)
 a[which(a>5)]<-">5"
 
@@ -4598,7 +4600,7 @@ dev.off()
 #\\begin{figure}[!h]
 #\\centering
 #")
-#cat(paste("\\includegraphics[width=0.9\\textwidth]{",paste("barplot_mRNA",seed,".pdf",sep=""),"}",sep=""))
+#cat(paste("\\includegraphics[width=0.9\\textwidth]{",paste(ddir,"barplot_mRNA",seed,".pdf",sep=""),"}",sep=""))
 
 #cat(paste("\\caption{Barplot for mRNAs, pval-corrected$<$0.05 and Targets=",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),"(minimum coincidences between databases:",obj@info[["dat.sum"]],").}",sep=""))
 #cat("
@@ -4611,7 +4613,7 @@ cat("
 \\begin{figure}[!h]
 \\centering
 ")
-cat(paste("\\includegraphics[width=0.7\\textwidth]{",paste("piechart_mRNA",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.7\\textwidth]{",paste(ddir,"piechart_mRNA",seed,".pdf",sep=""),"}",sep=""))
 
 cat(paste("\\caption{Pie chart representing the number of miRNAs targeting the mRNAs, pval-corrected$<$0.05 and Targets=",gsub("_","\\\\_",paste(obj@info[["database"]],collapse=", ")),"(minimum coincidences between databases:",obj@info[["dat.sum"]],").}",sep=""))
 cat("
@@ -4699,14 +4701,14 @@ cat("\\end{document}")
 
 	sink()
 
-	system(paste("pdflatex ",file,".tex",sep=""))
-	system(paste("pdflatex ",file,".tex",sep=""))
-	system(paste("rm ",file,".out",sep=""))
-	system(paste("rm ",file,".aux",sep=""))
-	system(paste("rm ",file,".log",sep=""))
+	system(paste("pdflatex ",ddir,file,".tex",sep=""))
+	system(paste("pdflatex ",ddir,file,".tex",sep=""))
+	system(paste("rm ",ddir,file,".out",sep=""))
+	system(paste("rm ",ddir,file,".aux",sep=""))
+	system(paste("rm ",ddir,file,".log",sep=""))
 
-	system(paste("rm *",seed,".pdf",sep=""))
-	system(paste("rm *",seed,".tiff",sep=""))
+	system(paste("rm ",ddir,"*",seed,".pdf",sep=""))
+	system(paste("rm ",ddir,"*",seed,".tiff",sep=""))
 	#system(paste("rm *",seed,".jpg",sep=""))
 	
 
