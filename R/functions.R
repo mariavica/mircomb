@@ -4080,7 +4080,7 @@ cat("
 ")
 
 if (obj@info[["mRNA.diffexp.method"]][1] != "anova") {
-pdf(paste("mamRNA",seed,".pdf",sep=""))
+pdf(paste(ddir,"mamRNA",seed,".pdf",sep=""))
 plot(obj@diffexp.mRNA$logratio,-log10(obj@diffexp.mRNA$pval),xlab="logratio",ylab="-log10(pval)",pch=19,cex=0.75)
 points(obj@diffexp.mRNA[obj@sig.mRNA,"logratio"],-log10(obj@diffexp.mRNA[obj@sig.mRNA,"pval"]),col="red",pch=19,cex=0.75)
 dev.off()
