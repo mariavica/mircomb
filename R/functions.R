@@ -4701,8 +4701,8 @@ cat("\\end{document}")
 
 	sink()
 
-	system(paste("pdflatex ",ddir,file,".tex --output.directory ",ddir,sep=""))
-	system(paste("pdflatex ",ddir,file,".tex --output.directory ",ddir,sep=""))
+	system(paste("pdflatex -output.directory ",ddir," ",ddir,file,".tex",sep=""))
+	system(paste("pdflatex -output.directory ",ddir," ",ddir,file,".tex",sep=""))
 	system(paste("rm ",ddir,file,".out",sep=""))
 	system(paste("rm ",ddir,file,".aux",sep=""))
 	system(paste("rm ",ddir,file,".log",sep=""))
