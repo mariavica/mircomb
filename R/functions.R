@@ -4278,7 +4278,7 @@ tarrs<-rownames(obj@net)[which(obj@net$dat.sum>=obj@info[["dat.sum"]])]
    filename = paste(ddir,"venn",seed,".tiff",sep=""))
 
 
-system(paste("convert ",ddir,"venn",seed,".tiff ",ddir,,"venn",seed,".pdf",sep=""))
+system(paste("convert ",ddir,"venn",seed,".tiff ",ddir,"venn",seed,".pdf",sep=""))
 
 
 cat("
