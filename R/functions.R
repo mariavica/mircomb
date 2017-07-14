@@ -3972,9 +3972,9 @@ cat("
 \\begin{figure}[!h]
 \\centering
 ")
-cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste("pcamRNA",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste(ddir,"pcamRNA",seed,".pdf",sep=""),"}",sep=""))
 cat("\\hspace{0.02\\textwidth}")
-cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste("densmRNA",seed,".pdf",sep=""),"}",sep=""))
+cat(paste("\\includegraphics[width=0.46\\textwidth]{",paste(ddir,"densmRNA",seed,".pdf",sep=""),"}",sep=""))
 
 
 cat("
