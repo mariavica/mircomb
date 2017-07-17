@@ -3802,6 +3802,22 @@ summary.corObject <- function (object, ...) {
 mkReport <- function (obj, file, title="Default \\texttt{miRComb} output", dat.sum.table=NULL, ddir= getwd() ) {
   
   ddir<-paste(ddir,"/",sep="")
+  ddir<-gsub("//","/",ddir)  # if ddir already ends with "/"
+  
+  ## be sure that any colname/rowname, and phenodata, has underscores
+  colnames(obj@dat.miRNA)<-gsub("_",".",colnames(obj@dat.miRNA))
+  colnames(obj@dat.mRNA)<-gsub("_",".",colnames(obj@dat.mRNA))
+  rownames(obj@pheno.miRNA)<-gsub("_",".",rownames(obj@pheno.miRNA))
+  rownames(obj@pheno.mRNA)<-gsub("_",".",rownames(obj@pheno.mRNA))
+  
+  for (i in 1:ncol(obj@pheno.miRNA)) {
+    obj@pheno.miRNA[,i]<-gsub("_",".",obj@pheno.miRNA[,i])
+  }
+  
+  for (i in 1:ncol(obj@pheno.mRNA)) {
+    obj@pheno.mRNA[,i]<-gsub("_",".",obj@pheno.mRNA[,i])
+  }
+  
 	
 	cat("Doesn't work locally? Try loading your \".RData\" file in our server, and we will make the pdf report for you (up to 100Mb):\n")
 	cat("http://bioinfo.ciberehd.org/mircomb/mkreport.html")
