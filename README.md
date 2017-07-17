@@ -6,15 +6,15 @@ There are two ways of installing miRComb from GitHub:
 Use devtools package:
 ```R
 library(devtools)
-install_github("mariavica/miRComb", ref="main", build_vignettes = TRUE)
+install_github("mariavica/miRComb", ref="patch-devel", build_vignettes = TRUE)
 ```
 
 Or with githubinstall package:
 ```R
 library(githubinstall)
-gh_install_packages("miRComb", ref = "main", build_vignettes = TRUE)
+gh_install_packages("miRComb", ref = "patch-devel", build_vignettes = TRUE)
 ```
-In both cases, use `ref="patch-devel"` if you want to install the latest version.
+In both cases, use `ref="main"` if you want to install the latest stable version, not the developmental one.
 
 
 Otherwise, you can also download the source files from sourceforge.net: https://sourceforge.net/projects/mircomb/files/?source=navbar
