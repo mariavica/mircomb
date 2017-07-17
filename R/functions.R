@@ -4708,7 +4708,7 @@ cat("\\end{document}")
 	system(paste("rm ",ddir,file,".log",sep=""))
 
 	system(paste("rm ",ddir,"*",seed,".pdf",sep=""))
-	system(paste("rm ",ddir,"*",seed,".tiff",sep=""))
+	system(paste("rm ",ddir,"*",seed,".tiff*",sep=""))
 	#system(paste("rm *",seed,".jpg",sep=""))
 	
 
