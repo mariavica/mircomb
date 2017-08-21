@@ -1,4 +1,4 @@
-useDynLib(miRComb,pearson,.registration=TRUE)
+useDynLib(miRComb,pearson)
 export(pearson)
 exportPattern("^[[:alpha:]]+")
 exportClass("corObject")

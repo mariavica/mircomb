@@ -11,7 +11,9 @@ Maintainer: Maria Vila-Casadesús <maria.vila@ciberehd.org>
 Description: Find miRNA targets combining both biological and theoretical information.
 License: GPL-3
 Depends: R (>= 3.0), gplots, gtools, network, pheatmap, WriteXLS, Hmisc, mvoutlier, pROC, verification, glmnet, survival, mclust, RankProd, GOstats, limma, scatterplot3d, RamiGO, circlize, VennDiagram, xtable, ReactomePA, fgsea, DESeq, GO.db, KEGG.db, miRData (>= 0.4)
-Imports: AnnotationDbi
+Imports: AnnotationDbi,
+    Rcpp
 biocViews: miRNA, mRNA, correlation
 Encoding: UTF-8
 URL: http://mircomb.sourceforge.net
+LinkingTo: Rcpp
