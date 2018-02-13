@@ -37,4 +37,4 @@ If the package has been useful for you, we will be very grateful if you can cite
 
 + *Vila-Casadesús M, Gironella M, Lozano JJ (2016) MiRComb: An R Package to Analyse miRNA-mRNA Interactions. Examples across Five Digestive Cancers. PLoS ONE 11(3): e0151127. doi:10.1371/journal.pone.0151127*
 
-Also, feel free to send any comments and suggestions to: maria.vila@ciberehd.org, many thanks!
+Also, feel free to send any comments and suggestions to: maria.vila.bioinfo@gmail.com and juanjo.lozano@ciberehd.org, many thanks!
