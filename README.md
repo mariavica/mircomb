@@ -9,6 +9,8 @@ library(devtools)
 if(!require(miRData)) install_github("mariavica/miRData", ref="master", build_vignettes = TRUE)
 install_github("mariavica/miRComb", ref="master", build_vignettes = TRUE)
 ```
+ (use `build_vignettes = FALSE` if you have problems with vignettes intallation)
+
 
 Or with githubinstall package:
 ```R
@@ -26,7 +28,7 @@ Other R/Bioconductor packages are needed, if you want to install all of them, ty
 ```R
 install.packages(c("gplots","gtools","network","WriteXLS","Hmisc","glmnet","scatterplot3d", "VennDiagram","xtable","survival","pheatmap","mvoutlier","mclust"))
 source("http://www.bioconductor.org/biocLite.R")
-biocLite(c("RankProd","GOstats","limma","RamiGO","circlize","ReactomePA","DESeq","DO.db")) 
+biocLite(c("RankProd","GOstats","limma","RamiGO","KEGG.db","circlize","ReactomePA","DESeq","DO.db")) 
 ```
 
 ## Use and comments
@@ -35,4 +37,4 @@ If the package has been useful for you, we will be very grateful if you can cite
 
 + *Vila-Casadesús M, Gironella M, Lozano JJ (2016) MiRComb: An R Package to Analyse miRNA-mRNA Interactions. Examples across Five Digestive Cancers. PLoS ONE 11(3): e0151127. doi:10.1371/journal.pone.0151127*
 
-Also, feel free to send any comments and suggestions to: maria.vila@ciberehd.org, many thanks!
+Also, feel free to send any comments and suggestions to: maria.vila.bioinfo@gmail.com and juanjo.lozano@ciberehd.org, many thanks!
