@@ -26,7 +26,7 @@ Other R/Bioconductor packages are needed, if you want to install all of them, ty
 ```R
 install.packages(c("gplots","gtools","network","WriteXLS","Hmisc","glmnet","scatterplot3d", "VennDiagram","xtable","survival","pheatmap","mvoutlier","mclust"))
 source("http://www.bioconductor.org/biocLite.R")
-biocLite(c("RankProd","GOstats","limma","RamiGO","circlize","ReactomePA","DESeq","DO.db")) 
+biocLite(c("RankProd","GOstats","limma","RamiGO","KEGG.db","circlize","ReactomePA","DESeq","DO.db")) 
 ```
 
 ## Use and comments
