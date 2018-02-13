@@ -9,7 +9,7 @@ library(devtools)
 if(!require(miRData)) install_github("mariavica/miRData", ref="master", build_vignettes = TRUE)
 install_github("mariavica/miRComb", ref="master", build_vignettes = TRUE)
 ```
-* Use `build_vignettes = FALSE` if you have problems with vignettes intallation.
+ (use `build_vignettes = FALSE` if you have problems with vignettes intallation)
 
 
 Or with githubinstall package:
