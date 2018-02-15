@@ -1,3 +1,9 @@
+CHANGES IN VERSION 0.9.4
+------------------------
+
+    o CorObject does not mandatory need a miRNA and mRNA data.
+
+
 CHANGES IN VERSION 0.9.3
 ------------------------
 
