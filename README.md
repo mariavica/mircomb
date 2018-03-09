@@ -31,9 +31,7 @@ source("http://www.bioconductor.org/biocLite.R")
 biocLite(c("RankProd","GOstats","limma","RamiGO","KEGG.db","circlize","ReactomePA","DESeq","DO.db")) 
 ```
 
-### Common problems
 If you have trouble installing RamiGO package due to XMLRPC package dependency, try:
-
 ```R
 install.packages("XMLRPC", repos="http://R-Forge.R-project.org")
 ```
