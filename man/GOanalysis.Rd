@@ -18,9 +18,9 @@ GOanalysis(obj, type, ontology, pval.cutoff = 0.05,
 a \kbd{corObject} with a \kbd{net} slot already defined
 }
   \item{type}{
-\kbd{"GO"}, \kbd{"KEGG"} or \kbd{"REACTOME"}}
+\kbd{"GO"} or \kbd{"REACTOME"}}
   \item{ontology}{
-If type is \kbd{"GO"}, the ontology to be analysed: \kbd{"BP"} (Biological Process), \kbd{"CC"} (Cellular Component) or \kbd{"MF"} (Molecular Function). If the type is \kbd{"KEGG"}, write \kbd{"KEGG"}; if it is \kbd{"REACTOME"}, write \kbd{"REACTOME"}.
+If type is \kbd{"GO"}, the ontology to be analysed: \kbd{"BP"} (Biological Process), \kbd{"CC"} (Cellular Component) or \kbd{"MF"} (Molecular Function). If the type is \kbd{"REACTOME"}, write \kbd{"REACTOME"}.
 }
   \item{pval.cutoff}{
 maximum \emph{p} value of selected miRNA-mRNA pairs.

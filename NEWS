@@ -1,3 +1,11 @@
+CHANGES IN VERSION 0.9.5
+------------------------
+
+    o Update function GOanalysis, which no longer requies GOStats (not mantained in the latest versions of R/Bioconductor), it uses clusterProfiler
+    o No longer supports KEGG analysis, use Reactome instead.
+    o plotGO function removed (RamiGO not mantained).
+
+
 CHANGES IN VERSION 0.9.4
 ------------------------
 

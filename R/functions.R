@@ -3487,70 +3487,22 @@ GOanalysis <- function (obj, type, ontology, pval.cutoff = 0.05, dat.sum=obj@inf
     		entrezIds.all <- as.character(unique(conversor.mouse[, 2]))
 	}
 
-
 	#print(length(mRNA.id))
 	#print("\n")
 	#print(length(entrezIds.all))
-
-	if (type=="GO") {
-    	params <- new("GOHyperGParams", 
-		geneIds = mRNA.id, 
-		universeGeneIds = entrezIds.all, 
-    		annotation = annotation, 
-		ontology = ontology, 
-		pvalueCutoff = 1, 
-    		conditional = FALSE, 
-		testDirection = "over")
-	}
-
-	if (type=="KEGG") {
-    	params <- new("KEGGHyperGParams", 
-		geneIds = mRNA.id, 
-		universeGeneIds = entrezIds.all, 
-    		annotation = annotation, 
-		pvalueCutoff = 1, 
-		testDirection = "over")
-	}
-
-	#assignInNamespace("lapply", lapply, "base")
-	if (type=="GO" | type=="KEGG") {
-    	results.test <- hyperGTest(params)
-    	df1 <- summary(results.test)
-	xxx <- geneIdsByCategory(results.test)
-    	genescat <- unlist(lapply(xxx, function(mapped_genes) {
-	    if (organism=="human") {
-    	    	x <- org.Hs.egSYMBOL
-	    }
-	    if (organism=="mouse") {
-    	    	x <- org.Mm.egSYMBOL
-	    }
-
-    	    mapped_genes <- as.character(mapped_genes)
-	#cat(class(x))
-    	    xx <- as.list(x[mapped_genes])
-    	    return(paste(unlist(xx), collapse = ", "))
-    	}))[df1[,1]]
-
-
-    	fdr <- p.adjust(df1$Pvalue, method = "BH")
-    	GO.results <- data.frame(Ontology = rep(ontology, length = length(fdr)), 
-        	df1, fdr, genescat)
-
-	if (add.miRNA) {
-		GO.results$miRNAs.count<-NA
-		GO.results$miRNAs<-NA
-		GO.results$genescat<-as.character(GO.results$genescat)
-		for (i in 1:nrow(GO.results)) {
-			genes <- strsplit(GO.results$genescat[i],", ")[[1]]
-			sels <- which((obj@net$mRNA %in% genes) & (obj@net$adj.pval <= pval.cutoff))
-			miRNAs <- unique(obj@net[sels,"miRNA"])
-			GO.results$miRNAs.count[i]<-length(miRNAs)
-			GO.results$miRNAs[i]<-paste(miRNAs,collapse=", ")
-		}
-	}
-
-	}
-
+  #library(clusterProfiler)
+    
+    if (type=="GO") {		
+    GO.results <- enrichGO(gene         = as.character(mRNA.name),
+    	                    OrgDb         = annotation,
+    	                    keyType       = 'SYMBOL',
+    	                    ont           = ontology,
+    	                    pAdjustMethod = "BH",
+    	                    pvalueCutoff  = 1,
+    	                    qvalueCutoff  = 1)
+    	
+    }
+    	
 	if (type=="REACTOME") {
 
 		mRNA.id<-mRNA.id[which(!is.na(mRNA.id)==TRUE)]
@@ -3559,6 +3511,21 @@ GOanalysis <- function (obj, type, ontology, pval.cutoff = 0.05, dat.sum=obj@inf
 		GO.results<-data.frame(df1)
 
 	}
+    	
+    	
+    	if (add.miRNA) {
+    	  GO.results$miRNAs.count<-NA
+    	  GO.results$miRNAs<-NA
+    	  GO.results$genescat<-as.character(GO.results$genescat)
+    	  for (i in 1:nrow(GO.results)) {
+    	    genes <- strsplit(GO.results$genescat[i],"/")[[1]]
+    	    sels <- which((obj@net$mRNA %in% genes) & (obj@net$adj.pval <= pval.cutoff))
+    	    miRNAs <- unique(obj@net[sels,"miRNA"])
+    	    GO.results$miRNAs.count[i]<-length(miRNAs)
+    	    GO.results$miRNAs[i]<-paste(miRNAs,collapse=", ")
+    	  }
+    	}
+    	
 
 	obj@GO.results[[paste(type,ontology,sep=":")]]<-GO.results
 	obj@info[[paste(type,ontology,sep=":")]]<-list(pval.cutoff=pval.cutoff, dat.sum=dat.sum, sub.miRNA=sub.miRNA, exclude.miRNA=exclude.miRNA, sub.mRNA=sub.mRNA, organism=organism, FC=FC, up=up, dw=dw)
@@ -3684,24 +3651,24 @@ topTable <- function (obj, class, pval.cutoff=0.05, dat.sum=obj@info[["dat.sum"]
 
 
 
-
-plotGO <- function ( obj, type, ontology, fdr=0.05, filename="GO_tree_default" ) {
+### RamiGO is no longer updated
+#plotGO <- function ( obj, type, ontology, fdr=0.05, filename="GO_tree_default" ) {
 	#library("RamiGO")
-	GOres<-obj@GO.results[[paste(type,ontology,sep=":")]]
-	sel<-which(GOres$fdr<fdr)
-	goIDs<-rownames(GOres)[sel]
-	num.fdr<-log(GOres$fdr[sel])
+#	GOres<-obj@GO.results[[paste(type,ontology,sep=":")]]
+#	sel<-which(GOres$fdr<fdr)
+#	goIDs<-rownames(GOres)[sel]
+#	num.fdr<-log(GOres$fdr[sel])
 	#remapejar de vermell a groc
 	
-	remap <- function(x) { (( x ) / max( abs(x) ) / 2)+0.5 }  # map x onto [0, 1]
-	fun.col <- function(x) {rgb(colorRamp(c("red","gold", "yellow"))(remap(x)),
-                        maxColorValue = 255)
-	}
+#	remap <- function(x) { (( x ) / max( abs(x) ) / 2)+0.5 }  # map x onto [0, 1]
+#	fun.col <- function(x) {rgb(colorRamp(c("red","gold", "yellow"))(remap(x)),
+#                        maxColorValue = 255)
+#	}
 
-	col.fdr<-fun.col(as.numeric(num.fdr))
-	pngRes<-getAmigoTree(goIDs=goIDs, color=col.fdr, filename=filename,picType="png",saveResult=TRUE)
+#	col.fdr<-fun.col(as.numeric(num.fdr))
+#	pngRes<-getAmigoTree(goIDs=goIDs, color=col.fdr, filename=filename,picType="png",saveResult=TRUE)
 
-}
+#}
 
 
 plotDensity <- function (obj, subset, col.color=1, colors=c("turquoise", "violet")) {
