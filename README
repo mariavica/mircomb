@@ -20,7 +20,7 @@ install.packages(c("gplots","gtools","network","WriteXLS","Hmisc","glmnet",
  
 source("http://www.bioconductor.org/biocLite.R")
 
-biocLite(c("RankProd","GOstats","limma","RamiGO","circlize","ReactomePA","DESeq",
+biocLite(c("RankProd","clusterProfiler","limma","circlize","ReactomePA","DESeq",
  "GO.db"))
 
 
