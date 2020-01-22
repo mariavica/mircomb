@@ -28,15 +28,7 @@ Other R/Bioconductor packages are needed, if you want to install all of them, ty
 ```R
 install.packages(c("gplots","gtools","network","WriteXLS","Hmisc","glmnet","scatterplot3d", "VennDiagram","xtable","survival","pheatmap","mvoutlier","mclust"))
 source("http://www.bioconductor.org/biocLite.R")
-biocLite(c("RankProd","clusterProfiler","limma","RamiGO","KEGG.db","circlize","ReactomePA","DESeq","DO.db")) 
-```
-
-If you have trouble installing `RamiGO` package due to `XMLRPC` package dependency, try:
-```R
-install.packages("XMLRPC", repos="http://R-Forge.R-project.org")
-source("http://www.bioconductor.org/biocLite.R")
-biocLite("RamiGO") 
-
+biocLite(c("RankProd","clusterProfiler","limma","KEGG.db","circlize","ReactomePA","DESeq","DO.db")) 
 ```
 
 
