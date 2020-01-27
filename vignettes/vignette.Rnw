@@ -538,7 +538,7 @@ mkReport(data.obj,"NameOfTheReport")
 And then the file \texttt{NameOfTheReport.pdf} will be created.
 
 \section{Available databases}
-All \texttt{names} are from miRBase version 17. See \texttt{miRData} package for more information.
+Check your miRNA version names in each cas \texttt{names} are from miRBase version 17. See \texttt{miRData} package for more information.
 
 \subsection{microCosm}
 \url{http://www.ebi.ac.uk/enright-srv/microcosm/htdocs/targets/v5/}
