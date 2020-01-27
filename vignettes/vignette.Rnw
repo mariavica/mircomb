@@ -338,7 +338,7 @@ head(data.obj@net)
 
 \subsection{Adding targets information}
 \label{sec:databases}
-At this moment, two databases are provided, but if it is necessary we can add more (see \texttt{?add.database}):
+At this moment, several databases are provided, but if it is necessary we can add more (see \texttt{?addDatabase}):
 <<>>=
 data(microCosm_v5_18)
 data(targetScan_v6.2_18)
@@ -353,6 +353,7 @@ And we can see that some columns have been added:
 	\item One column for each database, with the name: \texttt{dat.\textit{database\_name}}. 1 means that the miRNA-mRNA pair has been found as predicted in that database, 0 that the miRNA-mRNA pair is not predicted.
 	\item The column \texttt{dat.sum}, it reports how many times that miRNA-mRNA pair has been found in the used databases.
 \end{itemize}
+
 
 \begin{comment}
 \subsection{\emph{P} value combination}
@@ -548,9 +549,31 @@ head(microCosm_v5_18)
 
 \subsection{targetScan}
 \url{http://www.targetscan.org/}
+
+Human targets:
 <<>>=
 data(targetScan_v6.2_18)
 head(targetScan_v6.2_18)
+@
+
+Mouse targets:
+<<>>=
+data(targetScan_mouse_v7.1_21)
+head(targetScan_mouse_v7.1_21)
+@
+
+
+Fly targets:
+<<>>=
+data(targetScan_v7_2_fly)
+head(targetScan_v7_2_fly)
+@
+
+
+Zebrafish targets:
+<<>>=
+data(targetScan_v6_2_zebrafish)
+head(targetScan_v6_2_zebrafish)
 @
 
 
